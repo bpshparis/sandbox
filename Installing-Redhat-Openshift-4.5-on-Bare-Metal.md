@@ -488,6 +488,7 @@ wget -c $WEB_SERVER_SOFT_URL/buildIso.sh
 > -  **ISO_PATH**
 > - **RW_ISO_PATH** 
 > - **ISO_CFG**
+> - **VMS**
 
 > :information_source: Run this on Installer 
 

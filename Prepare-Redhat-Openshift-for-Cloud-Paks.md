@@ -424,7 +424,7 @@ oc login https://$LB_HOSTNAME:6443 -u admin -p admin --insecure-skip-tls-verify=
 REG_HOST=$(oc registry info) && echo $REG_HOST
 podman login -u $(oc whoami) -p $(oc whoami -t) $REG_HOST
 
-~/cpd-portworx/px-images/process-px-images.sh -r $REG_HOST -u $(oc whoami) -p $(oc whoami -t) -s $(oc project -q) -c podman -t ~/cpd-portworx/px-images/px_2.5.0.1-dist.tgz
+~/cpd-portworx/px-images/process-px-images.sh -r $REG_HOST -u $(oc whoami) -p $(oc whoami -t) -s $(oc project -q) -c podman -t ~/cpd-portworx/px-images/px_2.5.5.0-dist.tgz
 ```
 
 > :bulb: Check PX images are loadd in Openshift registry
@@ -438,7 +438,7 @@ oc get is | grep $NS
 > :information_source: Run this on Installer
 
 ```
-~/cpd-portworx/px-install-4.3/px-install.sh install-operator
+~/cpd-portworx/px-install-4.x/px-install.sh install-operator
 ```
 
 > :warning: Wait for operator pod to be running
@@ -454,7 +454,7 @@ watch "oc get po -n $NS | grep portworx-operator"
 > :information_source: Run this on Installer
 
 ```
-~/cpd-portworx/px-install-4.3/px-install.sh install-storage $APP_DEV $MD_DEV
+~/cpd-portworx/px-install-4.x/px-install.sh install-storage $APP_DEV $MD_DEV
 ```
 
 > :bulb: Monitor cluster installation and wait for all pods to be **1/1 Running**
@@ -480,9 +480,9 @@ oc exec $PX_POD -n $NS -- /opt/pwx/bin/pxctl status | grep '^Status'
 > :information_source: Run this on Installer
 
 ```
-~/cpd-portworx/px-install-4.3/px-install.sh install-sample-pvc
+~/cpd-portworx/px-install-4.x/px-install.sh install-sample-pvc
 
-oc create -f ~/cpd-portworx/px-install-4.3/px-test.yaml
+oc create -f ~/cpd-portworx/px-install-4.x/px-test.yaml
 ```
 
 > :bulb: Check pvc is **Bound** and pod is **1/1 Running** 
@@ -497,7 +497,7 @@ watch -n5 "oc get pvc | grep test && oc get po | grep test"
 > :information_source: Run this on Installer
 
 ```
-~/cpd-portworx/px-install-4.3/px-sc.sh
+~/cpd-portworx/px-install-4.x/px-sc.sh
 ```
 
 > :bulb: Check you have at least **30 storage classes available**
