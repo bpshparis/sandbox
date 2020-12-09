@@ -15,14 +15,14 @@ Download [Redhat Openshift 4 on Bare Metal material](https://cloud.redhat.com/op
 
 | name                        | role                                              | vcpus  | ram (GB) | storage (GB)    | ethernet (10GB) |
 | --------------------------- | ------------------------------------------------- | ------ | -------- | --------------- | --------------- |
-| m1-ocp1.iicparis.fr.ibm.com | master + etcd                                     | 4      | 16       | 120             | 1               |
-| m2-ocp1.iicparis.fr.ibm.com | master + etcd                                     | 4      | 16       | 120             | 1               |
-| m3-ocp1.iicparis.fr.ibm.com | master + etcd                                     | 4      | 16       | 120             | 1               |
-| w1-ocp1.iicparis.fr.ibm.com | worker                                            | 16     | 64       | 120 + 250 + 100 | 1               |
-| w2-ocp1.iicparis.fr.ibm.com | worker                                            | 16     | 64       | 120 + 250 + 100 | 1               |
-| w3-ocp1.iicparis.fr.ibm.com | worker                                            | 16     | 64       | 120 + 250 + 100 | 1               |
+| m1-ocp1.iicparis.fr.ibm.com | master + etcd                                     | 4      | 16       | 250             | 1               |
+| m2-ocp1.iicparis.fr.ibm.com | master + etcd                                     | 4      | 16       | 250             | 1               |
+| m3-ocp1.iicparis.fr.ibm.com | master + etcd                                     | 4      | 16       | 250             | 1               |
+| w1-ocp1.iicparis.fr.ibm.com | worker                                            | 16     | 64       | 250 + 250 + 100 | 1               |
+| w2-ocp1.iicparis.fr.ibm.com | worker                                            | 16     | 64       | 250 + 250 + 100 | 1               |
+| w3-ocp1.iicparis.fr.ibm.com | worker                                            | 16     | 64       | 250 + 250 + 100 | 1               |
 | bs-ocp1.iicparis.fr.ibm.com | bootstrap (will be removed after cluster install) | 4      | 16       | 120             | 1               |
-| **TOTAL**                   |                                                   | **60** | **240**  | **1770**        | **6**           |
+| **TOTAL**                   |                                                   | **60** | **240**  | **2550**        | **6**           |
 
 
 
@@ -378,7 +378,7 @@ tar xvzf $INSTALLER_FILE
 
 wget -c $WEB_SERVER_SOFT_URL/$CLIENT_FILE
 tar -xvzf $CLIENT_FILE -C $(echo $PATH | awk -F":" 'NR==1 {print $1}')
-oc version
+[ ! -z $(command -v oc) ] && echo "oc installed successfully" || echo "ERROR: oc not found in PATH"
 ```
 
 ### Create manifest and ignition files
@@ -581,6 +581,7 @@ wget -c $WEB_SERVER_VMDK_URL/rhcos.vmx -P $VMDK_PATH
 ```
 chmod +x ./createOCP4Cluster.sh
 ./createOCP4Cluster.sh
+./createOCP4Cluster.sh px
 ```
 <br>
 

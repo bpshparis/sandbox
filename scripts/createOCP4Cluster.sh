@@ -77,9 +77,16 @@ createPxVmdk (){
 
 for VM_NAME in $WORKERS_VM; do
 	echo $VM_NAME
+	VMID=$(vim-cmd vmsvc/getallvms | awk '{if (NR > 1) print $1 " " $2 }' | grep $VM_NAME | awk '{print $1}')
 	if [ $? -eq 0 ]; then
 		vmkfstools -c $PXDATA_STORAGE $VMS_PATH/$VM_NAME/$VM_NAME"-sdb".vmdk
+		if [ ! -z "$VMID" ]; then
+			vim-cmd vmsvc/device.diskaddexisting $VMID $VMS_PATH/$VM_NAME/$VM_NAME"-sdb".vmdk 0 1
+		fi;
 		vmkfstools -c $PXMDATA_STORAGE $VMS_PATH/$VM_NAME/$VM_NAME"-sdc".vmdk
+		if [ ! -z "$VMID" ]; then
+			vim-cmd vmsvc/device.diskaddexisting $VMID $VMS_PATH/$VM_NAME/$VM_NAME"-sdc".vmdk 0 2
+		fi;
 	fi
 done
 

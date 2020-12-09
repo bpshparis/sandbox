@@ -42,6 +42,7 @@ cd $INST_DIR
 wget -c $WEB_SERVER_CP_URL/$INST_FILE
 tar xvzf $INST_FILE
 rm $INST_FILE -f
+wget -c $WEB_SERVER_CP_URL/$CONF_FILE
 ```
 
 ### Set repo.yaml
@@ -155,7 +156,7 @@ WEB_SERVER_PASS="password"
 VERSION=$(find $INST_DIR/bin/cpd-linux-workspace/assembly/$ASSEMBLY/$ARCH/* -type d | awk -F'/' '{print $NF}')
 
 [ ! -z "$VERSION" ] && echo $VERSION "-> OK" || echo "ERROR: VERSION is not set."
-TAR_FILE="$ASSEMBLY-$VERSION-$ARCH.tar"
+TAR_FILE="$ASSEMBLY-$VERSION-$ARCH.tar" && echo $TAR_FILE
 ```
 
 ```
