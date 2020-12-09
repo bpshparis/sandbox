@@ -16,7 +16,7 @@
 :checkered_flag::checkered_flag::checkered_flag:
 <br>
 
-## Prepare for Cloud Pak for Data 3.0.1
+## Prepare for Cloud Pak for Data 3.5.1
 
 > :information_source: Commands below are valid for a **Linux/Centos 7**.
 
