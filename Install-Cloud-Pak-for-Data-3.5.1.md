@@ -14,7 +14,7 @@
 :checkered_flag::checkered_flag::checkered_flag:
 <br>
 
-## Install Cloud Pak for Data 3.0.1
+## Install Cloud Pak for Data 3.5.1
 
 > :information_source: Commands below are valid for a **Linux/Centos 7**.
 
@@ -27,7 +27,7 @@
 > :information_source: Run this on Installer 
 
 ```
-LB_HOSTNAME="cli-ocp15"
+LB_HOSTNAME="cli-ocp1"
 ```
 
 ```
@@ -59,7 +59,7 @@ oc adm policy add-role-to-user cpd-admin-role $PRJ_ADMIN --role-namespace=$(oc p
 ```
 INST_DIR=~/cpd
 ASSEMBLY="lite"
-VERSION="3.0.1"
+VERSION="3.5.1"
 ARCH="x86_64"
 TAR_FILE="$ASSEMBLY-$VERSION-$ARCH.tar"
 WEB_SERVER_CP_URL="http://web/cloud-pak/assemblies"
@@ -69,7 +69,6 @@ WEB_SERVER_CP_URL="http://web/cloud-pak/assemblies"
 [ -d "$INST_DIR" ] && { rm -rf $INST_DIR; mkdir $INST_DIR; }
 cd $INST_DIR
 
-mkdir bin && cd bin
 wget -c $WEB_SERVER_CP_URL/$TAR_FILE
 tar xvf $TAR_FILE
 rm -f $TAR_FILE
@@ -95,7 +94,7 @@ pkill screen; screen -mdS ADM && screen -r ADM
 INST_DIR=~/cpd
 ASSEMBLY="lite"
 ARCH="x86_64"
-VERSION=$(find $INST_DIR/bin/cpd-linux-workspace/assembly/$ASSEMBLY/$ARCH/* -type d | awk -F'/' '{print $NF}')
+VERSION=$(find $INST_DIR/cpd-cli-workspace/assembly/$ASSEMBLY/$ARCH/* -type d | awk -F'/' '{print $NF}')
 
 [ ! -z "$VERSION" ] && echo $VERSION "-> OK" || echo "ERROR: VERSION is not set."
 ```
@@ -103,7 +102,7 @@ VERSION=$(find $INST_DIR/bin/cpd-linux-workspace/assembly/$ASSEMBLY/$ARCH/* -typ
 ```
 podman login -u $(oc whoami) -p $(oc whoami -t) $(oc registry info)
 
-$INST_DIR/bin/cpd-linux preloadImages \
+$INST_DIR/cpd-cli preload-images \
 --assembly $ASSEMBLY \
 --version $VERSION \
 --arch $ARCH \
@@ -111,7 +110,7 @@ $INST_DIR/bin/cpd-linux preloadImages \
 --transfer-image-to $(oc registry info)/$(oc project -q) \
 --target-registry-password $(oc whoami -t) \
 --target-registry-username $(oc whoami) \
---load-from $INST_DIR/bin/cpd-linux-workspace \
+--load-from $INST_DIR/cpd-cli-workspace \
 --accept-all-licenses
 ```
 
@@ -121,12 +120,12 @@ $INST_DIR/bin/cpd-linux preloadImages \
 > :information_source: Run this on Installer
 
 ```
-$INST_DIR/bin/cpd-linux adm \
+$INST_DIR/cpd-cli adm \
 --namespace $(oc project -q) \
 --assembly $ASSEMBLY \
 --version $VERSION \
 --arch $ARCH \
---load-from $INST_DIR/bin/cpd-linux-workspace \
+--load-from $INST_DIR/cpd-cli-workspace \
 --apply \
 --accept-all-licenses
 ```
@@ -146,6 +145,7 @@ oc get sa
 ```
 SC="portworx-shared-gp3"
 INT_REG=$(oc describe pod $(oc get pod -n openshift-image-registry | awk '$1 ~ "image-registry-" {print $1}') -n openshift-image-registry | awk '$1 ~ "REGISTRY_OPENSHIFT_SERVER_ADDR:" {print $2}') && echo $INT_REG
+INT_REG=$(oc registry info --internal) && echo $INT_REG
 OVERRIDE=$INST_DIR/lite-override.yaml
 ```
 
@@ -155,14 +155,14 @@ zenCoreMetaDb:
   storageClass: portworx-metastoredb-sc
 EOF
 
-$INST_DIR/bin/cpd-linux \
+$INST_DIR/cpd-cli \
 --namespace $(oc project -q) \
 --assembly $ASSEMBLY \
 --version $VERSION \
 --arch $ARCH \
 --storageclass $SC \
 --cluster-pull-prefix $INT_REG/$(oc project -q) \
---load-from $INST_DIR/bin/cpd-linux-workspace \
+--load-from $INST_DIR/bin/cpd-cli-workspace \
 --override $OVERRIDE \
 --accept-all-licenses
 
@@ -179,7 +179,7 @@ watch -n5 "oc get pvc && oc get po"
 > :information_source: Run this on Installer
 
 ```
-$INST_DIR/bin/cpd-linux status \
+$INST_DIR/cpd-cli status \
 --namespace $(oc project -q) \
 --assembly $ASSEMBLY \
 --arch $ARCH
