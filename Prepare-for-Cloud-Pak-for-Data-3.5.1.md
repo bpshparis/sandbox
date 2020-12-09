@@ -1,4 +1,4 @@
-# Prepare for IBM Watson Assistant
+# Prepare for Cloud Pak for Data 3.5.1
 
 ## Hardware requirements
 
@@ -6,7 +6,7 @@
 
 ## System requirements
 
-- Have completed  [Install Cloud Pak for Data 3.0.1](https://github.com/bpshparis/sandbox/blob/master/Install-Cloud-Pak-for-Data-3.0.1.md#install-cloud-pak-for-data-301)
+- Have completed  [Prepare Redhat Openshift for Cloud Paks](https://github.com/bpshparis/sandbox/blob/master/Prepare-Redhat-Openshift-for-Cloud-Paks.md#prepare-redhat-openshift-for-cloud-paks)
 - One **WEB server** where following files are available in **read mode**:
   - [cpd-cli-linux-EE-3.5.1.tgz](https://github.com/IBM/cpd-cli/releases/download/v3.5.0/cpd-cli-linux-EE-3.5.1.tgz)
   - [IBM® Cloud Pak for Data entitlement license API key](https://myibm.ibm.com/products-services/containerlibrary) saved in apikey file.
@@ -16,7 +16,7 @@
 :checkered_flag::checkered_flag::checkered_flag:
 <br>
 
-## Prepare for IBM Watson Assistant
+## Prepare for Cloud Pak for Data 3.0.1
 
 > :information_source: Commands below are valid for a **Linux/Centos 7**.
 
@@ -36,7 +36,7 @@ INST_DIR=~/cpd && echo $INST_DIR
 ```
 
 ```
-[ -d "$INST_DIR" ] && { rm -rf $INST_DIR; mkdir $INST_DIR; } || mkdir $INST_DIR
+[ -d "$INST_DIR" ] && { rm -rf $INST_DIR; mkdir $INST_DIR; }
 cd $INST_DIR
 
 wget -c $WEB_SERVER_CP_URL/$INST_FILE
@@ -68,28 +68,13 @@ APIKEY=$(cat $APIKEY_FILE) && echo $APIKEY
 > :information_source: Run this on Installer 
 
 ```
-REG="cp.icr.io/cp/watson-assistant"
+REG="cp.icr.io/cp/cpd"
 ```
 
 ```
 [ -z $(command -v podman) ] && { yum install podman runc buildah skopeo -y; } || echo "podman already installed"
 
 podman login -u $USERNAME -p $APIKEY $REG
-```
-
-#### Add wa-registry to repo.yaml
-
-> :information_source: Run this on Installer
-
-```
-cat > wa-reg.yaml << EOF
-  - url: cp.icr.io/cp/watson-assistant
-    username: cp
-    apikey:
-    name: wa-registry
-EOF
-
-sed -i -e '/^\s\{4\}name: base-registry/r wa-reg.yaml' repo.yaml
 ```
 
 #### Add username and apikey to repo.yaml
@@ -102,7 +87,7 @@ sed -i -e 's/\(^\s\{4\}username:\).*$/\1 '$USERNAME'/' repo.yaml
 sed -i -e 's/\(^\s\{4\}apikey:\).*$/\1 '$APIKEY'/' repo.yaml
 ```
 
-### Download  IBM Watson Assistant resources definitions
+### Download  Cloud Pak for Data resources definitions
 
 > :warning: You have to be on line to execute this step.
 
@@ -112,7 +97,7 @@ sed -i -e 's/\(^\s\{4\}apikey:\).*$/\1 '$APIKEY'/' repo.yaml
 
 ```
 INST_DIR=~/cpd
-ASSEMBLY="ibm-watson-assistant"
+ASSEMBLY="lite"
 ARCH="x86_64"
 ```
 
@@ -122,7 +107,7 @@ $INST_DIR/cpd-cli adm --repo $INST_DIR/repo.yaml --assembly $ASSEMBLY --arch $AR
 
 > : bulb:  **$INST_DIR/cpd-linux-workspace** have been created and populated with yaml files.
 
-### Download  IBM Watson Assistant images
+### Download  Cloud Pak for Data images
 
 > :warning: You have to be on line to execute this step.
 
@@ -142,7 +127,7 @@ pkill screen; screen -mdS ADM && screen -r ADM
 
 ```
 INST_DIR=~/cpd
-ASSEMBLY="ibm-watson-assistant"
+ASSEMBLY="lite"
 ARCH="x86_64"
 ```
 
@@ -150,9 +135,9 @@ ARCH="x86_64"
 $INST_DIR/cpd-cli preload-images --action download -a $ASSEMBLY --arch $ARCH --repo $INST_DIR/repo.yaml --accept-all-licenses
 ```
 
-> :bulb:  Images have been copied in **$INST_DIR/bin/cpd-linux-workspace/images/**
+> :bulb:  Images have been copied in **$INST_DIR/cpd-cli-workspace/images/**
 
-### Save IBM Watson Assistant downloads to web server
+### Save Cloud Pak for Data Downloads to web server
 
 > :warning: Adapt settings to fit to your environment.
 
@@ -160,7 +145,7 @@ $INST_DIR/cpd-cli preload-images --action download -a $ASSEMBLY --arch $ARCH --r
 
 ```
 INST_DIR=~/cpd
-ASSEMBLY="ibm-watson-assistant"
+ASSEMBLY="lite"
 ARCH="x86_64"
 CPD_BIN="cpd-cli"
 CPD_WKS="cpd-cli-workspace/"
@@ -171,11 +156,11 @@ WEB_SERVER_PASS="password"
 VERSION=$(find $INST_DIR/cpd-cli-workspace/assembly/$ASSEMBLY/$ARCH/* -type d | awk -F'/' '{print $NF}')
 
 [ ! -z "$VERSION" ] && echo $VERSION "-> OK" || echo "ERROR: VERSION is not set."
-TAR_FILE="$ASSEMBLY-$VERSION-$ARCH.tar"
+TAR_FILE="$ASSEMBLY-$VERSION-$ARCH.tar" && echo $TAR_FILE
 ```
 
 ```
-cd $INST_DIR/bin
+cd $INST_DIR
 tar cvf $TAR_FILE $CPD_BIN $CPD_WKS
 
 [ -z $(command -v sshpass) ] && yum install -y sshpass || echo "sshpass already installed"
