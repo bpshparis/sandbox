@@ -742,7 +742,7 @@ ssh-add ~/.ssh/id_rsa
 
 >:bulb: bootstrap complete output
 
-![](img/bscomplete.jpg)
+![](img/bscomplete-4.5.png)
 
 ### -  :thumbsup: [Next step](#remove-bootstrap-from-load-balancer)
 ### -  :thumbsdown: [Troubleshoot wait-for-bootstrap-complete](#troubleshoot-wait-for-bootstrap-complete)
@@ -866,7 +866,7 @@ cd $INST_DIR
 
 >:bulb: install complete output
 
-![](img/installcomplete.jpg)
+![](img/installcomplete-4.5.png)
 
 
 ### -  :thumbsup: [Next step](#post-install-ocp)
@@ -943,7 +943,7 @@ oc adm policy add-cluster-role-to-user cluster-admin admin
 > :information_source: Run this on Installer
 
 ```
-LB_HOSTNAME="cli-ocp5"
+LB_HOSTNAME="cli-ocp1"
 ```
 
 ```
@@ -1096,8 +1096,8 @@ Choose Events API v2 from Integration Type
 Choose password from Routing Key
 Choose severity for Routing Labels NAME
 Choose warning for Routing Labels VALUE
-Hit save button
-Save YAML in YAML tab -> alertmanager-main has been updated to version 41453 
+Hit Create button
+Save YAML in YAML tab -> alertmanager-main has been updated to version NNNNN
 
 https://docs.openshift.com/container-platform/4.4/applications/pruning-objects.html#pruning-images_pruning-objects
 

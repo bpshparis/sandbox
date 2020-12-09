@@ -227,7 +227,7 @@ oc login https://cli-$OCP:8443 -u admin -p admin --insecure-skip-tls-verify=true
 > :information_source: Run this on Installer
 
 ```
-LB_HOSTNAME="cli-ocp15"
+LB_HOSTNAME="cli-ocp1"
 NS="default"
 ```
 
@@ -362,7 +362,7 @@ podman push default-route-openshift-image-registry.apps.$OCP.iicparis.fr.ibm.com
 > :information_source: Run this on Installer
 
 ```
-WORKERS_NODES="w1-ocp7 w2-ocp7 w3-ocp7"
+WORKERS_NODES="w1-ocp1 w2-ocp1 w3-ocp1"
 ```
 
 ```
@@ -396,7 +396,7 @@ pkill screen; screen -mdS ADM && screen -r ADM
 > :information_source: Run this on Installer
 
 ```
-LB_HOSTNAME="cli-ocp15"
+LB_HOSTNAME="cli-ocp1"
 NS="kube-system"
 WEB_SERVER_PX_URL="http://web/cloud-pak/cpdv3.0.1_portworx.tgz"
 PX_FILE="cpdv3.0.1_portworx.tgz"
@@ -491,7 +491,6 @@ oc create -f ~/cpd-portworx/px-install-4.x/px-test.yaml
 watch -n5 "oc get pvc | grep test && oc get po | grep test"
 ```
 
-
 #### Add storage classes for Cloud Pak
 
 > :information_source: Run this on Installer
@@ -506,8 +505,6 @@ watch -n5 "oc get pvc | grep test && oc get po | grep test"
 oc get sc
 ```
 
-### Add persistent storage to the registry
-
 #### Set default  storageclass
 
 > :information_source: Run this on Installer
@@ -517,6 +514,10 @@ SC="portworx-shared-gp3"
 
 oc patch storageclass $SC -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 ```
+
+<!--
+
+### Add persistent storage to the registry
 
 ##### Remove emptyDir storage
 
@@ -535,6 +536,7 @@ oc patch configs.imageregistry.operator.openshift.io --type='json' -p='[{"op": "
 ```
 oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"storage":{"pvc":{"claim": ""}}}}'
 ```
+-->
 
 <br>
 
