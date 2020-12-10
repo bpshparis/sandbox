@@ -27,7 +27,7 @@
 > :information_source: Run this on Installer 
 
 ```
-LB_HOSTNAME="cli-ocp7"
+LB_HOSTNAME="cli-ocp1"
 NS="cpd"
 ```
 
@@ -42,7 +42,7 @@ oc login https://$LB_HOSTNAME:6443 -u admin -p admin --insecure-skip-tls-verify=
 > :information_source: Run this on Installer 
 
 ```
-INST_DIR=~/cpd
+INST_DIR=~/cpd301
 ASSEMBLY="ibm-watson-assistant"
 VERSION="1.4.2"
 ARCH="x86_64"
@@ -78,7 +78,7 @@ pkill screen; screen -mdS ADM && screen -r ADM
 > :information_source: Run this on Installer
 
 ```
-INST_DIR=~/cpd
+INST_DIR=~/cpd301
 ASSEMBLY="ibm-watson-assistant"
 ARCH="x86_64"
 VERSION=$(find $INST_DIR/bin/cpd-linux-workspace/assembly/$ASSEMBLY/$ARCH/* -type d | awk -F'/' '{print $NF}')
@@ -92,8 +92,8 @@ podman login -u $(oc whoami) -p $(oc whoami -t) $(oc registry info)
 
 $INST_DIR/bin/cpd-linux preloadImages \
 --assembly $ASSEMBLY \
---version $VERSION \
 --arch $ARCH \
+--version $VERSION \
 --action push \
 --transfer-image-to $(oc registry info)/$(oc project -q) \
 --target-registry-password $(oc whoami -t) \
@@ -158,8 +158,8 @@ oc get namespace $(oc project -q) --show-labels
 > :information_source: Run this on Installer
 
 ```
-SC="portworx-assistant"
-INT_REG=$(oc describe pod $(oc get pod -n openshift-image-registry | awk '$1 ~ "image-registry-" {print $1}') -n openshift-image-registry | awk '$1 ~ "REGISTRY_OPENSHIFT_SERVER_ADDR:" {print $2}') && echo $INT_REG
+SC="portworx-watson-assistant-sc"
+INT_REG=$(oc registry info --internal) && echo $INT_REG
 ```
 
 ```

@@ -27,7 +27,7 @@
 > :information_source: Run this on Installer 
 
 ```
-LB_HOSTNAME="cli-ocp15"
+LB_HOSTNAME="cli-ocp1"
 ```
 
 ```
@@ -57,7 +57,7 @@ oc adm policy add-role-to-user cpd-admin-role $PRJ_ADMIN --role-namespace=$(oc p
 > :information_source: Run this on Installer 
 
 ```
-INST_DIR=~/cpd
+INST_DIR=~/cpd301
 ASSEMBLY="lite"
 VERSION="3.0.1"
 ARCH="x86_64"
@@ -145,7 +145,7 @@ oc get sa
 
 ```
 SC="portworx-shared-gp3"
-INT_REG=$(oc describe pod $(oc get pod -n openshift-image-registry | awk '$1 ~ "image-registry-" {print $1}') -n openshift-image-registry | awk '$1 ~ "REGISTRY_OPENSHIFT_SERVER_ADDR:" {print $2}') && echo $INT_REG
+INT_REG=$(oc registry info --internal) && echo $INT_REG
 OVERRIDE=$INST_DIR/lite-override.yaml
 ```
 

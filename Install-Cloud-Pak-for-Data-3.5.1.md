@@ -69,6 +69,7 @@ WEB_SERVER_CP_URL="http://web/cloud-pak/assemblies"
 [ -d "$INST_DIR" ] && { rm -rf $INST_DIR; mkdir $INST_DIR; }
 cd $INST_DIR
 
+mkdir bin && cd bin
 wget -c $WEB_SERVER_CP_URL/$TAR_FILE
 tar xvf $TAR_FILE
 rm -f $TAR_FILE
@@ -104,7 +105,6 @@ podman login -u $(oc whoami) -p $(oc whoami -t) $(oc registry info)
 
 $INST_DIR/cpd-cli preload-images \
 --assembly $ASSEMBLY \
---version $VERSION \
 --arch $ARCH \
 --action push \
 --transfer-image-to $(oc registry info)/$(oc project -q) \
@@ -120,17 +120,17 @@ $INST_DIR/cpd-cli preload-images \
 > :information_source: Run this on Installer
 
 ```
-$INST_DIR/cpd-cli adm \
+$INST_DIR/bin/cpd-cli adm \
 --namespace $(oc project -q) \
 --assembly $ASSEMBLY \
---version $VERSION \
 --arch $ARCH \
---load-from $INST_DIR/cpd-cli-workspace \
+--load-from $INST_DIR/bin/cpd-cli-workspace \
 --apply \
+--latest-dependency \
 --accept-all-licenses
 ```
 
-> :bulb: Check **cpd-admin-sa, cpd-editor-sa and cpd-viewer-sa** services account have been created
+> :bulb: Check **cpd-admin-sa, cpd-editor-sa, cpd-norbac-sa and cpd-viewer-sa** services account have been created
 
 ```
 oc get sa
@@ -144,7 +144,6 @@ oc get sa
 
 ```
 SC="portworx-shared-gp3"
-INT_REG=$(oc describe pod $(oc get pod -n openshift-image-registry | awk '$1 ~ "image-registry-" {print $1}') -n openshift-image-registry | awk '$1 ~ "REGISTRY_OPENSHIFT_SERVER_ADDR:" {print $2}') && echo $INT_REG
 INT_REG=$(oc registry info --internal) && echo $INT_REG
 OVERRIDE=$INST_DIR/lite-override.yaml
 ```
@@ -155,15 +154,15 @@ zenCoreMetaDb:
   storageClass: portworx-metastoredb-sc
 EOF
 
-$INST_DIR/cpd-cli \
+$INST_DIR/bin/cpd-cli install \
 --namespace $(oc project -q) \
 --assembly $ASSEMBLY \
---version $VERSION \
 --arch $ARCH \
 --storageclass $SC \
 --cluster-pull-prefix $INT_REG/$(oc project -q) \
 --load-from $INST_DIR/bin/cpd-cli-workspace \
 --override $OVERRIDE \
+--latest-dependency \
 --accept-all-licenses
 
 ```
@@ -179,7 +178,7 @@ watch -n5 "oc get pvc && oc get po"
 > :information_source: Run this on Installer
 
 ```
-$INST_DIR/cpd-cli status \
+$INST_DIR/bin/cpd-cli status \
 --namespace $(oc project -q) \
 --assembly $ASSEMBLY \
 --arch $ARCH

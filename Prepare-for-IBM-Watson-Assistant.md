@@ -8,7 +8,7 @@
 
 - Have completed  [Install Cloud Pak for Data 3.0.1](https://github.com/bpshparis/sandbox/blob/master/Install-Cloud-Pak-for-Data-3.0.1.md#install-cloud-pak-for-data-301)
 - One **WEB server** where following files are available in **read mode**:
-  - [cpd-cli-linux-EE-3.5.1.tgz](https://github.com/IBM/cpd-cli/releases/download/v3.5.0/cpd-cli-linux-EE-3.5.1.tgz)
+  - [cloudpak4data-ee-3.0.1-1.tgz](https://github.com/IBM/cpd-cli/releases/download/v3.0.1/cloudpak4data-ee-3.0.1-1.tgz)
   - [IBM® Cloud Pak for Data entitlement license API key](https://myibm.ibm.com/products-services/containerlibrary) saved in apikey file.
   - [repo.yaml](scripts/repo.yaml)
 
@@ -30,7 +30,7 @@
 
 ```
 WEB_SERVER_CP_URL="http://web/cloud-pak"
-INST_FILE="cpd-cli-linux-EE-3.5.1.tgz"
+INST_FILE="cloudpak4data-ee-3.0.1-1.tgz"
 CONF_FILE="repo.yaml"
 INST_DIR=~/cpd && echo $INST_DIR
 ```
@@ -175,7 +175,7 @@ TAR_FILE="$ASSEMBLY-$VERSION-$ARCH.tar"
 ```
 
 ```
-cd $INST_DIR/bin
+cd $INST_DIR
 tar cvf $TAR_FILE $CPD_BIN $CPD_WKS
 
 [ -z $(command -v sshpass) ] && yum install -y sshpass || echo "sshpass already installed"
