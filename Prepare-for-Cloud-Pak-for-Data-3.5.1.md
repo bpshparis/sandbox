@@ -8,7 +8,7 @@
 
 - Have completed  [Prepare Redhat Openshift for Cloud Paks](https://github.com/bpshparis/sandbox/blob/master/Prepare-Redhat-Openshift-for-Cloud-Paks.md#prepare-redhat-openshift-for-cloud-paks)
 - One **WEB server** where following files are available in **read mode**:
-  - [cpd-cli-linux-EE-3.5.1.tgz](https://github.com/IBM/cpd-cli/releases/download/v3.5.0/cpd-cli-linux-EE-3.5.1.tgz)
+  - [cpd-cli-linux-EE-3.5.2.tgz](https://github.com/IBM/cpd-cli/releases/download/v3.5.2/cpd-cli-linux-EE-3.5.2.tgz)
   - [IBM® Cloud Pak for Data entitlement license API key](https://myibm.ibm.com/products-services/containerlibrary) saved in apikey file.
   - [repo.yaml](scripts/repo.yaml)
 
@@ -30,7 +30,7 @@
 
 ```
 WEB_SERVER_CP_URL="http://web/cloud-pak"
-INST_FILE="cpd-cli-linux-EE-3.5.1.tgz"
+INST_FILE="cpd-cli-linux-EE-3.5.2.tgz"
 CONF_FILE="repo.yaml"
 INST_DIR=~/cpd && echo $INST_DIR
 ```
@@ -105,7 +105,7 @@ ARCH="x86_64"
 $INST_DIR/cpd-cli adm --repo $INST_DIR/repo.yaml --assembly $ASSEMBLY --arch $ARCH --accept-all-licenses 
 ```
 
-> : bulb:  **$INST_DIR/cpd-linux-workspace** have been created and populated with yaml files.
+> : bulb:  **$INST_DIR/cpd-cli-workspace** have been created and populated with yaml files.
 
 ### Download  Cloud Pak for Data images
 

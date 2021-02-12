@@ -120,11 +120,11 @@ $INST_DIR/cpd-cli preload-images \
 > :information_source: Run this on Installer
 
 ```
-$INST_DIR/bin/cpd-cli adm \
+$INST_DIR/cpd-cli adm \
 --namespace $(oc project -q) \
 --assembly $ASSEMBLY \
 --arch $ARCH \
---load-from $INST_DIR/bin/cpd-cli-workspace \
+--load-from $INST_DIR/cpd-cli-workspace \
 --apply \
 --latest-dependency \
 --accept-all-licenses
@@ -154,13 +154,13 @@ zenCoreMetaDb:
   storageClass: portworx-metastoredb-sc
 EOF
 
-$INST_DIR/bin/cpd-cli install \
+$INST_DIR/cpd-cli install \
 --namespace $(oc project -q) \
 --assembly $ASSEMBLY \
 --arch $ARCH \
 --storageclass $SC \
 --cluster-pull-prefix $INT_REG/$(oc project -q) \
---load-from $INST_DIR/bin/cpd-cli-workspace \
+--load-from $INST_DIR/cpd-cli-workspace \
 --override $OVERRIDE \
 --latest-dependency \
 --accept-all-licenses

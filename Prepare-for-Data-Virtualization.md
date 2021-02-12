@@ -29,7 +29,7 @@
 
 ```
 WEB_SERVER_CP_URL="http://web/cloud-pak"
-INST_FILE="cloudpak4data-ee-3.0.1.tgz"
+INST_FILE="cpd-cli-linux-EE-3.5.2.tgz"
 INST_DIR=~/cpd && echo $INST_DIR
 ```
 
@@ -57,7 +57,6 @@ APIKEY_FILE="apikey"
 wget -c $WEB_SERVER_CP_URL/$APIKEY_FILE
 USERNAME="cp" && echo $USERNAME
 APIKEY=$(cat $APIKEY_FILE) && echo $APIKEY
-
 ```
 
 #### Test your entitlement key against Cloud Pak registry
@@ -99,7 +98,7 @@ ARCH="x86_64"
 ```
 
 ```
-$INST_DIR/bin/cpd-linux adm --repo $INST_DIR/repo.yaml --assembly $ASSEMBLY --arch $ARCH --accept-all-licenses 
+$INST_DIR/cpd-cli adm --repo $INST_DIR/repo.yaml --assembly $ASSEMBLY --arch $ARCH --accept-all-licenses 
 ```
 
 > : bulb:  **$INST_DIR/cpd-linux-workspace** have been created and populated with yaml files.
@@ -129,7 +128,7 @@ ARCH="x86_64"
 ```
 
 ```
-$INST_DIR/bin/cpd-linux preloadImages --action download -a $ASSEMBLY --arch $ARCH --repo $INST_DIR/repo.yaml --accept-all-licenses
+$INST_DIR/cpd-cli preload-images --action download -a $ASSEMBLY --arch $ARCH --repo $INST_DIR/repo.yaml --accept-all-licenses
 ```
 
 > :bulb:  Images have been copied in **$INST_DIR/bin/cpd-linux-workspace/images/**
@@ -144,20 +143,20 @@ $INST_DIR/bin/cpd-linux preloadImages --action download -a $ASSEMBLY --arch $ARC
 INST_DIR=~/cpd
 ASSEMBLY="dv"
 ARCH="x86_64"
-CPD_BIN="cpd-linux"
-CPD_WKS="cpd-linux-workspace/"
+CPD_BIN="cpd-cli"
+CPD_WKS="cpd-cli-workspace/"
 WEB_SERVER="web"
 WEB_SERVER_PATH="/web/cloud-pak/assemblies"
 WEB_SERVER_USER="root"
 WEB_SERVER_PASS="password"
-VERSION=$(find $INST_DIR/bin/cpd-linux-workspace/assembly/$ASSEMBLY/$ARCH/* -type d | awk -F'/' '{print $NF}')
+VERSION=$(find $INST_DIR/cpd-cli-workspace/assembly/$ASSEMBLY/$ARCH/* -type d | awk -F'/' '{print $NF}')
 
 [ ! -z "$VERSION" ] && echo $VERSION "-> OK" || echo "ERROR: VERSION is not set."
 TAR_FILE="$ASSEMBLY-$VERSION-$ARCH.tar"
 ```
 
 ```
-cd $INST_DIR/bin
+cd $INST_DIR
 tar cvf $TAR_FILE $CPD_BIN $CPD_WKS
 
 [ -z $(command -v sshpass) ] && yum install -y sshpass || echo "sshpass already installed"

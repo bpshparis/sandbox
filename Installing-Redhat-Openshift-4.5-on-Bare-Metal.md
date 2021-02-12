@@ -71,7 +71,6 @@ Download [Redhat Openshift 4 on Bare Metal material](https://cloud.redhat.com/op
 DOMAIN=$(cat /etc/resolv.conf | awk '$1 ~ "search" {print $2}') && echo $DOMAIN
 IP_HEAD="172.16"
 OCP=ocp1
-CLI_IP=$IP_HEAD.187.10
 M1_IP=$IP_HEAD.187.11
 M2_IP=$IP_HEAD.187.12
 M3_IP=$IP_HEAD.187.13
@@ -88,7 +87,6 @@ RZONE=/var/lib/bind/$IP_HEAD.rev
 
 ```
 cat >> $MZONE << EOF
-cli-$OCP.$DOMAIN.   IN      A       $CLI_IP
 m1-$OCP.$DOMAIN.   IN      A       $M1_IP
 m2-$OCP.$DOMAIN.   IN      A       $M2_IP
 m3-$OCP.$DOMAIN.   IN      A       $M3_IP
@@ -115,7 +113,6 @@ EOF
 
 ```
 cat >> $RZONE << EOF
-$(echo $CLI_IP | awk -F. '{print $4 "." $3 "." $2 "." $1}').in-addr.arpa.    IN      PTR     cli-$OCP.$DOMAIN.
 $(echo $M1_IP | awk -F. '{print $4 "." $3 "." $2 "." $1}').in-addr.arpa.    IN      PTR     m1-$OCP.$DOMAIN.
 $(echo $M2_IP | awk -F. '{print $4 "." $3 "." $2 "." $1}').in-addr.arpa.    IN      PTR     m2-$OCP.$DOMAIN.
 $(echo $M3_IP | awk -F. '{print $4 "." $3 "." $2 "." $1}').in-addr.arpa.    IN      PTR     m3-$OCP.$DOMAIN.
@@ -651,7 +648,7 @@ watch -n 5 vim-cmd vmsvc/getallvms | awk '$2 ~ "'$VM_PATTERN'" && $1 !~ "Vmid" {
 > :information_source: Run this on Installer
 
 ```
-ESX_SERVER="ocp1"
+ESX_SERVER="ocp13"
 BS_VNC_PORT=9
 M1_VNC_PORT=1
 W1_VNC_PORT=4
@@ -943,7 +940,7 @@ oc adm policy add-cluster-role-to-user cluster-admin admin
 > :information_source: Run this on Installer
 
 ```
-LB_HOSTNAME="cli-ocp1"
+LB_HOSTNAME="cli-ocp13"
 ```
 
 ```

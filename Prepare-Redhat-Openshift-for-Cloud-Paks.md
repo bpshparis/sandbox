@@ -17,7 +17,7 @@
 
 - One **WEB server** where following files are available in **read mode**:
   - [Linux](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz) or [MacOS](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-mac.tar.gz) Openshift command line interface
-  - Portworx Enterprise Edition (Part number **CC648EN**) downloaded either from [IBM Passport Advantage](https://www.ibm.com/software/passportadvantage/pao_customer.html) or from [XL](https://w3-03.ibm.com/software/xl/download/ticket.wss).
+  - Portworx Enterprise Edition (Part number **G00BXZX**) downloaded either from [IBM Passport Advantage](https://www.ibm.com/software/passportadvantage/pao_customer.html) or from [XL](https://w3-03.ibm.com/software/xl/download/ticket.wss).
 
 
 :checkered_flag::checkered_flag::checkered_flag:
@@ -398,8 +398,8 @@ pkill screen; screen -mdS ADM && screen -r ADM
 ```
 LB_HOSTNAME="cli-ocp1"
 NS="kube-system"
-WEB_SERVER_PX_URL="http://web/cloud-pak/cpdv3.0.1_portworx.tgz"
-PX_FILE="cpdv3.0.1_portworx.tgz"
+WEB_SERVER_PX_URL="http://web/cloud-pak/cpdv3.5.0_portworx.tgz"
+PX_FILE="cpdv3.5.0_portworx.tgz"
 APP_DEV="/dev/sdb"
 MD_DEV="/dev/sdc"
 ```
@@ -424,7 +424,7 @@ oc login https://$LB_HOSTNAME:6443 -u admin -p admin --insecure-skip-tls-verify=
 REG_HOST=$(oc registry info) && echo $REG_HOST
 podman login -u $(oc whoami) -p $(oc whoami -t) $REG_HOST
 
-~/cpd-portworx/px-images/process-px-images.sh -r $REG_HOST -u $(oc whoami) -p $(oc whoami -t) -s $(oc project -q) -c podman -t ~/cpd-portworx/px-images/px_2.5.5.0-dist.tgz
+~/cpd-portworx/px-images/process-px-images.sh -r $REG_HOST -u $(oc whoami) -p $(oc whoami -t) -s $(oc project -q) -c podman -t ~/cpd-portworx/px-images/px_2.6.2.0-dist.tgz
 ```
 
 > :bulb: Check PX images are loadd in Openshift registry
@@ -475,6 +475,8 @@ oc exec $PX_POD -n $NS -- /opt/pwx/bin/pxctl status | grep '^Status'
 
 > :bulb: PX status should be **operational** 
 
+<!--
+
 #### Test PX PVC
 
 > :information_source: Run this on Installer
@@ -490,6 +492,8 @@ oc create -f ~/cpd-portworx/px-install-4.x/px-test.yaml
 ```
 watch -n5 "oc get pvc | grep test && oc get po | grep test"
 ```
+
+-->
 
 #### Add storage classes for Cloud Pak
 
