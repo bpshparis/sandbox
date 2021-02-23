@@ -1,4 +1,4 @@
-# Prepare for Cloud Pak for Data 3.5.1
+# Prepare for Cloud Pak for Data 3.5.2
 
 ## Hardware requirements
 
@@ -16,7 +16,7 @@
 :checkered_flag::checkered_flag::checkered_flag:
 <br>
 
-## Prepare for Cloud Pak for Data 3.5.1
+## Prepare for Cloud Pak for Data 3.5.2
 
 > :information_source: Commands below are valid for a **Linux/Centos 7**.
 
@@ -36,7 +36,7 @@ INST_DIR=~/cpd && echo $INST_DIR
 ```
 
 ```
-[ -d "$INST_DIR" ] && { rm -rf $INST_DIR; mkdir $INST_DIR; }
+[ -d "$INST_DIR" ] && { rm -rf $INST_DIR; mkdir $INST_DIR; } || { mkdir $INST_DIR; }
 cd $INST_DIR
 
 wget -c $WEB_SERVER_CP_URL/$INST_FILE

@@ -6,9 +6,9 @@
 
 ## System requirements
 
-- Have completed  [Install Cloud Pak for Data 3.0.1](https://github.com/bpshparis/sandbox/blob/master/Install-Cloud-Pak-for-Data-3.0.1.md#install-cloud-pak-for-data-301)
+- Have completed  [Install Cloud Pak for Data 3.5.2](https://github.com/bpshparis/sandbox/blob/master/Install-Cloud-Pak-for-Data-3.0.1.md#install-cloud-pak-for-data-352)
 - One **WEB server** where following files are available in **read mode**:
-  - [cloudpak4data-ee-3.0.1.tgz](https://github.com/IBM/cpd-cli/releases/download/cpd-3.0.1/cloudpak4data-ee-3.0.1.tgz)
+  - [cpd-cli-linux-EE-3.5.2.tgz](https://github.com/IBM/cpd-cli/releases/download/v3.5.2/cpd-cli-linux-EE-3.5.2.tgz)
   - [IBM® Cloud Pak for Data entitlement license API key](https://myibm.ibm.com/products-services/containerlibrary) saved in apikey file.
 
 <br>
@@ -94,7 +94,7 @@ sed -i -e 's/\(^\s\{4\}apikey:\).*$/\1 '$APIKEY'/' repo.yaml
 
 ```
 INST_DIR=~/cpd
-ASSEMBLY="ds"
+ASSEMBLY="ds-ent"
 ARCH="x86_64"
 ```
 
@@ -124,7 +124,7 @@ pkill screen; screen -mdS ADM && screen -r ADM
 
 ```
 INST_DIR=~/cpd
-ASSEMBLY="ds"
+ASSEMBLY="ds-ent"
 ARCH="x86_64"
 ```
 
@@ -142,10 +142,11 @@ $INST_DIR/cpd-cli preload-images --action download -a $ASSEMBLY --arch $ARCH --r
 
 ```
 INST_DIR=~/cpd
-ASSEMBLY="ds"
+ASSEMBLY="ds-ent"
 ARCH="x86_64"
 CPD_BIN="cpd-cli"
 CPD_WKS="cpd-cli-workspace/"
+CPD_CONF="plugins/ LICENSES/"
 WEB_SERVER="web"
 WEB_SERVER_PATH="/web/cloud-pak/assemblies"
 WEB_SERVER_USER="root"
@@ -158,7 +159,7 @@ TAR_FILE="$ASSEMBLY-$VERSION-$ARCH.tar"
 
 ```
 cd $INST_DIR
-tar cvf $TAR_FILE $CPD_BIN $CPD_WKS
+tar cvf $TAR_FILE $CPD_BIN $CPD_WKS $CPD_CONF
 
 [ -z $(command -v sshpass) ] && yum install -y sshpass || echo "sshpass already installed"
 

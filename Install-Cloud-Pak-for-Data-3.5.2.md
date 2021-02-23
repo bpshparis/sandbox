@@ -1,4 +1,4 @@
-# Install Data Virtualization
+# Install Cloud Pak for Data 3.5.2
 
 ## Hardware requirements
 
@@ -6,15 +6,15 @@
 
 ## System requirements
 
-- Have completed  [Prepare for Data Virtualization](https://github.com/bpshparis/sandbox/blob/master/Prepare-for-Data-Virtualization.md#prepare-for-data-virtualization)
+- Have completed  [Prepare for Cloud Pak for Data 3.5.2](https://github.com/bpshparis/sandbox/blob/master/Prepare-for-Cloud-Pak-for-Data-3.5.2.md#prepare-for-cloud-pak-for-data-352)
 - One **WEB server** where following files are available in **read mode**:
-  - [dv-1.5.0-x86_64.tar](https://github.com/bpshparis/sandbox/blob/master/Prepare-for-Data-Virtualization.md#save-data-virtualization-downloads-to-web-server)
+  - [lite-3.5.2-x86_64.tar](https://github.com/bpshparis/sandbox/blob/master/Prepare-for-Cloud-Pak-for-Data-3.5.2.md#save-cloud-pak-for-data-downloads-to-web-server)
 
 <br>
 :checkered_flag::checkered_flag::checkered_flag:
 <br>
 
-## Install Data Virtualization
+## Install Cloud Pak for Data 3.5.2
 
 > :information_source: Commands below are valid for a **Linux/Centos 7**.
 
@@ -27,33 +27,30 @@
 > :information_source: Run this on Installer 
 
 ```
-LB_HOSTNAME="cli-ocp13"
-NS="cpd"
+LB_HOSTNAME="cli-ocp1"
 ```
 
 ```
-oc login https://$LB_HOSTNAME:6443 -u admin -p admin --insecure-skip-tls-verify=true -n $NS
+oc login https://$LB_HOSTNAME:6443 -u admin -p admin --insecure-skip-tls-verify=true
 ```
 
-### Label worker node for Data Virtualization
+### Create Cloud Pak for Data project
 
-> :information_source: Run this on Installer 
+> :warning: Adapt settings to fit to your environment.
 
-```
-LABEL="\"dv-dedicated=dv\""
-```
+> :information_source: Run this on Installer
 
 ```
-oc get nodes | awk '$3 ~ "compute|worker" {print "oc label node " $1 " "'$LABEL'" --overwrite"}' | sh
+PRJ="cpd"
+PRJ_ADMIN="admin"
+```
+```
+oc new-project $PRJ
+
+oc adm policy add-role-to-user cpd-admin-role $PRJ_ADMIN --role-namespace=$(oc project -q) -n $(oc project -q)
 ```
 
->:bulb: Check workers are labelled
-
-```
-oc get nodes --show-labels | awk '$3 ~ "compute|worker" {print $1 " -> " $6}'
-```
-
-### Copy Data Virtualization Downloads from web server
+### Copy Cloud Pak for Data Downloads from web server
 
 > :warning: Adapt settings to fit to your environment.
 
@@ -61,23 +58,24 @@ oc get nodes --show-labels | awk '$3 ~ "compute|worker" {print $1 " -> " $6}'
 
 ```
 INST_DIR=~/cpd
-ASSEMBLY="dv"
-VERSION="1.5.0"
+ASSEMBLY="lite"
+VERSION="3.5.2"
 ARCH="x86_64"
 TAR_FILE="$ASSEMBLY-$VERSION-$ARCH.tar"
 WEB_SERVER_CP_URL="http://web/cloud-pak/assemblies"
 ```
 
 ```
-[ -d "$INST_DIR" ] && { rm -rf $INST_DIR; mkdir $INST_DIR; } || mkdir $INST_DIR
+[ -d "$INST_DIR" ] && { rm -rf $INST_DIR; mkdir $INST_DIR; } || { mkdir $INST_DIR; }
 cd $INST_DIR
 
+mkdir bin && cd bin
 wget -c $WEB_SERVER_CP_URL/$TAR_FILE
 tar xvf $TAR_FILE
 rm -f $TAR_FILE
 ```
 
-### Push Data Virtualization images to Openshift registry
+### Push Cloud Pak for Data images to Openshift registry
 
 > :warning: To avoid network failure, launch installation on locale console or in a screen
 
@@ -95,7 +93,7 @@ pkill screen; screen -mdS ADM && screen -r ADM
 
 ```
 INST_DIR=~/cpd
-ASSEMBLY="dv"
+ASSEMBLY="lite"
 ARCH="x86_64"
 VERSION=$(find $INST_DIR/cpd-cli-workspace/assembly/$ASSEMBLY/$ARCH/* -type d | awk -F'/' '{print $NF}')
 
@@ -117,7 +115,7 @@ $INST_DIR/cpd-cli preload-images \
 ```
 
 
-### Create Data Virtualization resources on cluster
+### Create Cloud Pak for Data resources on cluster
 
 > :information_source: Run this on Installer
 
@@ -132,25 +130,30 @@ $INST_DIR/cpd-cli adm \
 --accept-all-licenses
 ```
 
-> :bulb: Check **dv-sa**  and **dv-bar-sa** service accounts have been created
+> :bulb: Check **cpd-admin-sa, cpd-editor-sa, cpd-norbac-sa and cpd-viewer-sa** services account have been created
 
 ```
 oc get sa
 ```
 
-
-### Install Data Virtualization
+### Install Cloud Pak for Data
 
 > :warning: Adapt settings to fit to your environment.
 
 > :information_source: Run this on Installer
 
 ```
-SC="portworx-dv-shared-gp"
+SC="portworx-shared-gp3"
 INT_REG=$(oc registry info --internal) && echo $INT_REG
+OVERRIDE=$INST_DIR/lite-override.yaml
 ```
 
 ```
+cat > $OVERRIDE << EOF
+zenCoreMetaDb:
+  storageClass: portworx-metastoredb-sc
+EOF
+
 $INST_DIR/cpd-cli install \
 --namespace $(oc project -q) \
 --assembly $ASSEMBLY \
@@ -158,12 +161,19 @@ $INST_DIR/cpd-cli install \
 --storageclass $SC \
 --cluster-pull-prefix $INT_REG/$(oc project -q) \
 --load-from $INST_DIR/cpd-cli-workspace \
---override-config portworx \
+--override $OVERRIDE \
 --latest-dependency \
 --accept-all-licenses
+
 ```
 
-### Check Data Virtualization status
+> :bulb: Check installation progress
+
+```
+watch -n5 "oc get pvc && oc get po"
+```
+
+### Check Cloud Pak for Data status
 
 > :information_source: Run this on Installer
 
@@ -174,13 +184,8 @@ $INST_DIR/cpd-cli status \
 --arch $ARCH
 ```
 
-![](img/dv-ready.jpg)
+![](img/lite-ready.jpg)
 
-<br>
-:checkered_flag::checkered_flag::checkered_flag:
-<br>
-
-## Provisioning the service
 
 ### Access Cloud Pak for Data web console
 
@@ -192,67 +197,7 @@ oc get routes | awk 'NR==2 {print "Access the web console at https://" $2}'
 
 > :bulb: Login as **admin** using **password** for password 
 
-### Provisioning the service
-
-> :information_source: Run this on Cloud Pak for Data web console
-
-
-
-1.   Click the Services icon ![](img/catalog.jpg) from the Cloud Pak for Data web user interface.   
-2.   From the list of services, locate the **Data Virtualization** service under the Data sources category. Click the action menu and select **Provision instance**.
-3.   Leave **kernel semaphore** checkbox **unchecked** (RHCOS kernel is 4.18) 
-4.   Keep default value for Nodes.
-5.   **Create new claim** with **portworx-dv-shared-gp** as Storage class for both Persistent storage and Cache storage.
-6.   Provision the service by clicking **Configure**.
-
-### Monitoring service provisioning
-
-#### Log in OCP
-
-> :warning: Adapt settings to fit to your environment.
-
-> :information_source: Run this on Installer 
-
-```
-LB_HOSTNAME="cli-ocp15"
-NS="cpd"
-```
-
-```
-oc login https://$LB_HOSTNAME:6443 -u admin -p admin --insecure-skip-tls-verify=true -n $NS
-```
-
-#### Monitoring service provisioning
-
-> :information_source: Run this on Installer 
-
-```
-watch -n5 "oc get pvc | grep 'dv' && oc get po | grep 'dv'"
-```
-
-### Start working with service
-
-> :information_source: Run this on Cloud Pak for Data web console
-
-![](img/my_instances.jpg)
-
-1.   From the navigation, select My instances.     
-
 <br>
 :checkered_flag::checkered_flag::checkered_flag:
 <br>
 
-<!--
-
-```shell
-./cpd-cli patch \
---repo ./repo.yaml \
---assembly dv \
---version 1.5.0 \
---patch-name v1.5.0.0-234 \
---action download
-```
-
-
-
--->

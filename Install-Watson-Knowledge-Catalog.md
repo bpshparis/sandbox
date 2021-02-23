@@ -1,4 +1,4 @@
-# Install Cloud Pak for Data 3.5.1
+# Install Watson Knowledge Catalog
 
 ## Hardware requirements
 
@@ -6,15 +6,15 @@
 
 ## System requirements
 
-- Have completed  [Prepare for Cloud Pak for Data 3.5.1](https://github.com/bpshparis/sandbox/blob/master/Prepare-for-Cloud-Pak-for-Data-3.5.1.md#prepare-for-cloud-pak-for-data-351)
+- Have completed  [Prepare for Watson Knowledge Catalog](https://github.com/bpshparis/sandbox/blob/master/Prepare-for-Watson Knowledge Catalog.md#prepare-for-Watson Knowledge Catalog)
 - One **WEB server** where following files are available in **read mode**:
-  - [lite-3.5.1-x86_64.tar](https://github.com/bpshparis/sandbox/blob/master/Prepare-for-Cloud-Pak-for-Data-3.5.1.md#save-cloud-pak-for-data-downloads-to-web-server)
+  - [wkc-3.5.2-x86_64.tar](https://github.com/bpshparis/sandbox/blob/master/Prepare-for-Watson Knowledge Catalog.md#save-watson-knowledge- catalog-downloads-to-web-server)
 
 <br>
 :checkered_flag::checkered_flag::checkered_flag:
 <br>
 
-## Install Cloud Pak for Data 3.5.1
+## Install Watson Knowledge Catalog
 
 > :information_source: Commands below are valid for a **Linux/Centos 7**.
 
@@ -27,30 +27,15 @@
 > :information_source: Run this on Installer 
 
 ```
-LB_HOSTNAME="cli-ocp1"
+LB_HOSTNAME="cli-ocp15"
+NS="cpd"
 ```
 
 ```
-oc login https://$LB_HOSTNAME:6443 -u admin -p admin --insecure-skip-tls-verify=true
+oc login https://$LB_HOSTNAME:6443 -u admin -p admin --insecure-skip-tls-verify=true -n $NS
 ```
 
-### Create Cloud Pak for Data project
-
-> :warning: Adapt settings to fit to your environment.
-
-> :information_source: Run this on Installer
-
-```
-PRJ="cpd"
-PRJ_ADMIN="admin"
-```
-```
-oc new-project $PRJ
-
-oc adm policy add-role-to-user cpd-admin-role $PRJ_ADMIN --role-namespace=$(oc project -q) -n $(oc project -q)
-```
-
-### Copy Cloud Pak for Data Downloads from web server
+### Copy Watson Knowledge Catalog Downloads from web server
 
 > :warning: Adapt settings to fit to your environment.
 
@@ -58,24 +43,23 @@ oc adm policy add-role-to-user cpd-admin-role $PRJ_ADMIN --role-namespace=$(oc p
 
 ```
 INST_DIR=~/cpd
-ASSEMBLY="lite"
-VERSION="3.5.1"
+ASSEMBLY="wkc"
+VERSION="3.5.2"
 ARCH="x86_64"
 TAR_FILE="$ASSEMBLY-$VERSION-$ARCH.tar"
 WEB_SERVER_CP_URL="http://web/cloud-pak/assemblies"
 ```
 
 ```
-[ -d "$INST_DIR" ] && { rm -rf $INST_DIR; mkdir $INST_DIR; }
+[ -d "$INST_DIR" ] && { rm -rf $INST_DIR; mkdir $INST_DIR; } || mkdir $INST_DIR
 cd $INST_DIR
 
-mkdir bin && cd bin
 wget -c $WEB_SERVER_CP_URL/$TAR_FILE
 tar xvf $TAR_FILE
 rm -f $TAR_FILE
 ```
 
-### Push Cloud Pak for Data images to Openshift registry
+### Push Watson Knowledge Catalog images to Openshift registry
 
 > :warning: To avoid network failure, launch installation on locale console or in a screen
 
@@ -93,7 +77,7 @@ pkill screen; screen -mdS ADM && screen -r ADM
 
 ```
 INST_DIR=~/cpd
-ASSEMBLY="lite"
+ASSEMBLY="wkc"
 ARCH="x86_64"
 VERSION=$(find $INST_DIR/cpd-cli-workspace/assembly/$ASSEMBLY/$ARCH/* -type d | awk -F'/' '{print $NF}')
 
@@ -115,7 +99,7 @@ $INST_DIR/cpd-cli preload-images \
 ```
 
 
-### Create Cloud Pak for Data resources on cluster
+### Create Watson Knowledge Catalog resources on cluster
 
 > :information_source: Run this on Installer
 
@@ -130,13 +114,14 @@ $INST_DIR/cpd-cli adm \
 --accept-all-licenses
 ```
 
-> :bulb: Check **cpd-admin-sa, cpd-editor-sa, cpd-norbac-sa and cpd-viewer-sa** services account have been created
+>:bulb: Check **wdp-db2-sa** and **wkc-iis-sa** services account have been created
 
 ```
 oc get sa
 ```
 
-### Install Cloud Pak for Data
+
+### Install Watson Knowledge Catalog
 
 > :warning: Adapt settings to fit to your environment.
 
@@ -145,23 +130,40 @@ oc get sa
 ```
 SC="portworx-shared-gp3"
 INT_REG=$(oc registry info --internal) && echo $INT_REG
-OVERRIDE=$INST_DIR/lite-override.yaml
+OVERRIDE=$INST_DIR/ds-override.yaml
 ```
 
 ```
 cat > $OVERRIDE << EOF
-zenCoreMetaDb:
-  storageClass: portworx-metastoredb-sc
-EOF
+shared-services:
+  kafka:
+    volumeClaim:
+      overrideStorageClass: true
+      storageClassName: "portworx-kafka-sc"
 
+wdp-db2:
+  support4kDevice: true
+  volumeClaim:
+    storageClassName: "portworx-db2-rwo-sc"
+    overrideStorageClass: true
+
+xmetarepoVolumeInfo:
+  support4kDevice: true
+  volumeClaim:
+    storageClassName: "portworx-db2-rwo-sc"
+    overrideStorageClass: true
+EOF
+```
+
+```
 $INST_DIR/cpd-cli install \
 --namespace $(oc project -q) \
 --assembly $ASSEMBLY \
 --arch $ARCH \
 --storageclass $SC \
+--override-config portworx \
 --cluster-pull-prefix $INT_REG/$(oc project -q) \
 --load-from $INST_DIR/cpd-cli-workspace \
---override $OVERRIDE \
 --latest-dependency \
 --accept-all-licenses
 
@@ -170,24 +172,27 @@ $INST_DIR/cpd-cli install \
 > :bulb: Check installation progress
 
 ```
-watch -n5 "oc get pvc && oc get po"
+watch -n5 "oc get pvc | egrep -w 'wkc|iis|refinery|ug|solr|is|kafka' ; oc get po | egrep -w 'wkc|iis|refinery|ug|solr|is|kafka'"
 ```
 
-### Check Cloud Pak for Data status
+
+### Check Watson Knowledge Catalog status
 
 > :information_source: Run this on Installer
 
 ```
-$INST_DIR/bin/cpd-cli status \
+$INST_DIR/cpd-cli status \
 --namespace $(oc project -q) \
 --assembly $ASSEMBLY \
 --arch $ARCH
 ```
 
-![](img/lite-ready.jpg)
+![](img/wkc-ready.png)
 
 
-### Access Cloud Pak for Data web console
+### Start working with Watson Knowledge Catalog
+
+#### Access Cloud Pak for Data web console
 
 > :information_source: Run this on Installer
 
@@ -196,6 +201,21 @@ oc get routes | awk 'NR==2 {print "Access the web console at https://" $2}'
 ```
 
 > :bulb: Login as **admin** using **password** for password 
+
+
+#### Start working with Watson Knowledge Catalog
+
+> :information_source: Run this on Cloud Pak for Data web console
+
+![](img/projects.jpg)
+
+1.   From the navigation, select Projects.     
+
+> :bulb: If Projects is missing then browse
+
+```
+oc get routes | awk 'NR==2 {print "https://" $2 "/zen/#/projectList"}'
+```
 
 <br>
 :checkered_flag::checkered_flag::checkered_flag:
