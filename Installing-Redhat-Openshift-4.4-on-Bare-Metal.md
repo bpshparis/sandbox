@@ -65,15 +65,16 @@ Download [Redhat Openshift 4 on Bare Metal material](https://cloud.redhat.com/op
 ```
 DOMAIN=$(cat /etc/resolv.conf | awk '$1 ~ "search" {print $2}') && echo $DOMAIN
 IP_HEAD="172.16"
-OCP=ocp5
-CLI_IP=$IP_HEAD.187.50
-M1_IP=$IP_HEAD.187.51
-M2_IP=$IP_HEAD.187.52
-M3_IP=$IP_HEAD.187.53
-W1_IP=$IP_HEAD.187.54
-W2_IP=$IP_HEAD.187.55
-W3_IP=$IP_HEAD.187.56
-BS_IP=$IP_HEAD.187.59
+OCP=ocp9
+CLI_IP=$IP_HEAD.187.90
+M1_IP=$IP_HEAD.187.91
+M2_IP=$IP_HEAD.187.92
+M3_IP=$IP_HEAD.187.93
+W1_IP=$IP_HEAD.187.94
+W2_IP=$IP_HEAD.187.95
+W3_IP=$IP_HEAD.187.96
+W4_IP=$IP_HEAD.187.97
+BS_IP=$IP_HEAD.187.99
 MZONE=/var/lib/bind/$DOMAIN.hosts
 RZONE=/var/lib/bind/$IP_HEAD.rev
 ```
@@ -90,6 +91,7 @@ m3-$OCP.$DOMAIN.   IN      A       $M3_IP
 w1-$OCP.$DOMAIN.   IN      A       $W1_IP
 w2-$OCP.$DOMAIN.   IN      A       $W2_IP
 w3-$OCP.$DOMAIN.   IN      A       $W3_IP
+w4-$OCP.$DOMAIN.   IN      A       $W4_IP
 bs-$OCP.$DOMAIN.   IN      A       $BS_IP
 api.$OCP.$DOMAIN.  IN      A       $CLI_IP
 api-int.$OCP.$DOMAIN.      IN      A       $CLI_IP
@@ -117,6 +119,7 @@ $(echo $M3_IP | awk -F. '{print $4 "." $3 "." $2 "." $1}').in-addr.arpa.    IN  
 $(echo $W1_IP | awk -F. '{print $4 "." $3 "." $2 "." $1}').in-addr.arpa.    IN      PTR     w1-$OCP.$DOMAIN.
 $(echo $W2_IP | awk -F. '{print $4 "." $3 "." $2 "." $1}').in-addr.arpa.    IN      PTR     w2-$OCP.$DOMAIN.
 $(echo $W3_IP | awk -F. '{print $4 "." $3 "." $2 "." $1}').in-addr.arpa.    IN      PTR     w3-$OCP.$DOMAIN.
+$(echo $W4_IP | awk -F. '{print $4 "." $3 "." $2 "." $1}').in-addr.arpa.    IN      PTR     w4-$OCP.$DOMAIN.
 $(echo $BS_IP | awk -F. '{print $4 "." $3 "." $2 "." $1}').in-addr.arpa.    IN      PTR     bs-$OCP.$DOMAIN.
 EOF
 ```
@@ -134,7 +137,7 @@ service bind9 restart
 > :information_source: Run this on DNS
 
 ```
-for host in m1 m2 m3 w1 w2 w3 bs; do echo -n $host-$OCP "-> "; dig @localhost +short $host-$OCP.$DOMAIN; done
+for host in m1 m2 m3 w1 w2 w3 w4 bs; do echo -n $host-$OCP "-> "; dig @localhost +short $host-$OCP.$DOMAIN; done
 ```
 
 ### Test reverse zone
@@ -142,7 +145,7 @@ for host in m1 m2 m3 w1 w2 w3 bs; do echo -n $host-$OCP "-> "; dig @localhost +s
 > :information_source: Run this on DNS
 
 ```
-for host in m1 m2 m3 w1 w2 w3 bs; do IP=$(dig @localhost +short $host-$OCP.$DOMAIN); echo -n $IP "-> "; dig @localhost +short -x $IP; done
+for host in m1 m2 m3 w1 w2 w3 w4 bs; do IP=$(dig @localhost +short $host-$OCP.$DOMAIN); echo -n $IP "-> "; dig @localhost +short -x $IP; done
 ```
 
 ### Test alias
@@ -176,7 +179,7 @@ dig @localhost +short _etcd-server-ssl._tcp.$OCP.$DOMAIN SRV
 > :information_source: Run this on Load Balancer
 
 ```
-OCP="ocp5"
+OCP="ocp9"
 DOMAIN=$(cat /etc/resolv.conf | awk '$1 ~ "^search" {print $2}') && echo $DOMAIN
 LB_CONF="/etc/haproxy/haproxy.cfg" && echo $LB_CONF
 [ -f "$LB_CONF" ] && echo "haproxy already installed" || yum install haproxy -y
@@ -215,6 +218,7 @@ backend ingress-http
     server w1-$OCP $(dig +short w1-$OCP.$DOMAIN):80 check
     server w2-$OCP $(dig +short w2-$OCP.$DOMAIN):80 check
     server w3-$OCP $(dig +short w3-$OCP.$DOMAIN):80 check
+    server w4-$OCP $(dig +short w4-$OCP.$DOMAIN):80 check
 
 frontend ingress-https
     bind *:443
@@ -228,6 +232,7 @@ backend ingress-https
     server w1-$OCP $(dig +short w1-$OCP.$DOMAIN):443 check
     server w2-$OCP $(dig +short w2-$OCP.$DOMAIN):443 check
     server w3-$OCP $(dig +short w3-$OCP.$DOMAIN):443 check
+    server w4-$OCP $(dig +short w4-$OCP.$DOMAIN):443 check
 
 frontend openshift-api-server
     bind *:6443
@@ -326,7 +331,7 @@ sed -i "s:^sshKey\:.*$:sshKey\: '$PUB_KEY':"  install-config.yaml
 > :information_source: Run this on Installer
 
 ```
-OCP="ocp5"
+OCP="ocp9"
 WEB_SERVER="web"
 WEB_SERVER_PATH="/web/$OCP"
 ```
@@ -430,7 +435,7 @@ sshpass -e ssh -o StrictHostKeyChecking=no root@web "chmod -R +r /web/$OCP"
 > :information_source: Run this on Installer
 
 ```
-ESX_SERVER="ocp5"
+ESX_SERVER="ocp9"
 ```
 
 

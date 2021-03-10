@@ -178,7 +178,7 @@ dig @localhost +short _etcd-server-ssl._tcp.$OCP.$DOMAIN SRV
 > :information_source: Run this on Load Balancer
 
 ```
-OCP="ocp1"
+OCP="ocp2"
 DOMAIN=$(cat /etc/resolv.conf | awk '$1 ~ "^search" {print $2}') && echo $DOMAIN
 LB_CONF="/etc/haproxy/haproxy.cfg" && echo $LB_CONF
 [ -f "$LB_CONF" ] && echo "haproxy already installed" || yum install haproxy -y
@@ -291,7 +291,7 @@ systemctl enable haproxy
 > :information_source: Run this on Installer
 
 ```
-OCP="ocp13"
+OCP="ocp2"
 DOMAIN=$(cat /etc/resolv.conf | awk '$1 ~ "^search" {print $2}') && echo $DOMAIN
 WEB_SERVER_SOFT_URL="http://web/soft"
 INST_DIR=~/ocpinst && echo $INST_DIR
@@ -329,7 +329,7 @@ sed -i "s:^sshKey\:.*$:sshKey\: '$PUB_KEY':"  install-config.yaml
 > :information_source: Run this on Installer
 
 ```
-OCP="ocp13"
+OCP="ocp2"
 WEB_SERVER="web"
 WEB_SERVER_PATH="/web/$OCP"
 ```
@@ -360,8 +360,8 @@ sshpass -e ssh -o StrictHostKeyChecking=no root@$WEB_SERVER "chmod -R +r $WEB_SE
 
 ```
 WEB_SERVER_SOFT_URL="http://web/soft"
-INSTALLER_FILE="openshift-install-linux-4.5.22.tar.gz"
-CLIENT_FILE="openshift-client-linux-4.5.22.tar.gz"
+INSTALLER_FILE="openshift-install-linux.tar.gz"
+CLIENT_FILE="openshift-client-linux.tar.gz"
 ```
 
 #### Install Openshift installer, oc and kubectl commands
@@ -405,7 +405,7 @@ sed -i 's/mastersSchedulable: true/mastersSchedulable: false/' manifests/cluster
 ```
 WEB_SERVER="web"
 WEB_SERVER_PATH="/web/$OCP"
-RHCOS_IMG_PATH="/web/img/rhcos-4.5.6-metal.x86_64.raw.gz"
+RHCOS_IMG_PATH="/web/img/rhcos-metal.x86_64.raw.gz"
 ```
 
 #### Make ignition files and RHCOS image available on web server
@@ -433,8 +433,10 @@ sshpass -e ssh -o StrictHostKeyChecking=no root@web "chmod -R +r /web/$OCP"
 > :information_source: Run this on Installer
 
 ```
-ESX_SERVER="ocp13"
+ESX_SERVER="ocp2"
 ```
+
+
 
 
 ```
@@ -506,7 +508,7 @@ rm -rf $RW_ISO_PATH
 ```
 [ ! -d $TEST_ISO_PATH ] && mkdir $TEST_ISO_PATH
 
-for iso in $(ls *.iso); do
+for iso in $(ls *-ocp2.iso); do
     echo $iso
     mount -o loop $iso $TEST_ISO_PATH
     grep 'ip=' $TEST_ISO_PATH/isolinux/isolinux.cfg

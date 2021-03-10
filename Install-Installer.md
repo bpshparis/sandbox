@@ -42,8 +42,8 @@ One Lenovo **X3550M5** or similar to host **1** virtual machine:
 ```
 DOMAIN=$(cat /etc/resolv.conf | awk '$1 ~ "search" {print $2}') && echo $DOMAIN
 IP_HEAD="172.16"
-OCP=ocp5
-CLI_IP=$IP_HEAD.187.30
+OCP=ocp9
+CLI_IP=$IP_HEAD.187.90
 MZONE=/var/lib/bind/$DOMAIN.hosts
 RZONE=/var/lib/bind/$IP_HEAD.rev
 ```
@@ -234,8 +234,8 @@ watch -n 5 "./getVMAddress.sh"
 ```
 cat >> ~/.bashrc << EOF
 
-export OCP=ocp3
-export SSHPASS=spcspc
+export OCP=ocp9
+export SSHPASS=password
 alias l='ls -Alhtr'
 
 EOF
@@ -265,6 +265,7 @@ VNC_PWD="password"
 ```
 [ -z $(command -v vncviewer) ] && yum install -y tigervnc || echo "vncviewer already installed"
 [ -z $(command -v vncpasswd) ] && yum install -y tigervnc-server-minimal || echo "vncpasswd already installed"
+[ -f ~/.vnc ] || mkdir ~/.vnc
 echo $VNC_PWD | vncpasswd -f > ~/.vnc/passwd
 ```
 
@@ -273,7 +274,7 @@ echo $VNC_PWD | vncpasswd -f > ~/.vnc/passwd
 > :information_source: Run this on Installer
 
 ```
-OC_URL="https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.4.17/openshift-client-linux-4.4.17.tar.gz"
+OC_URL="https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz"
 
 [ -z $(command -v oc) ] && { wget -c $OC_URL; tar -xvzf $(echo $OC_URL | awk -F'/' '{print $NF}') -C $(echo $PATH | awk -F":" 'NR==1 {print $1}'); oc version; } || { echo "oc and bubectl already installed"; }
 
