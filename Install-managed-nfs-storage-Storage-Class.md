@@ -65,7 +65,7 @@ sed -i -e 's/^SELINUX=\w*/SELINUX=disabled/' /etc/selinux/config
 > :information_source: Run this on **NFS Server**
 
 ```
-NFS_SERVER="cli-ocp5"
+NFS_SERVER="cli-ocp9"
 NFS_PATH="/exports"
 ```
 
@@ -82,7 +82,7 @@ touch /mnt/$NFS_SERVER/SUCCESS && echo "RC="$?
 > :information_source: Run this on **NFS Server**
 
 ```
-[ -z $(command -v sshpass) ] && { yum install -y sshpass; export SSHPASS="spcspc"; }
+[ -z $(command -v sshpass) ] && { yum install -y sshpass; export SSHPASS="abc123"; }
 
 sshpass -e ssh -o StrictHostKeyChecking=no $NFS_SERVER ls $NFS_PATH/ 
 ```
@@ -92,7 +92,7 @@ sshpass -e ssh -o StrictHostKeyChecking=no $NFS_SERVER ls $NFS_PATH/
 > :information_source: Run this on **NFS Server**
 
 ```
-NFS_SERVER="cli-ocp5"
+NFS_SERVER="cli-ocp9"
 NFS_PATH="/exports"
 ```
 
@@ -131,7 +131,7 @@ oc login https://$LB_HOSTNAME:6443 -u admin -p admin --insecure-skip-tls-verify=
 
 ```
 WEB_SERVER_SOFT_URL="http://web/soft"
-NFS_SERVER="cli-ocp5"
+NFS_SERVER="cli-ocp9"
 NFS_PATH="/exports"
 ```
 

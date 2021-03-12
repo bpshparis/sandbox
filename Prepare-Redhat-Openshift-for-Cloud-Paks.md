@@ -227,7 +227,7 @@ oc login https://cli-$OCP:8443 -u admin -p admin --insecure-skip-tls-verify=true
 > :information_source: Run this on Installer
 
 ```
-LB_HOSTNAME="cli-ocp2"
+LB_HOSTNAME="cli-ocp9"
 NS="default"
 ```
 
