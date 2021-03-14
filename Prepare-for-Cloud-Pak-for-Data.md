@@ -36,7 +36,7 @@ oc get no -l node-role.kubernetes.io/worker --no-headers -o name | xargs -I {} -
 oc get no -l node-role.kubernetes.io/worker --no-headers -o name | xargs -I {} --  oc debug {} -- bash -c 'chroot /host grep  "^pids_limit" /etc/crio/crio.conf'
 ```
 
-### Enable container_manage_cgroup on the worker nodes
+### Enable container_manage_cgroup on worker nodes
 
 > :warning: Adapt settings to fit to your environment.
 
