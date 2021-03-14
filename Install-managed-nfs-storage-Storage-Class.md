@@ -65,7 +65,7 @@ sed -i -e 's/^SELINUX=\w*/SELINUX=disabled/' /etc/selinux/config
 > :information_source: Run this on **NFS Server**
 
 ```
-NFS_SERVER="cli-ocp9"
+NFS_SERVER="cli-ocp11"
 NFS_PATH="/exports"
 ```
 
@@ -92,7 +92,7 @@ sshpass -e ssh -o StrictHostKeyChecking=no $NFS_SERVER ls $NFS_PATH/
 > :information_source: Run this on **NFS Server**
 
 ```
-NFS_SERVER="cli-ocp9"
+NFS_SERVER="cli-ocp11"
 NFS_PATH="/exports"
 ```
 
@@ -115,7 +115,7 @@ umount /mnt/$NFS_SERVER && rmdir /mnt/$NFS_SERVER && echo "RC="$?
 
 ```
 OC_URL="https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.4.17/openshift-client-linux-4.4.17.tar.gz"
-LB_HOSTNAME="cli-ocp5"
+LB_HOSTNAME="cli-ocp11"
 ```
 
 ```
@@ -131,7 +131,7 @@ oc login https://$LB_HOSTNAME:6443 -u admin -p admin --insecure-skip-tls-verify=
 
 ```
 WEB_SERVER_SOFT_URL="http://web/soft"
-NFS_SERVER="cli-ocp9"
+NFS_SERVER="cli-ocp11"
 NFS_PATH="/exports"
 ```
 
@@ -142,7 +142,7 @@ wget -c $WEB_SERVER_SOFT_URL/nfs-client.zip
 unzip nfs-client.zip
 cd nfs-client/
 
-oc new-project storage
+oc new-project nfs-storage
 
 sed -i -e 's/namespace:.*/namespace: '$(oc project -q)'/g' ./deploy/rbac.yaml
 oc create -f deploy/rbac.yaml

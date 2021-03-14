@@ -1,4 +1,4 @@
-# Prepare for Cloud Pak for Data 3.5.2
+# Prepare for Cloud Pak for Data
 
 ## Hardware requirements
 
@@ -16,11 +16,83 @@
 :checkered_flag::checkered_flag::checkered_flag:
 <br>
 
-## Prepare for Cloud Pak for Data 3.5.2
+## Prepare for Cloud Pak for Data
 
 > :information_source: Commands below are valid for a **Linux/Centos 7**.
 
 > :warning: Some of commands below will need to be adapted to fit Linux/Debian or MacOS .
+
+### Changing CRI-O container settings on worker nodes
+
+> :warning: Adapt settings to fit to your environment.
+
+> :information_source: Run this on Installer
+
+```
+PIDS_LIMIT="16384"
+
+oc get no -l node-role.kubernetes.io/worker --no-headers -o name | xargs -I {} --  oc debug {} -- bash -c 'chroot /host sed -i "s/^\(pids_limit\)\s\{0,\}=.*/\1 = '$PIDS_LIMIT'/" /etc/crio/crio.conf'
+
+oc get no -l node-role.kubernetes.io/worker --no-headers -o name | xargs -I {} --  oc debug {} -- bash -c 'chroot /host grep  "^pids_limit" /etc/crio/crio.conf'
+```
+
+### Enable container_manage_cgroup on the worker nodes
+
+> :warning: Adapt settings to fit to your environment.
+
+> :information_source: Run this on Installer
+
+```
+oc get no -l node-role.kubernetes.io/worker --no-headers -o name | xargs -I {} --  oc debug {} -- bash -c 'chroot /host setsebool -P container_manage_cgroup true'
+```
+
+### Changing kernel parameter settings on worker nodes
+
+> :warning: Adapt settings to fit to your environment.
+
+> :information_source: Run this on Installer
+
+#### Check
+
+```
+KERNEL_PARMS="kernel.shmall|kernel.shmmax|kernel.shmmni|kernel.sem|kernel.msgmax|kernel.msgmnb|kernel.msgmni|vm.max_map_count"
+```
+
+```
+for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; echo '$ROOT_PWD' | sudo -S sysctl -a | egrep -w "'$KERNEL_PARMS'"'; done
+```
+
+#### Change if necessary
+
+> :bulb: Settings below suits for a 64GB RAM workers
+
+```
+OCP="ocp9"
+WORKERS="w1-$OCP w2-$OCP w3-$OCP"
+NEW_VALUES="kernel.shmmni=32768 kernel.msgmax=65536 kernel.msgmnb=65536 kernel.msgmni=32768"
+ROOT_PWD="password"
+```
+
+```
+for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; echo '$ROOT_PWD' | sudo passwd root --stdin'; done
+
+for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; for value in '$NEW_VALUES'; do echo '$ROOT_PWD' | sudo -S sysctl -w $value; done'; done
+
+for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; echo '$ROOT_PWD' | sudo -S chmod 646 /etc/sysctl.conf; ls -Alhtr /etc/sysctl.conf'; done
+
+for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; echo '$ROOT_PWD' | sudo -S sed -i "/^[^#]/d" /etc/sysctl.conf'; done
+
+for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; for value in '$NEW_VALUES'; do echo '$ROOT_PWD' | sudo -S echo $value | tee -a /etc/sysctl.conf; done'; done
+
+for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; echo '$ROOT_PWD' | sudo -S tail /etc/sysctl.conf'; done
+
+for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; echo '$ROOT_PWD' | sudo -S chmod 644 /etc/sysctl.conf; ls -Alhtr /etc/sysctl.conf'; done
+
+for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; echo '$ROOT_PWD' | sudo -S sysctl -p'; done
+
+for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; echo '$ROOT_PWD' | sudo -S sysctl -a | egrep -w "'$KERNEL_PARMS'"'; done
+```
+
 
 ### Install the cpd command
 

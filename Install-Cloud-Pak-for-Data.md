@@ -1,4 +1,4 @@
-# Install Cloud Pak for Data 3.5.2
+# Install Cloud Pak for Data
 
 ## Hardware requirements
 
@@ -14,7 +14,7 @@
 :checkered_flag::checkered_flag::checkered_flag:
 <br>
 
-## Install Cloud Pak for Data 3.5.2
+## Install Cloud Pak for Data
 
 > :information_source: Commands below are valid for a **Linux/Centos 7**.
 

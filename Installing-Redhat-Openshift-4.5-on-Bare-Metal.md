@@ -70,14 +70,15 @@ Download [Redhat Openshift 4 on Bare Metal material](https://cloud.redhat.com/op
 ```
 DOMAIN=$(cat /etc/resolv.conf | awk '$1 ~ "search" {print $2}') && echo $DOMAIN
 IP_HEAD="172.16"
-OCP=ocp1
-M1_IP=$IP_HEAD.187.11
-M2_IP=$IP_HEAD.187.12
-M3_IP=$IP_HEAD.187.13
-W1_IP=$IP_HEAD.187.14
-W2_IP=$IP_HEAD.187.15
-W3_IP=$IP_HEAD.187.16
-BS_IP=$IP_HEAD.187.19
+OCP=ocp11
+LB_IP=$IP_HEAD.187.110
+M1_IP=$IP_HEAD.187.111
+M2_IP=$IP_HEAD.187.112
+M3_IP=$IP_HEAD.187.113
+W1_IP=$IP_HEAD.187.114
+W2_IP=$IP_HEAD.187.115
+W3_IP=$IP_HEAD.187.116
+BS_IP=$IP_HEAD.187.119
 MZONE=/var/lib/bind/$DOMAIN.hosts
 RZONE=/var/lib/bind/$IP_HEAD.rev
 ```
@@ -94,9 +95,9 @@ w1-$OCP.$DOMAIN.   IN      A       $W1_IP
 w2-$OCP.$DOMAIN.   IN      A       $W2_IP
 w3-$OCP.$DOMAIN.   IN      A       $W3_IP
 bs-$OCP.$DOMAIN.   IN      A       $BS_IP
-api.$OCP.$DOMAIN.  IN      A       $CLI_IP
-api-int.$OCP.$DOMAIN.      IN      A       $CLI_IP
-apps.$OCP.$DOMAIN. IN      A       $CLI_IP
+api.$OCP.$DOMAIN.  IN      A       $LB_IP
+api-int.$OCP.$DOMAIN.      IN      A       $LB_IP
+apps.$OCP.$DOMAIN. IN      A       $LB_IP
 etcd-0.$OCP.$DOMAIN.       IN      A       $M1_IP
 etcd-1.$OCP.$DOMAIN.       IN      A       $M2_IP
 etcd-2.$OCP.$DOMAIN.       IN      A       $M3_IP
@@ -178,7 +179,7 @@ dig @localhost +short _etcd-server-ssl._tcp.$OCP.$DOMAIN SRV
 > :information_source: Run this on Load Balancer
 
 ```
-OCP="ocp2"
+OCP="ocp11"
 DOMAIN=$(cat /etc/resolv.conf | awk '$1 ~ "^search" {print $2}') && echo $DOMAIN
 LB_CONF="/etc/haproxy/haproxy.cfg" && echo $LB_CONF
 [ -f "$LB_CONF" ] && echo "haproxy already installed" || yum install haproxy -y
@@ -291,11 +292,12 @@ systemctl enable haproxy
 > :information_source: Run this on Installer
 
 ```
-OCP="ocp2"
+OCP="ocp11"
 DOMAIN=$(cat /etc/resolv.conf | awk '$1 ~ "^search" {print $2}') && echo $DOMAIN
 WEB_SERVER_SOFT_URL="http://web/soft"
 INST_DIR=~/ocpinst && echo $INST_DIR
 MASTER_COUNT="3"
+PULL_SECRET_FILE="pull-secret.txt"
 ```
 
 #### Set install-config.yaml
@@ -311,8 +313,8 @@ sed -i "10s/.*/  replicas: $MASTER_COUNT/"  install-config.yaml
 sed -i "s/\(^baseDomain: \).*$/\1$DOMAIN/" install-config.yaml
 sed -i -e '12s/^  name:.*$/  name: '$OCP'/' install-config.yaml
 
-wget $WEB_SERVER_SOFT_URL/pull-secret.txt
-SECRET=$(cat pull-secret.txt) && echo $SECRET
+wget $WEB_SERVER_SOFT_URL/$PULL_SECRET_FILE
+SECRET=$(cat $PULL_SECRET_FILE) && echo $SECRET
 sed -i "s/^pullSecret:.*$/pullSecret: '$SECRET'/"  install-config.yaml
 
 [ ! -f ~/.ssh/id_rsa ] && yes y | ssh-keygen -b 4096 -f ~/.ssh/id_rsa -N ""
@@ -329,7 +331,7 @@ sed -i "s:^sshKey\:.*$:sshKey\: '$PUB_KEY':"  install-config.yaml
 > :information_source: Run this on Installer
 
 ```
-OCP="ocp2"
+OCP="ocp11"
 WEB_SERVER="web"
 WEB_SERVER_PATH="/web/$OCP"
 ```
@@ -360,8 +362,8 @@ sshpass -e ssh -o StrictHostKeyChecking=no root@$WEB_SERVER "chmod -R +r $WEB_SE
 
 ```
 WEB_SERVER_SOFT_URL="http://web/soft"
-INSTALLER_FILE="openshift-install-linux.tar.gz"
-CLIENT_FILE="openshift-client-linux.tar.gz"
+INSTALLER_FILE="openshift-install-linux-4.5.22.tar.gz"
+CLIENT_FILE="openshift-client-linux-4.5.22.tar.gz"
 ```
 
 #### Install Openshift installer, oc and kubectl commands
@@ -405,7 +407,7 @@ sed -i 's/mastersSchedulable: true/mastersSchedulable: false/' manifests/cluster
 ```
 WEB_SERVER="web"
 WEB_SERVER_PATH="/web/$OCP"
-RHCOS_IMG_PATH="/web/img/rhcos-metal.x86_64.raw.gz"
+RHCOS_IMG_PATH="/web/img/rhcos-4.5.6-metal.x86_64.raw.gz"
 ```
 
 #### Make ignition files and RHCOS image available on web server
@@ -433,7 +435,7 @@ sshpass -e ssh -o StrictHostKeyChecking=no root@web "chmod -R +r /web/$OCP"
 > :information_source: Run this on Installer
 
 ```
-ESX_SERVER="ocp2"
+ESX_SERVER="ocp11"
 ```
 
 
@@ -508,7 +510,7 @@ rm -rf $RW_ISO_PATH
 ```
 [ ! -d $TEST_ISO_PATH ] && mkdir $TEST_ISO_PATH
 
-for iso in $(ls *-ocp2.iso); do
+for iso in $(ls *-$OCP.iso); do
     echo $iso
     mount -o loop $iso $TEST_ISO_PATH
     grep 'ip=' $TEST_ISO_PATH/isolinux/isolinux.cfg
@@ -943,7 +945,7 @@ oc adm policy add-cluster-role-to-user cluster-admin admin
 > :information_source: Run this on Installer
 
 ```
-LB_HOSTNAME="cli-ocp13"
+LB_HOSTNAME="cli-ocp11"
 ```
 
 ```
