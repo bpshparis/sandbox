@@ -10,7 +10,6 @@
 - One **WEB server** where following files are available in **read mode**:
   - [cpd-cli-linux-EE-3.5.2.tgz](https://github.com/IBM/cpd-cli/releases/download/v3.5.2/cpd-cli-linux-EE-3.5.2.tgz)
   - [IBM® Cloud Pak for Data entitlement license API key](https://myibm.ibm.com/products-services/containerlibrary) saved in apikey file.
-  - [repo.yaml](scripts/repo.yaml)
 
 <br>
 :checkered_flag::checkered_flag::checkered_flag:
@@ -26,7 +25,7 @@
 
 > :warning: Adapt settings to fit to your environment.
 
-> :information_source: Run this on Installer
+> :information_source: Run this on Load Balancer
 
 #### Check
 
@@ -43,8 +42,12 @@ TIMEOUT="5m"
 ```
 
 ```
-sed -e "/timeout client/s/ [0-9].*/ 5m/" /etc/haproxy/haproxy.cfg
-sed -e "/timeout server/s/ [0-9].*/ 5m/" /etc/haproxy/haproxy.cfg
+sed -i -e "/timeout client/s/ [0-9].*/ 5m/" /etc/haproxy/haproxy.cfg
+sed -i -e "/timeout server/s/ [0-9].*/ 5m/" /etc/haproxy/haproxy.cfg
+
+egrep -w 'timeout client|timeout server'  /etc/haproxy/haproxy.cfg
+
+systemctl restart haproxy
 ```
 
 
@@ -81,6 +84,8 @@ oc get no -l node-role.kubernetes.io/worker --no-headers -o name | xargs -I {} -
 #### Check
 
 ```
+OCP="ocp9"
+WORKERS="w1-$OCP w2-$OCP w3-$OCP"
 KERNEL_PARMS="kernel.shmall|kernel.shmmax|kernel.shmmni|kernel.sem|kernel.msgmax|kernel.msgmnb|kernel.msgmni|vm.max_map_count"
 ```
 
@@ -93,16 +98,12 @@ for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f
 > :bulb: Settings below suits for a 64GB RAM worker
 
 ```
-OCP="ocp9"
-WORKERS="w1-$OCP w2-$OCP w3-$OCP"
 NEW_VALUES="kernel.shmmni=32768 kernel.msgmax=65536 kernel.msgmnb=65536 kernel.msgmni=32768"
 ROOT_PWD="password"
 ```
 
 ```
 for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; echo '$ROOT_PWD' | sudo passwd root --stdin'; done
-
-for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; for value in '$NEW_VALUES'; do echo '$ROOT_PWD' | sudo -S sysctl -w $value; done'; done
 
 for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; echo '$ROOT_PWD' | sudo -S chmod 646 /etc/sysctl.conf; ls -Alhtr /etc/sysctl.conf'; done
 
@@ -129,7 +130,6 @@ for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f
 ```
 WEB_SERVER_CP_URL="http://web/cloud-pak"
 INST_FILE="cpd-cli-linux-EE-3.5.2.tgz"
-CONF_FILE="repo.yaml"
 INST_DIR=~/cpd && echo $INST_DIR
 ```
 
@@ -140,7 +140,7 @@ cd $INST_DIR
 wget -c $WEB_SERVER_CP_URL/$INST_FILE
 tar xvzf $INST_FILE
 rm $INST_FILE -f
-wget -c $WEB_SERVER_CP_URL/$CONF_FILE
+
 ```
 
 ### Set repo.yaml

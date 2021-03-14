@@ -27,7 +27,7 @@
 > :information_source: Run this on Installer 
 
 ```
-LB_HOSTNAME="cli-ocp1"
+LB_HOSTNAME="cli-ocp9"
 ```
 
 ```
@@ -66,10 +66,10 @@ WEB_SERVER_CP_URL="http://web/cloud-pak/assemblies"
 ```
 
 ```
+cd ~
 [ -d "$INST_DIR" ] && { rm -rf $INST_DIR; mkdir $INST_DIR; } || { mkdir $INST_DIR; }
 cd $INST_DIR
 
-mkdir bin && cd bin
 wget -c $WEB_SERVER_CP_URL/$TAR_FILE
 tar xvf $TAR_FILE
 rm -f $TAR_FILE
@@ -144,16 +144,11 @@ oc get sa
 
 ```
 SC="portworx-shared-gp3"
+OVERRIDE_CONFIG="portworx"
 INT_REG=$(oc registry info --internal) && echo $INT_REG
-OVERRIDE=$INST_DIR/lite-override.yaml
 ```
 
 ```
-cat > $OVERRIDE << EOF
-zenCoreMetaDb:
-  storageClass: portworx-metastoredb-sc
-EOF
-
 $INST_DIR/cpd-cli install \
 --namespace $(oc project -q) \
 --assembly $ASSEMBLY \
@@ -161,7 +156,7 @@ $INST_DIR/cpd-cli install \
 --storageclass $SC \
 --cluster-pull-prefix $INT_REG/$(oc project -q) \
 --load-from $INST_DIR/cpd-cli-workspace \
---override $OVERRIDE \
+--override-config $OVERRIDE_CONFIG \
 --latest-dependency \
 --accept-all-licenses
 

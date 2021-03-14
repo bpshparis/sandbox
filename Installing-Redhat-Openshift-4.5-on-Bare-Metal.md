@@ -292,7 +292,7 @@ systemctl enable haproxy
 > :information_source: Run this on Installer
 
 ```
-OCP="ocp11"
+OCP="ocp9"
 DOMAIN=$(cat /etc/resolv.conf | awk '$1 ~ "^search" {print $2}') && echo $DOMAIN
 WEB_SERVER_SOFT_URL="http://web/soft"
 INST_DIR=~/ocpinst && echo $INST_DIR
@@ -331,7 +331,7 @@ sed -i "s:^sshKey\:.*$:sshKey\: '$PUB_KEY':"  install-config.yaml
 > :information_source: Run this on Installer
 
 ```
-OCP="ocp11"
+OCP="ocp9"
 WEB_SERVER="web"
 WEB_SERVER_PATH="/web/$OCP"
 ```
@@ -435,7 +435,7 @@ sshpass -e ssh -o StrictHostKeyChecking=no root@web "chmod -R +r /web/$OCP"
 > :information_source: Run this on Installer
 
 ```
-ESX_SERVER="ocp11"
+ESX_SERVER="ocp9"
 ```
 
 
