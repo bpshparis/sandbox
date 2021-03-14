@@ -64,7 +64,7 @@ for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f
 
 #### Change if necessary
 
-> :bulb: Settings below suits for a 64GB RAM workers
+> :bulb: Settings below suits for a 64GB RAM worker
 
 ```
 OCP="ocp9"
