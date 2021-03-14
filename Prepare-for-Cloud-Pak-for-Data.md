@@ -22,6 +22,32 @@
 
 > :warning: Some of commands below will need to be adapted to fit Linux/Debian or MacOS .
 
+### Changing load balancer timeout settings
+
+> :warning: Adapt settings to fit to your environment.
+
+> :information_source: Run this on Installer
+
+#### Check
+
+```
+egrep -w 'timeout client|timeout server'  /etc/haproxy/haproxy.cfg
+```
+
+#### Change if necessary
+
+> :bulb: The recommended timeout is at least 5 minutes.
+
+```
+TIMEOUT="5m"
+```
+
+```
+sed -e "/timeout client/s/ [0-9].*/ 5m/" /etc/haproxy/haproxy.cfg
+sed -e "/timeout server/s/ [0-9].*/ 5m/" /etc/haproxy/haproxy.cfg
+```
+
+
 ### Changing CRI-O container settings on worker nodes
 
 > :warning: Adapt settings to fit to your environment.
