@@ -8,7 +8,7 @@
 
 - Have completed  [Prepare for Cloud Pak for Data](https://github.com/bpshparis/sandbox/blob/master/Prepare-for-Cloud-Pak-for-Data.md#prepare-for-cloud-pak-for-data)
 - One **WEB server** where following files are available in **read mode**:
-  - [lite-3.5.2-x86_64.tar](https://github.com/bpshparis/sandbox/blob/master/Prepare-for-Cloud-Pak-for-Data-3.5.2.md#save-cloud-pak-for-data-downloads-to-web-server)
+  - [lite-3.5.2-x86_64.tar](https://github.com/bpshparis/sandbox/blob/master/Prepare-for-Cloud-Pak-for-Data.md#save-cloud-pak-for-data-downloads-to-web-server)
 
 <br>
 :checkered_flag::checkered_flag::checkered_flag:
