@@ -269,7 +269,7 @@ VNC_PWD="password"
 echo $VNC_PWD | vncpasswd -f > ~/.vnc/passwd
 ```
 
-### Install oc and kubectl
+### Install oc and kubectl and podman
 
 > :information_source: Run this on Installer
 
@@ -278,6 +278,7 @@ OC_URL="https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshi
 
 [ -z $(command -v oc) ] && { wget -c $OC_URL; tar -xvzf $(echo $OC_URL | awk -F'/' '{print $NF}') -C $(echo $PATH | awk -F":" 'NR==1 {print $1}'); oc version; } || { echo "oc and bubectl already installed"; }
 
+[ -z $(command -v podman) ] && { yum install podman runc buildah skopeo -y; } || echo "podman already installed"
 
 yum -y install bash-completion
 oc completion bash >>/etc/bash_completion.d/oc_completion

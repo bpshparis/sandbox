@@ -172,7 +172,8 @@ $INST_DIR/cpd-cli install \
 > :bulb: Check installation progress
 
 ```
-watch -n5 "oc get pvc | egrep -w 'wkc|iis|refinery|ug|solr|is|kafka' ; oc get po | egrep -w 'wkc|iis|refinery|ug|solr|is|kafka'"
+cd ~
+watch -n5 "oc get pvc | egrep -w 'wkc|iis|refinery|ug|solr|is|kafka|dap|redis|usermgmt|ax|wml|dataview' ; oc get po | egrep -w 'wkc|iis|refinery|ug|solr|is|kafka|dap|redis|usermgmt|ax|wml|dataview'"
 ```
 
 
