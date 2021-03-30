@@ -247,6 +247,8 @@ ASSEMBLY="lite"
 ARCH="x86_64"
 CPD_BIN="cpd-cli"
 CPD_WKS="cpd-cli-workspace/"
+CPD_PLUGINS="plugins/"
+CPD_LICENSES="LICENSES/"
 WEB_SERVER="web"
 WEB_SERVER_PATH="/web/cloud-pak/assemblies"
 WEB_SERVER_USER="root"
@@ -259,7 +261,7 @@ TAR_FILE="$ASSEMBLY-$VERSION-$ARCH.tar" && echo $TAR_FILE
 
 ```
 cd $INST_DIR
-tar cvf $TAR_FILE $CPD_BIN $CPD_WKS
+tar cvf $TAR_FILE $CPD_BIN $CPD_WKS $CPD_PLUGINS $CPD_LICENSES
 
 [ -z $(command -v sshpass) ] && yum install -y sshpass || echo "sshpass already installed"
 
