@@ -334,6 +334,7 @@ sed -i "s:^sshKey\:.*$:sshKey\: '$PUB_KEY':"  install-config.yaml
 OCP="ocp9"
 WEB_SERVER="web"
 WEB_SERVER_PATH="/web/$OCP"
+SSHPASS="password"
 ```
 
 #### Backup install-config.yaml and ssh keys on web server
@@ -421,7 +422,7 @@ sshpass -e scp -o StrictHostKeyChecking=no *.ign root@$WEB_SERVER:$WEB_SERVER_PA
 
 sshpass -e ssh -o StrictHostKeyChecking=no root@$WEB_SERVER "ln -s $RHCOS_IMG_PATH $WEB_SERVER_PATH"
 
-sshpass -e ssh -o StrictHostKeyChecking=no root@web "chmod -R +r /web/$OCP"
+sshpass -e ssh -o StrictHostKeyChecking=no root@$WEB_SERVER "chmod -R +r /web/$OCP"
 ```
 
 ### Customize RHCOS boot iso

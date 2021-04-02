@@ -254,5 +254,18 @@ watch -n5 "oc get pvc | grep 'dv' && oc get po | grep 'dv'"
 ```
 
 
+```shell
+frontend dv-nonssl
+       bind *:30485
+       default_backend dv-nonssl
+       mode tcp
+       option tcplog
+backend dv-nonssl
+       balance source
+       mode tcp
+       server m1-ocp13 172.16.187.131:30485 check
+       server m2-ocp13 172.16.187.132:30485 check
+       server m3-ocp13 172.16.187.133:30485 check
+```
 
 -->

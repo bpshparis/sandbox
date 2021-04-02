@@ -65,6 +65,29 @@ oc get no -l node-role.kubernetes.io/worker --no-headers -o name | xargs -I {} -
 oc get no -l node-role.kubernetes.io/worker --no-headers -o name | xargs -I {} --  oc debug {} -- bash -c 'chroot /host grep  "^pids_limit" /etc/crio/crio.conf'
 ```
 
+```
+OCP="ocp9"
+WORKERS="w1-$OCP w2-$OCP w3-$OCP"
+ULIMITS_FILE="ulimits"
+```
+
+```
+cat > $ULIMITS_FILE << EOF
+default_ulimits = [
+        "nofile=66560:66560"
+]
+EOF
+```
+
+```
+for node in $WORKERS; do scp -o StrictHostKeyChecking=no $ULIMITS_FILE core@$node:/tmp; done
+
+
+sed -e '/^#default_ulimits = \[$/,/^#\]/!b' -e '/^#\]/!d; r /tmp/ulimits' -e 'd' -i crio.conf
+```
+
+
+
 ### Enable container_manage_cgroup on worker nodes
 
 > :warning: Adapt settings to fit to your environment.
