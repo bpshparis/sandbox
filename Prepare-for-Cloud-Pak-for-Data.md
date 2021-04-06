@@ -68,11 +68,11 @@ oc get no -l node-role.kubernetes.io/worker --no-headers -o name | xargs -I {} -
 ```
 OCP="ocp9"
 WORKERS="w1-$OCP w2-$OCP w3-$OCP"
-ULIMITS_FILE="ulimits"
+ROOT_PWD="password"
 ```
 
 ```
-cat > $ULIMITS_FILE << EOF
+cat > ulimits << EOF
 default_ulimits = [
         "nofile=66560:66560"
 ]
@@ -80,10 +80,17 @@ EOF
 ```
 
 ```
-for node in $WORKERS; do scp -o StrictHostKeyChecking=no $ULIMITS_FILE core@$node:/tmp; done
+for node in $WORKERS; do scp -o StrictHostKeyChecking=no ulimits core@$node:/tmp; done
 
+for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; echo '$ROOT_PWD' | sudo passwd root --stdin'; done
 
-sed -e '/^#default_ulimits = \[$/,/^#\]/!b' -e '/^#\]/!d; r /tmp/ulimits' -e 'd' -i crio.conf
+for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; echo '$ROOT_PWD' | sudo -S sed -e "/^#default_ulimits = \[$/,/^#\]/!b" -e "/^#\]/!d; r /tmp/ulimits" -e "d" -i /etc/crio/crio.conf'; done
+
+for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; echo '$ROOT_PWD' | sudo -S grep -A2 "^default_ulimit" /etc/crio/crio.conf'; done
+
+for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; echo '$ROOT_PWD' | sudo -S systemctl restart crio'; done
+
+for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; echo '$ROOT_PWD' | sudo -S systemctl status crio | egrep -w "Active:|crio.service"'; done
 ```
 
 
