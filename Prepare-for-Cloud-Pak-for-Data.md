@@ -2,13 +2,14 @@
 
 ## Hardware requirements
 
--  One computer which will be called **Installer** that runs Linux or MacOS.
+-  One computer which will be called **Installer** that runs Linux.
 
 ## System requirements
 
 - Have completed  [Prepare Redhat Openshift for Cloud Paks](https://github.com/bpshparis/sandbox/blob/master/Prepare-Redhat-Openshift-for-Cloud-Paks.md#prepare-redhat-openshift-for-cloud-paks)
+- Check latest [**cpd-cli**](https://github.com/IBM/cpd-cli/releases) release
 - One **WEB server** where following files are available in **read mode**:
-  - [cpd-cli-linux-EE-3.5.2.tgz](https://github.com/IBM/cpd-cli/releases/download/v3.5.2/cpd-cli-linux-EE-3.5.2.tgz)
+  - [Latest cpd-cli](https://github.com/IBM/cpd-cli/releases/download/v3.5.3/cpd-cli-linux-EE-3.5.3.tgz)
   - [IBM® Cloud Pak for Data entitlement license API key](https://myibm.ibm.com/products-services/containerlibrary) saved in apikey file.
 
 <br>
@@ -159,7 +160,7 @@ for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f
 
 ```
 WEB_SERVER_CP_URL="http://web/cloud-pak"
-INST_FILE="cpd-cli-linux-EE-3.5.2.tgz"
+INST_FILE="cpd-cli-linux-EE-3.5.3.tgz"
 INST_DIR=~/cpd && echo $INST_DIR
 ```
 

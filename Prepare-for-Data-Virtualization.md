@@ -2,13 +2,14 @@
 
 ## Hardware requirements
 
--  One computer which will be called **Installer** that runs Linux or MacOS.
+-  One computer which will be called **Installer** that runs Linux.
 
 ## System requirements
 
-- Have completed  [Install Cloud Pak for Data 3.0.1](https://github.com/bpshparis/sandbox/blob/master/Install-Cloud-Pak-for-Data-3.0.1.md#install-cloud-pak-for-data-301)
+- Have completed  [Install Cloud Pak for Data](https://github.com/bpshparis/sandbox/blob/master/Install-Cloud-Pak-for-Data.md#install-cloud-pak-for-data)
+- Check latest [**cpd-cli**](https://github.com/IBM/cpd-cli/releases) release
 - One **WEB server** where following files are available in **read mode**:
-  - [cloudpak4data-ee-3.0.1.tgz](https://github.com/IBM/cpd-cli/releases/download/cpd-3.0.1/cloudpak4data-ee-3.0.1.tgz)
+  - [Latest cpd-cli](https://github.com/IBM/cpd-cli/releases/download/v3.5.3/cpd-cli-linux-EE-3.5.3.tgz)
   - [IBM® Cloud Pak for Data entitlement license API key](https://myibm.ibm.com/products-services/containerlibrary) saved in apikey file.
 
 <br>
@@ -29,7 +30,7 @@
 
 ```
 WEB_SERVER_CP_URL="http://web/cloud-pak"
-INST_FILE="cpd-cli-linux-EE-3.5.2.tgz"
+INST_FILE="cpd-cli-linux-EE-3.5.3.tgz"
 INST_DIR=~/cpd && echo $INST_DIR
 ```
 
@@ -145,6 +146,8 @@ ASSEMBLY="dv"
 ARCH="x86_64"
 CPD_BIN="cpd-cli"
 CPD_WKS="cpd-cli-workspace/"
+CPD_PLUGINS="plugins/"
+CPD_LICENSES="LICENSES/"
 WEB_SERVER="web"
 WEB_SERVER_PATH="/web/cloud-pak/assemblies"
 WEB_SERVER_USER="root"
@@ -157,7 +160,7 @@ TAR_FILE="$ASSEMBLY-$VERSION-$ARCH.tar"
 
 ```
 cd $INST_DIR
-tar cvf $TAR_FILE $CPD_BIN $CPD_WKS
+tar cvf $TAR_FILE $CPD_BIN $CPD_WKS $CPD_PLUGINS $CPD_LICENSES
 
 [ -z $(command -v sshpass) ] && yum install -y sshpass || echo "sshpass already installed"
 
