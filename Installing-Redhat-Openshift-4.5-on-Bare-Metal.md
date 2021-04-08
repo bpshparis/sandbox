@@ -363,7 +363,7 @@ sshpass -e ssh -o StrictHostKeyChecking=no root@$WEB_SERVER "chmod -R +r $WEB_SE
 
 ```
 WEB_SERVER_SOFT_URL="http://web/soft"
-INSTALLER_FILE="openshift-install-linux-4.5.22.tar.gz"
+INSTALLER_FILE="openshift-install-linux.tar.gz"
 CLIENT_FILE="openshift-client-linux-4.5.22.tar.gz"
 ```
 
@@ -408,7 +408,7 @@ sed -i 's/mastersSchedulable: true/mastersSchedulable: false/' manifests/cluster
 ```
 WEB_SERVER="web"
 WEB_SERVER_PATH="/web/$OCP"
-RHCOS_IMG_PATH="/web/img/rhcos-4.5.6-metal.x86_64.raw.gz"
+RHCOS_IMG_PATH="/web/img/rhcos-4.6.8-x86_64-metal.x86_64.raw.gz"
 ```
 
 #### Make ignition files and RHCOS image available on web server
