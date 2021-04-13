@@ -955,6 +955,8 @@ oc login https://$LB_HOSTNAME:6443 -u admin -p admin --insecure-skip-tls-verify=
 
 ### Setup image-registry to use ephemeral storage
 
+> :bulb: Explanations are available [here](https://docs.openshift.com/container-platform/4.5/registry/configuring_registry_storage/configuring-registry-storage-baremetal.html#installation-registry-storage-non-production_configuring-registry-storage-baremetal).
+
 > :information_source: Run this on Installer
 
 ```
