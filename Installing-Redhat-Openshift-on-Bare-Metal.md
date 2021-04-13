@@ -287,6 +287,8 @@ systemctl enable haproxy
 
 > :warning: Adapt settings to fit to your environment
 
+> :bulb: Explanations about **install-config.yaml settings** can be found [here](https://docs.openshift.com/container-platform/4.5/installing/installing_bare_metal/installing-bare-metal.html#installation-bare-metal-config-yaml_installing-bare-metal)
+
 > :warning: Keep **MASTER_COUNT** set to **3** as installing with one master only does not work anymore in **>= OCP 4.4**.
 
 > :information_source: Run this on Installer
@@ -385,6 +387,8 @@ tar -xvzf $CLIENT_FILE -C $(echo $PATH | awk -F":" 'NR==1 {print $1}')
 ### Create manifest and ignition files
 
 > :warning: You have to be on line to execute this steps.
+
+> :warning: If you plan to add more compute machines to your cluster after you finish installation, do not delete Ignition config files.
 
 > :information_source: Run this on Installer 
 
@@ -719,13 +723,13 @@ vncviewer $ESX_SERVER:$W3_VNC_PORT
 
 > :warning: Adapt settings to fit to your environment.
 
+> :bulb: Explanations for both **ssh-agent** and **ssh-add** commands can be found [here](https://docs.openshift.com/container-platform/4.5/installing/installing_bare_metal/installing-bare-metal.html#ssh-agent-using_installing-bare-metal) 
+
 > :information_source: Run this on Installer
 
 ```
 INST_DIR=~/ocpinst
 ```
-
-
 
 ```
 cd $INST_DIR
