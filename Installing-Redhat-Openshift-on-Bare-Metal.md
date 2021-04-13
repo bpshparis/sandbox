@@ -38,10 +38,10 @@ Download [Redhat Openshift 4 on Bare Metal material](https://cloud.redhat.com/op
 
 | Port      | machines                                                     | Description           |
 | --------- | ------------------------------------------------------------ | --------------------- |
-| 6443      | m1-ocp5.iicparis.fr.ibm.com<br>m2-ocp5.iicparis.fr.ibm.com<br/>m3-ocp5.iicparis.fr.ibm.com<br/>bs-ocp5.iicparis.fr.ibm.com | Kubernetes API server |
-| 22623 | m1-ocp5.iicparis.fr.ibm.com<br/>m2-ocp5.iicparis.fr.ibm.com<br/>m3-ocp5.iicparis.fr.ibm.com<br/>bs-ocp5.iicparis.fr.ibm.com | Machine Config server |
-| 443       | w1-ocp5.iicparis.fr.ibm.com<br/>w2-ocp5.iicparis.fr.ibm.com<br/>w3-ocp5.iicparis.fr.ibm.com | HTTPS traffic         |
-| 80        | w1-ocp5.iicparis.fr.ibm.com<br/>w2-ocp5.iicparis.fr.ibm.com<br/>w3-ocp5.iicparis.fr.ibm.com | HTTP traffic          |
+| 6443      | m1-ocp1.iicparis.fr.ibm.com<br>m2-ocp1.iicparis.fr.ibm.com<br/>m3-ocp1.iicparis.fr.ibm.com<br/>bs-ocp1.iicparis.fr.ibm.com | Kubernetes API server |
+| 22623 | m1-ocp1.iicparis.fr.ibm.com<br/>m2-ocp1.iicparis.fr.ibm.com<br/>m3-ocp1.iicparis.fr.ibm.com<br/>bs-ocp1.iicparis.fr.ibm.com | Machine Config server |
+| 443       | w1-ocp1.iicparis.fr.ibm.com<br/>w2-ocp1.iicparis.fr.ibm.com<br/>w3-ocp1.iicparis.fr.ibm.com | HTTPS traffic         |
+| 80        | w1-ocp1.iicparis.fr.ibm.com<br/>w2-ocp1.iicparis.fr.ibm.com<br/>w3-ocp1.iicparis.fr.ibm.com | HTTP traffic          |
 
 - One **WEB server** where following files are available in **read mode**:
 
@@ -70,15 +70,15 @@ Download [Redhat Openshift 4 on Bare Metal material](https://cloud.redhat.com/op
 ```
 DOMAIN=$(cat /etc/resolv.conf | awk '$1 ~ "search" {print $2}') && echo $DOMAIN
 IP_HEAD="172.16"
-OCP=ocp11
-LB_IP=$IP_HEAD.187.110
-M1_IP=$IP_HEAD.187.111
-M2_IP=$IP_HEAD.187.112
-M3_IP=$IP_HEAD.187.113
-W1_IP=$IP_HEAD.187.114
-W2_IP=$IP_HEAD.187.115
-W3_IP=$IP_HEAD.187.116
-BS_IP=$IP_HEAD.187.119
+OCP=ocp1
+LB_IP=$IP_HEAD.187.10
+M1_IP=$IP_HEAD.187.11
+M2_IP=$IP_HEAD.187.12
+M3_IP=$IP_HEAD.187.13
+W1_IP=$IP_HEAD.187.14
+W2_IP=$IP_HEAD.187.15
+W3_IP=$IP_HEAD.187.16
+BS_IP=$IP_HEAD.187.19
 MZONE=/var/lib/bind/$DOMAIN.hosts
 RZONE=/var/lib/bind/$IP_HEAD.rev
 ```
@@ -179,7 +179,7 @@ dig @localhost +short _etcd-server-ssl._tcp.$OCP.$DOMAIN SRV
 > :information_source: Run this on Load Balancer
 
 ```
-OCP="ocp11"
+OCP="ocp1"
 DOMAIN=$(cat /etc/resolv.conf | awk '$1 ~ "^search" {print $2}') && echo $DOMAIN
 LB_CONF="/etc/haproxy/haproxy.cfg" && echo $LB_CONF
 [ -f "$LB_CONF" ] && echo "haproxy already installed" || yum install haproxy -y
@@ -292,7 +292,7 @@ systemctl enable haproxy
 > :information_source: Run this on Installer
 
 ```
-OCP="ocp9"
+OCP="ocp1"
 DOMAIN=$(cat /etc/resolv.conf | awk '$1 ~ "^search" {print $2}') && echo $DOMAIN
 WEB_SERVER_SOFT_URL="http://web/soft"
 INST_DIR=~/ocpinst && echo $INST_DIR
@@ -331,7 +331,7 @@ sed -i "s:^sshKey\:.*$:sshKey\: '$PUB_KEY':"  install-config.yaml
 > :information_source: Run this on Installer
 
 ```
-OCP="ocp9"
+OCP="ocp1"
 WEB_SERVER="web"
 WEB_SERVER_PATH="/web/$OCP"
 SSHPASS="password"
@@ -427,7 +427,7 @@ sshpass -e ssh -o StrictHostKeyChecking=no root@$WEB_SERVER "chmod -R +r /web/$O
 
 ### Customize RHCOS boot iso
 
-:bulb: The trick is to automate what's explained [here](https://docs.openshift.com/container-platform/4.5/installing/installing_bare_metal/installing-bare-metal.html#installation-user-infra-machines-static-network_installing-bare-metal)
+:bulb: The trick is to automate both **adding kernel parameters** explained [here](https://docs.openshift.com/container-platform/4.5/installing/installing_bare_metal/installing-bare-metal.html#installation-user-infra-machines-iso_installing-bare-metal) and to configure network with **static ip address** explained [here](https://docs.openshift.com/container-platform/4.5/installing/installing_bare_metal/installing-bare-metal.html#installation-user-infra-machines-static-network_installing-bare-metal).
 
 #### Set environment
 
@@ -436,7 +436,7 @@ sshpass -e ssh -o StrictHostKeyChecking=no root@$WEB_SERVER "chmod -R +r /web/$O
 > :information_source: Run this on Installer
 
 ```
-ESX_SERVER="ocp9"
+ESX_SERVER="ocp1"
 ```
 
 
@@ -654,7 +654,7 @@ watch -n 5 vim-cmd vmsvc/getallvms | awk '$2 ~ "'$VM_PATTERN'" && $1 !~ "Vmid" {
 > :information_source: Run this on Installer
 
 ```
-ESX_SERVER="ocp13"
+ESX_SERVER="ocp1"
 BS_VNC_PORT=9
 M1_VNC_PORT=1
 W1_VNC_PORT=4
@@ -946,7 +946,7 @@ oc adm policy add-cluster-role-to-user cluster-admin admin
 > :information_source: Run this on Installer
 
 ```
-LB_HOSTNAME="cli-ocp11"
+LB_HOSTNAME="cli-ocp1"
 ```
 
 ```
@@ -1080,6 +1080,8 @@ vim-cmd vmsvc/getallvms | awk '$2 ~ "'$VM_PATTERN'" && $1 !~ "Vmid" {print "vim-
 <br>
 
 > :warning: Wait for at least **24** hours before taking a valid snapshot
+>
+> :bulb: The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
 >:bulb: Check cluster age
 
@@ -1088,7 +1090,6 @@ oc get nodes | awk 'NR==2 {print $4}'
 ```
 
 ### -  [Take snapshot](https://github.com/bpshparis/sandbox/blob/master/Manage-ESX-snapshots.md#manage-esx-snapshots)
-
 
 <!--
 
