@@ -17,8 +17,8 @@ VMX="/vmfs/volumes/datastore1/vmdk/rhcos.vmx"
 [ -z "$OCP" ] && { echo -e "$RED ERROR: OCP is empty. Exiting... $NC"; exit 1; }
 
 BOOTSTRAP_VM="bs-$OCP"
-#MASTERS_VM="m1-$OCP m2-$OCP m3-$OCP"
-MASTERS_VM="m1-$OCP"
+MASTERS_VM="m1-$OCP m2-$OCP m3-$OCP"
+#MASTERS_VM="m1-$OCP"
 WORKERS_VM="w1-$OCP w2-$OCP w3-$OCP"                 
 #WORKERS_VM="w1-$OCP w2-$OCP w3-$OCP w4-$OCP w5-$OCP"
 #WORKERS_VM="w1-$OCP w2-$OCP"         

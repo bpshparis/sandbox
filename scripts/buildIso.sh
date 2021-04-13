@@ -14,7 +14,7 @@ OCP=""
 [ -z "$OCP" ] && { echo -e "$RED ERROR: OCP is empty. Exiting... $NC"; exit 1; }
 
 WEB_SRV_URL="http://172.16.160.150/$OCP"
-RAW_IMG_URL="$WEB_SRV_URL/rhcos-4.3.33-x86_64-metal.x86_64.raw.gz"
+RAW_IMG_URL="$WEB_SRV_URL/rhcos-4.6.8-x86_64-metal.x86_64.raw.gz"
 
 DNS="172.16.160.100"
 DOMAIN="iicparis.fr.ibm.com"
@@ -26,8 +26,8 @@ RW_ISO_PATH="/media/isorw"
 ISO_CFG=$RW_ISO_PATH/isolinux/isolinux.cfg
 
 
-#VMS="bs-$OCP m1-$OCP m2-$OCP m3-$OCP w1-$OCP w2-$OCP w3-$OCP"
-VMS="bs-$OCP m1-$OCP w1-$OCP w2-$OCP w3-$OCP"
+VMS="bs-$OCP m1-$OCP m2-$OCP m3-$OCP w1-$OCP w2-$OCP w3-$OCP"
+#VMS="bs-$OCP m1-$OCP w1-$OCP w2-$OCP w3-$OCP"
 #VMS="bs-$OCP m1-$OCP m2-$OCP m3-$OCP w1-$OCP w2-$OCP w3-$OCP w4-$OCP w5-$OCP"
 KERNEL_CMD_LINE="coreos.inst=yes"
 DEVICE="sda"
