@@ -1,6 +1,6 @@
 # Installing Redhat Openshift on Bare Metal
 
-This article is *read between lines* of [Installing a cluster on bare metal](https://docs.openshift.com/container-platform/4.5/installing/installing_bare_metal/installing-bare-metal.html).
+This article is *read between lines* of [Installing a cluster on bare metal](https://docs.openshift.com/container-platform/4.6/installing/installing_bare_metal/installing-bare-metal.html).
 
 ## Redhat requirements
 
@@ -46,8 +46,8 @@ Download [Redhat Openshift 4 on Bare Metal material](https://cloud.redhat.com/op
 - One **WEB server** where following files are available in **read mode**:
 
   - [Openshift pull secret](https://cloud.redhat.com/openshift/install/pull-secret) saved as pull-secret.txt
-  - [Linux](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.6.24/openshift-install-linux.tar.gz) OpenShift installer
-  - [Linux](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz) Openshift command line interface
+  - [Linux](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-4.6/openshift-client-linux.tar.gz) OpenShift installer
+  - [Linux](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz) Openshift command line interface
   - [Red Hat Enterprise Linux CoreOS raw image](https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.6/latest/rhcos-metal.x86_64.raw.gz)
   - [Red Hat Enterprise Linux CoreOS iso image](https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.5/latest/rhcos-installer.x86_64.iso)
   - [Openshift installation configuration file (*install-config.yaml*)](scripts/install-config.yaml)
@@ -364,7 +364,7 @@ sshpass -e ssh -o StrictHostKeyChecking=no root@$WEB_SERVER "chmod -R +r $WEB_SE
 ```
 WEB_SERVER_SOFT_URL="http://web/soft"
 INSTALLER_FILE="openshift-install-linux.tar.gz"
-CLIENT_FILE="openshift-client-linux-4.5.22.tar.gz"
+CLIENT_FILE="openshift-client-linux.tar.gz"
 ```
 
 #### Install Openshift installer, oc and kubectl commands
