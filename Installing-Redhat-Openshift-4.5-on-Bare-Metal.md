@@ -1,4 +1,4 @@
-# Installing Redhat Openshift 4.5 on Bare Metal
+# Installing Redhat Openshift on Bare Metal
 
 This article is *read between lines* of [Installing a cluster on bare metal](https://docs.openshift.com/container-platform/4.5/installing/installing_bare_metal/installing-bare-metal.html).
 
@@ -46,9 +46,9 @@ Download [Redhat Openshift 4 on Bare Metal material](https://cloud.redhat.com/op
 - One **WEB server** where following files are available in **read mode**:
 
   - [Openshift pull secret](https://cloud.redhat.com/openshift/install/pull-secret) saved as pull-secret.txt
-  - [Linux](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.5.22/openshift-install-linux.tar.gz) or [MacOS](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.5.22/openshift-install-mac.tar.gz) OpenShift installer
-  - [Linux](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.5.22/openshift-client-linux.tar.gz) or [MacOS](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.5.22/openshift-client-mac.tar.gz) Openshift command line interface
-  - [Red Hat Enterprise Linux CoreOS raw image](https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.5/latest/rhcos-metal.x86_64.raw.gz)
+  - [Linux](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.6.24/openshift-install-linux.tar.gz) OpenShift installer
+  - [Linux](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz) Openshift command line interface
+  - [Red Hat Enterprise Linux CoreOS raw image](https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.6/latest/rhcos-metal.x86_64.raw.gz)
   - [Red Hat Enterprise Linux CoreOS iso image](https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.5/latest/rhcos-installer.x86_64.iso)
   - [Openshift installation configuration file (*install-config.yaml*)](scripts/install-config.yaml)
   - [rhcos.vmx](scripts/rhcos.vmx)
@@ -287,7 +287,7 @@ systemctl enable haproxy
 
 > :warning: Adapt settings to fit to your environment
 
-> :warning: Keep **MASTER_COUNT** set to **3** as installing with one master only does not work anymore in **OCP 4.5**.
+> :warning: Keep **MASTER_COUNT** set to **3** as installing with one master only does not work anymore in **>= OCP 4.4**.
 
 > :information_source: Run this on Installer
 
