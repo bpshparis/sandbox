@@ -6,9 +6,10 @@
 
 ## System requirements
 
-- Have completed  [Install Cloud Pak for Data 3.0.1](https://github.com/bpshparis/sandbox/blob/master/Install-Cloud-Pak-for-Data-3.0.1.md#install-cloud-pak-for-data-301)
+- Have completed  [Install Cloud Pak for Data](https://github.com/bpshparis/sandbox/blob/master/Install-Cloud-Pak-for-Data.md#install-cloud-pak-for-data)
+- Check latest [**cpd-cli**](https://github.com/IBM/cpd-cli/releases) release
 - One **WEB server** where following files are available in **read mode**:
-  - [cloudpak4data-ee-3.0.1.tgz](https://github.com/IBM/cpd-cli/releases/download/cpd-3.0.1/cloudpak4data-ee-3.0.1.tgz)
+  - [Latest cpd-cli](https://github.com/IBM/cpd-cli/releases/download/v3.5.3/cpd-cli-linux-EE-3.5.3.tgz)
   - [IBM® Cloud Pak for Data entitlement license API key](https://myibm.ibm.com/products-services/containerlibrary) saved in apikey file.
 
 <br>
@@ -29,7 +30,7 @@
 
 ```
 WEB_SERVER_CP_URL="http://web/cloud-pak"
-INST_FILE="cloudpak4data-ee-3.0.1.tgz"
+INST_FILE="cpd-cli-linux-EE-3.5.3.tgz"
 INST_DIR=~/cpd && echo $INST_DIR
 ```
 
@@ -99,10 +100,10 @@ ARCH="x86_64"
 ```
 
 ```
-$INST_DIR/bin/cpd-linux adm --repo $INST_DIR/repo.yaml --assembly $ASSEMBLY --arch $ARCH --accept-all-licenses 
+$INST_DIR/cpd-cli adm --repo $INST_DIR/repo.yaml --assembly $ASSEMBLY --arch $ARCH --accept-all-licenses 
 ```
 
-> : bulb:  **$INST_DIR/cpd-linux-workspace** have been created and populated with yaml files.
+> : bulb:  **$INST_DIR/cpd-cli-workspace** have been created and populated with yaml files.
 
 ### Download  DB2 Advanced Edition images
 
@@ -129,7 +130,7 @@ ARCH="x86_64"
 ```
 
 ```
-$INST_DIR/bin/cpd-linux preloadImages --action download -a $ASSEMBLY --arch $ARCH --repo $INST_DIR/repo.yaml --accept-all-licenses
+$INST_DIR/cpd-cli preload-images --action download -a $ASSEMBLY --arch $ARCH --repo $INST_DIR/repo.yaml --accept-all-licenses
 ```
 
 > :bulb:  Images have been copied in **$INST_DIR/bin/cpd-linux-workspace/images/**
@@ -144,21 +145,23 @@ $INST_DIR/bin/cpd-linux preloadImages --action download -a $ASSEMBLY --arch $ARC
 INST_DIR=~/cpd
 ASSEMBLY="db2oltp"
 ARCH="x86_64"
-CPD_BIN="cpd-linux"
-CPD_WKS="cpd-linux-workspace/"
+CPD_BIN="cpd-cli"
+CPD_WKS="cpd-cli-workspace/"
+CPD_PLUGINS="plugins/"
+CPD_LICENSES="LICENSES/"
 WEB_SERVER="web"
 WEB_SERVER_PATH="/web/cloud-pak/assemblies"
 WEB_SERVER_USER="root"
 WEB_SERVER_PASS="password"
-VERSION=$(find $INST_DIR/bin/cpd-linux-workspace/assembly/$ASSEMBLY/$ARCH/* -type d | awk -F'/' '{print $NF}')
+VERSION=$(find $INST_DIR/cpd-cli-workspace/assembly/$ASSEMBLY/$ARCH/* -type d | awk -F'/' '{print $NF}')
 
 [ ! -z "$VERSION" ] && echo $VERSION "-> OK" || echo "ERROR: VERSION is not set."
-TAR_FILE="$ASSEMBLY-$VERSION-$ARCH.tar"
+TAR_FILE="$ASSEMBLY-$VERSION-$ARCH.tar" && echo $TAR_FILE
 ```
 
 ```
-cd $INST_DIR/bin
-tar cvf $TAR_FILE $CPD_BIN $CPD_WKS
+cd $INST_DIR
+tar cvf $TAR_FILE $CPD_BIN $CPD_WKS $CPD_PLUGINS $CPD_LICENSES
 
 [ -z $(command -v sshpass) ] && yum install -y sshpass || echo "sshpass already installed"
 
