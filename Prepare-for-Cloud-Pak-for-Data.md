@@ -91,6 +91,8 @@ for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f
 
 for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; echo '$ROOT_PWD' | sudo -S systemctl restart crio'; done
 
+for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; echo '$ROOT_PWD' | sudo -S systemctl daemon-reload'; done
+
 for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; echo '$ROOT_PWD' | sudo -S systemctl status crio | egrep -w "Active:|crio.service"'; done
 ```
 

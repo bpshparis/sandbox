@@ -114,13 +114,10 @@ umount /mnt/$NFS_SERVER && rmdir /mnt/$NFS_SERVER && echo "RC="$?
 > :information_source: Run this on Installer
 
 ```
-OC_URL="https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.4.17/openshift-client-linux-4.4.17.tar.gz"
 LB_HOSTNAME="cli-ocp11"
 ```
 
 ```
-[ -z $(command -v oc) ] && { wget -c $OC_URL; tar -xvzf $(echo $OC_URL | awk -F'/' '{print $NF}') -C $(echo $PATH | awk -F":" 'NR==1 {print $1}'); oc version; } || { echo "oc and bubectl already installed"; }
-
 oc login https://$LB_HOSTNAME:6443 -u admin -p admin --insecure-skip-tls-verify=true
 ```
 

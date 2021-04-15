@@ -8,7 +8,7 @@
 
 - Have completed  [Prepare for DB2 Advanced Edition](https://github.com/bpshparis/sandbox/blob/master/Prepare-for-DB2-Advanced-Edition.md#prepare-for-db2-advanced-edition)
 - One **WEB server** where following files are available in **read mode**:
-  - [db2oltp-3.0.1-x86_64.tar](https://github.com/bpshparis/sandbox/blob/master/Prepare-for-DB2-Advanced-Edition.md#save-db2-advanced-edition-downloads-to-web-server)
+  - [db2oltp-3.5.4-x86_64.tar](https://github.com/bpshparis/sandbox/blob/master/Prepare-for-DB2-Advanced-Edition.md#save-db2-advanced-edition-downloads-to-web-server)
 
 <br>
 :checkered_flag::checkered_flag::checkered_flag:
@@ -62,7 +62,7 @@ oc get nodes --show-labels | awk '$3 ~ "compute|worker" {print $1 " -> " $6}'
 ```
 INST_DIR=~/cpd
 ASSEMBLY="db2oltp"
-VERSION="3.0.1"
+VERSION="3.5.4"
 ARCH="x86_64"
 TAR_FILE="$ASSEMBLY-$VERSION-$ARCH.tar"
 WEB_SERVER_CP_URL="http://web/cloud-pak/assemblies"
@@ -72,7 +72,6 @@ WEB_SERVER_CP_URL="http://web/cloud-pak/assemblies"
 [ -d "$INST_DIR" ] && { rm -rf $INST_DIR; mkdir $INST_DIR; } || mkdir $INST_DIR
 cd $INST_DIR
 
-mkdir bin && cd bin
 wget -c $WEB_SERVER_CP_URL/$TAR_FILE
 tar xvf $TAR_FILE
 rm -f $TAR_FILE
@@ -98,7 +97,7 @@ pkill screen; screen -mdS ADM && screen -r ADM
 INST_DIR=~/cpd
 ASSEMBLY="db2oltp"
 ARCH="x86_64"
-VERSION=$(find $INST_DIR/bin/cpd-linux-workspace/assembly/$ASSEMBLY/$ARCH/* -type d | awk -F'/' '{print $NF}')
+VERSION=$(find $INST_DIR/cpd-cli-workspace/assembly/$ASSEMBLY/$ARCH/* -type d | awk -F'/' '{print $NF}')
 
 [ ! -z "$VERSION" ] && echo $VERSION "-> OK" || echo "ERROR: VERSION is not set."
 ```
@@ -106,15 +105,14 @@ VERSION=$(find $INST_DIR/bin/cpd-linux-workspace/assembly/$ASSEMBLY/$ARCH/* -typ
 ```
 podman login -u $(oc whoami) -p $(oc whoami -t) $(oc registry info)
 
-$INST_DIR/bin/cpd-linux preloadImages \
+$INST_DIR/cpd-cli preload-images \
 --assembly $ASSEMBLY \
---version $VERSION \
 --arch $ARCH \
 --action push \
 --transfer-image-to $(oc registry info)/$(oc project -q) \
 --target-registry-password $(oc whoami -t) \
 --target-registry-username $(oc whoami) \
---load-from $INST_DIR/bin/cpd-linux-workspace \
+--load-from $INST_DIR/cpd-cli-workspace \
 --accept-all-licenses
 ```
 
@@ -124,17 +122,17 @@ $INST_DIR/bin/cpd-linux preloadImages \
 > :information_source: Run this on Installer
 
 ```
-$INST_DIR/bin/cpd-linux adm \
+$INST_DIR/cpd-cli adm \
 --namespace $(oc project -q) \
 --assembly $ASSEMBLY \
---version $VERSION \
 --arch $ARCH \
---load-from $INST_DIR/bin/cpd-linux-workspace \
+--load-from $INST_DIR/cpd-cli-workspace \
 --apply \
+--latest-dependency \
 --accept-all-licenses
 ```
 
-> :bulb: Check **compose, cpd-cdcp-sa, cpd-databases-sa and db2u** services account have been created
+> :bulb: Check **db2u-operator, cpd-databases-sa and db2u** services account have been created
 
 ```
 oc get sa
@@ -148,18 +146,18 @@ oc get sa
 
 ```
 SC="portworx-shared-gp3"
-INT_REG=$(oc describe pod $(oc get pod -n openshift-image-registry | awk '$1 ~ "image-registry-" {print $1}') -n openshift-image-registry | awk '$1 ~ "REGISTRY_OPENSHIFT_SERVER_ADDR:" {print $2}') && echo $INT_REG
+INT_REG=$(oc registry info --internal) && echo $INT_REG
 ```
 
 ```
-$INST_DIR/bin/cpd-linux \
+$INST_DIR/cpd-cli install \
 --namespace $(oc project -q) \
 --assembly $ASSEMBLY \
---version $VERSION \
 --arch $ARCH \
 --storageclass $SC \
 --cluster-pull-prefix $INT_REG/$(oc project -q) \
---load-from $INST_DIR/bin/cpd-linux-workspace \
+--load-from $INST_DIR/cpd-cli-workspace \
+--latest-dependency \
 --accept-all-licenses
 ```
 
@@ -168,7 +166,7 @@ $INST_DIR/bin/cpd-linux \
 > :information_source: Run this on Installer
 
 ```
-$INST_DIR/bin/cpd-linux status \
+$INST_DIR/cpd-cli status \
 --namespace $(oc project -q) \
 --assembly $ASSEMBLY \
 --arch $ARCH
@@ -196,9 +194,9 @@ oc get routes | awk 'NR==2 {print "Access the web console at https://" $2}'
 
 > :information_source: Run this on Cloud Pak for Data web console
 
-![](img/menu-collect-mydata.jpg)
+![](img/menu-data-databases.png)
 
-1.   From the navigation, select Collect > My data.     
+1.   From the navigation, select Data > Databases.     
 2.   Open the Databases tab, which is only visible after you install the database service.
 3.   Click Create a database.
 4.   Select the database type and version. Click Next. 
@@ -243,17 +241,13 @@ oc login https://$LB_HOSTNAME:6443 -u admin -p admin --insecure-skip-tls-verify=
 watch -n5 "oc get pvc | grep 'db2oltp' && oc get po | grep 'db2oltp'"
 ```
 
->:bulb: Don't pay attention to those errors 
-
-![](img/db2-view-errors.jpg)
-
 ### Check BLUDB database status
 
 > :information_source: Run this on Cloud Pak for Data web console
 
-1.   From the navigation, select Collect > My data.     
+1.   From the navigation, select Data > Databases.     
 
-![](img/db2-bludb-ok.jpg)
+![](img/db2-bludb-ok.png)
 
 <br>
 :checkered_flag::checkered_flag::checkered_flag:

@@ -285,13 +285,8 @@ oc patch configs.imageregistry.operator.openshift.io/cluster --type merge -p '{"
 
 >:bulb: You will be logged out from api server for few seconds.
 
->:bulb: Wait until the image-registry operator completes the update before using the registry.
+>:bulb: Wait until **oc registry info** command display something like **default-route-openshift-image-registry...** instead of the internal registry e.g. **image-registry.openshift-image-registry.svc:5000**.
 
-```
-watch -n5 "oc get clusteroperators | grep registry"
-```
-
->:bulb:  **3rd column should display true**
 
 ### Trust Openshift registry
 
