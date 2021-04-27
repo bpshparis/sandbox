@@ -130,29 +130,6 @@ oc get sa
 ```
 SC="portworx-shared-gp3"
 INT_REG=$(oc registry info --internal) && echo $INT_REG
-OVERRIDE=$INST_DIR/ds-override.yaml
-```
-
-```
-cat > $OVERRIDE << EOF
-shared-services:
-  kafka:
-    volumeClaim:
-      overrideStorageClass: true
-      storageClassName: "portworx-kafka-sc"
-
-wdp-db2:
-  support4kDevice: true
-  volumeClaim:
-    storageClassName: "portworx-db2-rwo-sc"
-    overrideStorageClass: true
-
-xmetarepoVolumeInfo:
-  support4kDevice: true
-  volumeClaim:
-    storageClassName: "portworx-db2-rwo-sc"
-    overrideStorageClass: true
-EOF
 ```
 
 ```
