@@ -2,13 +2,13 @@
 
 ## Hardware requirements
 
--  One computer which will be called **Installer** that runs Linux or MacOS.
+-  One computer which will be called **Installer** that runs Linux.
 
 ## System requirements
 
 - Have completed  [Prepare for Cognos Analytics](https://github.com/bpshparis/sandbox/blob/master/Prepare-for-Cognos-Analytics.md#prepare-for-cognos-analytics)
 - One **WEB server** where following files are available in **read mode**:
-  - [ca-3.2.0-x86_64.tar](https://github.com/bpshparis/sandbox/blob/master/Prepare-for-Cognos-Analytics.md#save-cognos-analytics-downloads-to-web-server)
+  - [ca-3.5.2-x86_64.tar](https://github.com/bpshparis/sandbox/blob/master/Prepare-for-Cognos-Analytics.md#save-cognos-analytics-downloads-to-web-server)
 
 <br>
 :checkered_flag::checkered_flag::checkered_flag:
@@ -18,7 +18,7 @@
 
 > :information_source: Commands below are valid for a **Linux/Centos 7**.
 
-> :warning: Some of commands below will need to be adapted to fit Linux/Debian or MacOS .
+> :warning: Some of commands below will need to be adapted to fit Linux/Debian.
 
 ### Log in OCP
 
@@ -27,7 +27,8 @@
 > :information_source: Run this on Installer 
 
 ```
-LB_HOSTNAME="cli-ocp15"
+OCP="ocp15"
+LB_HOSTNAME="cli-$OCP"
 NS="cpd"
 ```
 
@@ -150,35 +151,11 @@ $INST_DIR/cpd-cli status \
 --arch $ARCH
 ```
 
-![](img/ca-ready.jpg)
+![](img/ca-ready.png)
 
 ### Configuring the content store for Cognos Analytics
 
-#### Access Cloud Pak for Data web console
-
-> :information_source: Run this on Installer
-
-```
-oc get routes | awk 'NR==2 {print "Access the web console at https://" $2}'
-```
-
-> :bulb: Login as **admin** using **password** for password 
-
-#### Collect BLUDB details
-
-> :information_source: Run this on Cloud Pak for Data web console
-
-![](img/my_instances.jpg)
-
-1. From the navigation, select My instances.
-2. Collect the following details: 
-   - Database name
-   - Deployment id
-   - Username
-   - Password
-   - JDBC Connection URL
-
-#### Update BLUDB for Cognos Analytics
+#### Update database configuration for Cognos Analytics
 
 ##### Log in OCP
 
@@ -195,53 +172,84 @@ NS="cpd"
 oc login https://$LB_HOSTNAME:6443 -u admin -p admin --insecure-skip-tls-verify=true -n $NS
 ```
 
-##### Connect to DB2U pod
+##### Connect to DB2 Engine pod
 
 > :warning: Adapt settings with what you collected above.
 
 > :information_source: Run this on Installer
 
 ```
-NAMESPACE="cpd"
-DB2USERNAME="user999"
-DB2PASSWORD="eJ*4-XLu1Ca-5z*3"
-DB2DEPLOYMENTID="db2oltp-1598106739396"
-JDBC_URL="jdbc:db2://w1-ocp15.iicparis.fr.ibm.com:32696/BLUDB"
+NS="cpd"
+DB2USERNAME="db2inst1"
 ```
 
 ```
-export CMD="env DB2USERNAME=$DB2USERNAME DB2PASSWORD=$DB2PASSWORD  bash"
-oc  exec -ti $DB2DEPLOYMENTID-db2u-0 -n $NAMESPACE -- $CMD
+DB2_ENGINE_POD=$(oc get pod -n $NS | awk '$1 ~ "db2u-0$" {print $1}') && echo $DB2_ENGINE_POD
+
+oc exec -it $DB2_ENGINE_POD -- bash
 ```
 
-##### Update BLUDB for Cognos Analytics
+##### Update Database Configuration for Cognos Analytics
 
-> :information_source: Run this on DB2U pod
+> :information_source: Run this on DB2 Engine pod
 
 ```
-cd /mnt/blumeta0/home/db2inst1/sqllib
-. ./db2profile   
- 
-db2 CONNECT to BLUDB user $DB2USERNAME using  $DB2PASSWORD 
-db2 UPDATE DATABASE CONFIGURATION USING APPLHEAPSZ 1024 DEFERRED; 
-db2 UPDATE DATABASE CONFIGURATION USING LOCKTIMEOUT 240 DEFERRED;
-db2 CREATE BUFFERPOOL CMDB_08KBP IMMEDIATE SIZE 1000 PAGESIZE 8K;
-db2 CREATE BUFFERPOOL CMDB_32KBP IMMEDIATE SIZE 1000 PAGESIZE 32K;
-db2 CREATE SYSTEM TEMPORARY TABLESPACE TSN_SYS_CMDB IN DATABASE PARTITION GROUP IBMTEMPGROUP PAGESIZE 32K BUFFERPOOL CMDB_32KBP;
-db2 CREATE USER TEMPORARY TABLESPACE TSN_USR_CMDB IN DATABASE PARTITION GROUP IBMDEFAULTGROUP PAGESIZE 8K BUFFERPOOL CMDB_08KBP;
-db2 CREATE REGULAR TABLESPACE TSN_REG_CMDB IN DATABASE PARTITION GROUP IBMDEFAULTGROUP PAGESIZE 8K BUFFERPOOL CMDB_08KBP; 
-db2 DROP TABLESPACE USERSPACE1;
-db2 CREATE SCHEMA db2COGNOS AUTHORIZATION $DB2USERNAME;
-db2 ALTER BUFFERPOOL ibmdefaultbp size 49800
+su - db2inst1
+DB_NAME=$(db2 list db directory | awk -F'= ' '$1 ~ "Database name" {print $2}') && echo $DB_NAME
 
-exit
+cat > updateConf.db2 << EOF
+CONNECT to $DB_NAME; 
+UPDATE DATABASE CONFIGURATION USING APPLHEAPSZ 1024 DEFERRED; 
+UPDATE DATABASE CONFIGURATION USING LOCKTIMEOUT 240 DEFERRED;
+CREATE BUFFERPOOL CMDB_08KBP IMMEDIATE SIZE 1000 PAGESIZE 8K;
+CREATE BUFFERPOOL CMDB_32KBP IMMEDIATE SIZE 1000 PAGESIZE 32K;
+CREATE SYSTEM TEMPORARY TABLESPACE TSN_SYS_CMDB IN DATABASE PARTITION GROUP IBMTEMPGROUP PAGESIZE 32K BUFFERPOOL CMDB_32KBP;
+CREATE USER TEMPORARY TABLESPACE TSN_USR_CMDB IN DATABASE PARTITION GROUP IBMDEFAULTGROUP PAGESIZE 8K BUFFERPOOL CMDB_08KBP;
+CREATE REGULAR TABLESPACE TSN_REG_CMDB IN DATABASE PARTITION GROUP IBMDEFAULTGROUP PAGESIZE 8K BUFFERPOOL CMDB_08KBP; 
+DROP TABLESPACE USERSPACE1;
+ALTER BUFFERPOOL ibmdefaultbp size 49800;
+CONNECT reset;
+EOF
+
+db2 -v -td\; -f updateConf.db2 -z updateConf.log
+
+exit; exit
 ```
+
+#### Access Cloud Pak for Data web console
+
+> :information_source: Run this on Installer
+
+```
+oc get routes | awk 'NR==2 {print "Access the web console at https://" $2}'
+```
+
+> :bulb: Login as **admin** using **password** for password 
+
+#### Collect Database details
+
+> :information_source: Run this on Cloud Pak for Data web console
+
+![](img/menu-data-databases.png)
+
+1. From the navigation, select Data > Databases.
+
+2. Display database details:
+
+![](img/db-details.png)
+
+3. Collect the following details: 
+   - Database name
+   - JDBC Connection URL
+
 
 #### Create the content store connection
 
 > :warning: Adapt settings with what you collected above.
 
 > :information_source: Run this on Cloud Pak for Data web console
+
+> :warning: (Get DB2 password as explained here)[https://github.com/bpshparis/sandbox/blob/master/Prepare-for-DB2-Advanced-Edition.md#updating-the-db2-password]
 
 ```
 USERNAME="user999"

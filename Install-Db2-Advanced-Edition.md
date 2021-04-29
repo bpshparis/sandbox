@@ -291,5 +291,7 @@ if 'db2inst1' in parsed['users']:
 with open("/mnt/blumeta0/db2_config/users.json", 'w') as fd:
     json.dump(parsed, fd, indent=2)
 EOF
+
+oc delete po $DB2_ENGINE_POD -n $NS
 ```
 
