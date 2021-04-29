@@ -28,10 +28,11 @@
 
 ```
 LB_HOSTNAME="cli-ocp9"
+PASSWD="password"
 ```
 
 ```
-oc login https://$LB_HOSTNAME:6443 -u admin -p admin --insecure-skip-tls-verify=true
+oc login https://$LB_HOSTNAME:6443 -u admin -p $PASSWD --insecure-skip-tls-verify=true
 ```
 
 ### Create Cloud Pak for Data project

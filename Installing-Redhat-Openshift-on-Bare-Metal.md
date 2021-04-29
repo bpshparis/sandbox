@@ -46,7 +46,7 @@ Download [Redhat Openshift 4 on Bare Metal material](https://cloud.redhat.com/op
 - One **WEB server** where following files are available in **read mode**:
 
   - [Openshift pull secret](https://cloud.redhat.com/openshift/install/pull-secret) saved as pull-secret.txt
-  - [Linux](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-4.6/openshift-client-linux.tar.gz) OpenShift installer
+  - [Linux](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-4.6/openshift-install-linux.tar.gz) OpenShift installer
   - [Linux](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz) Openshift command line interface
   - [Red Hat Enterprise Linux CoreOS raw image](https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.6/latest/rhcos-metal.x86_64.raw.gz)
   - [Red Hat Enterprise Linux CoreOS iso image](https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.5/latest/rhcos-installer.x86_64.iso)
@@ -911,7 +911,7 @@ oc whoami
 
 ```
 INST_DIR=~/ocpinst
-ADMIN_PASSWD="admin"
+ADMIN_PASSWD="password"
 ```
 
 ```
@@ -954,7 +954,7 @@ LB_HOSTNAME="cli-ocp1"
 ```
 
 ```
-oc login https://$LB_HOSTNAME:6443 -u admin -p admin --insecure-skip-tls-verify=true
+oc login https://$LB_HOSTNAME:6443 -u admin -p $ADMIN_PASSWD --insecure-skip-tls-verify=true
 ```
 
 ### Setup image-registry to use ephemeral storage
