@@ -249,23 +249,22 @@ oc get routes | awk 'NR==2 {print "Access the web console at https://" $2}'
 
 > :information_source: Run this on Cloud Pak for Data web console
 
-> :warning: (Get DB2 password as explained here)[https://github.com/bpshparis/sandbox/blob/master/Prepare-for-DB2-Advanced-Edition.md#updating-the-db2-password]
+> :warning: Get DB2 admin password as explained [here](https://github.com/bpshparis/sandbox/blob/master/Install-Db2-Advanced-Edition.md#updating-the-db2-password)
 
 ```
-USERNAME="user999"
-PASSWORD="eJ*4-XLu1Ca-5z*3"
+USERNAME="db2inst1"
+PASSWORD="password"
 HOST="w1-ocp15.iicparis.fr.ibm.com"
 PORT="32696"
 DATABASE="BLUDB"
-JDBC_URL="jdbc:db2://w1-ocp15.iicparis.fr.ibm.com:32696/BLUDB"
 ```
 
-![](img/connections.jpg)
+![](img/platform-connections.png)
 
-1. From the navigation, select Connections.
+1. From the navigation menu, select Platform connections.
 2. Click **New connection**.
-3. Enter a connection name.
-4. Select **Db2** as **Connection type**.
+3. Select **Db2** as **Connection type**.
+4. Enter a connection name.
 5. Set **Host** with **$HOST**.
 6. Set **Port** with **$PORT**.
 7. Set **Database** with **$DATABASE**.
@@ -283,9 +282,10 @@ JDBC_URL="jdbc:db2://w1-ocp15.iicparis.fr.ibm.com:32696/BLUDB"
 
 > :information_source: Run this on Cloud Pak for Data web console
 
-1. Click the Services icon ![](img/catalog.jpg) from the Cloud Pak for Data web user interface.
-2. From the list of services, locate the **Cognos Analytics** service under the **Analytics** category. Click the action menu and click **Provision instance**.
-3. Select **portworx-shared-gp3** for **Shared Volume Storage**.
+1. Browse the catalog of the Cloud Pak for Data web user interface.
+2. From the list of services, locate the **Cognos Analytics** service under the **Analytics** category and click on it.
+3. Click **Provision instance**.
+3. Select **portworx-shared-gp3** for **Shared Volume Storage** and click Next.
 4. Select **content store connection created above** for **Content Storage**.
 5. Click **Create**.
 
@@ -299,7 +299,8 @@ JDBC_URL="jdbc:db2://w1-ocp15.iicparis.fr.ibm.com:32696/BLUDB"
 > :information_source: Run this on Installer 
 
 ```
-LB_HOSTNAME="cli-ocp15"
+OCP="ocp15"
+LB_HOSTNAME="cli-$OCP"
 NS="cpd"
 ```
 

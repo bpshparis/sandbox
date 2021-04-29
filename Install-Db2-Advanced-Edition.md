@@ -179,7 +179,7 @@ $INST_DIR/cpd-cli status \
 :checkered_flag::checkered_flag::checkered_flag:
 <br>
 
-## Creating BLUDB database
+## Creating database
 
 ### Access Cloud Pak for Data web console
 
@@ -191,7 +191,7 @@ oc get routes | awk 'NR==2 {print "Access the web console at https://" $2}'
 
 > :bulb: Login as **admin** using **password** for password 
 
-### Creating BLUDB database
+### Creating database
 
 > :information_source: Run this on Cloud Pak for Data web console
 
