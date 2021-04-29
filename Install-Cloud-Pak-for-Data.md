@@ -28,7 +28,7 @@
 
 ```
 LB_HOSTNAME="cli-ocp9"
-PASSWD="password"
+PASSWD="admin"
 ```
 
 ```

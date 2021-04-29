@@ -288,6 +288,10 @@ oc patch configs.imageregistry.operator.openshift.io/cluster --type merge -p '{"
 >:bulb: Wait until **oc registry info** command display something like **default-route-openshift-image-registry...** instead of the internal registry e.g. **image-registry.openshift-image-registry.svc:5000**.
 
 
+```
+watch -n5 oc registry info
+```
+
 ### Trust Openshift registry
 
 > :information_source: Run this on Installer
@@ -357,7 +361,8 @@ podman push default-route-openshift-image-registry.apps.$OCP.iicparis.fr.ibm.com
 > :information_source: Run this on Installer
 
 ```
-WORKERS_NODES="w1-ocp9 w2-ocp9 w3-ocp9"
+OCP="ocp9"
+WORKERS_NODES="w1-$OCP w2-$OCP w3-$OCP"
 ```
 
 ```
@@ -391,7 +396,8 @@ pkill screen; screen -mdS ADM && screen -r ADM
 > :information_source: Run this on Installer
 
 ```
-LB_HOSTNAME="cli-ocp9"
+OCP="ocp9"
+LB_HOSTNAME="cli-$OCP"
 NS="kube-system"
 WEB_SERVER_PX_URL="http://web/cloud-pak/cpdv3.5.0_portworx.tgz"
 PX_FILE="cpdv3.5.0_portworx.tgz"

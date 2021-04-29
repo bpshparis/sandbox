@@ -950,7 +950,8 @@ oc adm policy add-cluster-role-to-user cluster-admin admin
 > :information_source: Run this on Installer
 
 ```
-LB_HOSTNAME="cli-ocp1"
+OCP="ocp1"
+LB_HOSTNAME="cli-$OCP"
 ```
 
 ```

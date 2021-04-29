@@ -27,7 +27,8 @@
 > :information_source: Run this on Installer 
 
 ```
-LB_HOSTNAME="cli-ocp15"
+OCP="ocp15"
+LB_HOSTNAME="cli-$OCP"
 NS="cpd"
 ```
 
@@ -172,7 +173,7 @@ $INST_DIR/cpd-cli status \
 --arch $ARCH
 ```
 
-![](img/db2oltp-ready.jpg)
+![](img/db2oltp-ready.png)
 
 <br>
 :checkered_flag::checkered_flag::checkered_flag:
@@ -225,7 +226,8 @@ oc get routes | awk 'NR==2 {print "Access the web console at https://" $2}'
 > :information_source: Run this on Installer 
 
 ```
-LB_HOSTNAME="cli-ocp15"
+OCP="ocp15"
+LB_HOSTNAME="cli-$OCP"
 NS="cpd"
 ```
 
@@ -252,4 +254,42 @@ watch -n5 "oc get pvc | grep 'db2oltp' && oc get po | grep 'db2oltp'"
 <br>
 :checkered_flag::checkered_flag::checkered_flag:
 <br>
+
+### Updating the Db2 password
+
+> :information_source: Run this on Installer 
+
+```
+OCP="ocp15"
+LB_HOSTNAME="cli-$OCP"
+NS="cpd"
+INSTANCE_NEW_PASSWORD="password" && echo $INSTANCE_NEW_PASSWORD
+```
+
+```
+oc login https://$LB_HOSTNAME:6443 -u admin -p admin --insecure-skip-tls-verify=true -n $NS
+
+INSTANCE_ID=$(oc get pod | grep db2u-0 | awk -F- '{print $3}') && echo $INSTANCE_ID
+
+SECRET=$(oc get secret -n $NS -o name | grep "$INSTANCE_ID-instancepassword") && echo $SECRET
+
+oc patch -n $NS $SECRET -p '{"data":{"password": "'$(echo $INSTANCE_NEW_PASSWORD | base64)'"}}' --dry-run=client
+
+oc patch -n $NS $SECRET -p '{"data":{"password": "'$(echo $INSTANCE_NEW_PASSWORD | base64)'"}}'
+
+DB2_ENGINE_POD=$(oc get pod | awk '$1 ~ "db2u-0$" {print $1}') && echo $DB2_ENGINE_POD
+
+oc exec -it $DB2_ENGINE_POD -- sudo python <<EOF
+import json
+
+with open("/mnt/blumeta0/db2_config/users.json", 'r') as fd:
+    parsed = json.load(fd)
+
+if 'db2inst1' in parsed['users']:
+    del parsed['users']['db2inst1']
+
+with open("/mnt/blumeta0/db2_config/users.json", 'w') as fd:
+    json.dump(parsed, fd, indent=2)
+EOF
+```
 

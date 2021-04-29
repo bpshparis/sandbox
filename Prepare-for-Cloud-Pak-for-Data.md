@@ -68,7 +68,7 @@ oc get no -l node-role.kubernetes.io/worker --no-headers -o name | xargs -I {} -
 
 ```
 OCP="ocp9"
-WORKERS="w1-$OCP w2-$OCP w3-$OCP"
+WORKERS="w1-$OCP w2-$OCP w3-$OCP w4-$OCP w5-$OCP"
 ROOT_PWD="password"
 ```
 
@@ -152,6 +152,10 @@ for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f
 
 for node in $WORKERS; do ssh -o StrictHostKeyChecking=no core@$node 'hostname -f; echo '$ROOT_PWD' | sudo -S sysctl -a | egrep -w "'$KERNEL_PARMS'"'; done
 ```
+
+<!--
+https://docs.openshift.com/container-platform/4.6/nodes/nodes/nodes-nodes-managing.html
+-->
 
 
 ### Install the cpd command

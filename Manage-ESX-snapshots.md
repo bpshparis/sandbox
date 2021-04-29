@@ -7,7 +7,7 @@
 > :information_source: Run this on ESX
 
 ```
-SNAPNAME="CPDInstalled"
+SNAPNAME="OCPInstalled"
 
 WORKERS_PATTERN="[w][1-5]"
 OTHERS_PATTERN="[m][1-5]"
