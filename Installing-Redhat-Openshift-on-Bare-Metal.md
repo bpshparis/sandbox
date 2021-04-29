@@ -911,7 +911,7 @@ oc whoami
 
 ```
 INST_DIR=~/ocpinst
-ADMIN_PASSWD="password"
+ADMIN_PASSWD="admin"
 ```
 
 ```
