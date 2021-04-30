@@ -251,9 +251,20 @@ watch -n5 "oc get pvc | grep 'db2oltp' && oc get po | grep 'db2oltp'"
 
 ![](img/db2-bludb-ok.png)
 
-<br>
-:checkered_flag::checkered_flag::checkered_flag:
-<br>
+### Get the Db2 password
+
+```
+ASSEMBLY="db2oltp"
+```
+
+```
+SECRET=$(oc get secret -n cpd | egrep -w 'instancepassword' | grep $ASSEMBLY | cut -d ' ' -f 1) && echo $SECRET
+
+[ ! -z $(command -v jq) ] && echo jq installed || yum install jq -y
+
+PASSWD=$(oc get secret $SECRET -n cpd -o json | jq -r .data.password | base64 --decode) && echo $PASSWD
+```
+
 
 ### Updating the Db2 password
 
@@ -294,4 +305,6 @@ EOF
 
 oc delete po $DB2_ENGINE_POD -n $NS
 ```
-
+<br>
+:checkered_flag::checkered_flag::checkered_flag:
+<br>
