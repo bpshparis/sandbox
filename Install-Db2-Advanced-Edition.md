@@ -251,7 +251,7 @@ watch -n5 "oc get pvc | grep 'db2oltp' && oc get po | grep 'db2oltp'"
 
 ![](img/db2-bludb-ok.png)
 
-### Get the Db2 password
+### Get the Db2 admin password
 
 ```
 ASSEMBLY="db2oltp"
@@ -266,7 +266,7 @@ PASSWD=$(oc get secret $SECRET -n cpd -o json | jq -r .data.password | base64 --
 ```
 
 
-### Updating the Db2 password
+### Updating the Db2 admin password
 
 > :information_source: Run this on Installer 
 
