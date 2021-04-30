@@ -41,17 +41,18 @@ oc login https://$LB_HOSTNAME:6443 -u admin -p admin --insecure-skip-tls-verify=
 > :information_source: Run this on Installer 
 
 ```
-LABEL="\"icp4data=database-db2oltp\""
+LABEL="icp4data=database-db2oltp"
+NODE="w1-ocp4.iicparis.fr.ibm.com"
 ```
 
 ```
-oc get nodes | awk '$3 ~ "compute|worker" {print "oc label node " $1 " "'$LABEL'" --overwrite"}' | sh
+oc label node $NODE $LABEL --overwrite
 ```
 
->:bulb: Check workers are labelled
+>:bulb: Check worker is labelled
 
 ```
-oc get nodes --show-labels | awk '$3 ~ "compute|worker" {print $1 " -> " $6}'
+oc get node $NODE --show-labels | grep icp4data
 ```
 
 ### Copy Db2 Advanced Edition Downloads from web server
