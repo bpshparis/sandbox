@@ -256,6 +256,7 @@ watch -n5 "oc get pvc | grep 'db2oltp' && oc get po | grep 'db2oltp'"
 
 ```
 ASSEMBLY="db2oltp"
+NS="cpd"
 ```
 
 ```
@@ -263,7 +264,7 @@ SECRET=$(oc get secret -n cpd | egrep -w 'instancepassword' | grep $ASSEMBLY | c
 
 [ ! -z $(command -v jq) ] && echo jq installed || yum install jq -y
 
-PASSWD=$(oc get secret $SECRET -n cpd -o json | jq -r .data.password | base64 --decode) && echo $PASSWD
+PASSWD=$(oc get secret $SECRET -n $NS -o json | jq -r .data.password | base64 --decode) && echo $PASSWD
 ```
 
 
