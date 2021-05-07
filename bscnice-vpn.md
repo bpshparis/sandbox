@@ -1,3 +1,7 @@
+
+
+Mise à disposition de votre sandbox IBM Cloud Pak for Data
+
 Bonjour,
 
 voici vos identifiants utiles une seule fois pour récupérer le client VPN et le fichier de configuration ici:
@@ -5,8 +9,10 @@ voici vos identifiants utiles une seule fois pour récupérer le client VPN et l
 https://bscvpn.nca.ihost.com
 
 User:				Paswword:
-christophetanneau 		JYkKfToR
-issammahfoudi 			4ud/fVu1
+
+
+
+
 
 
 

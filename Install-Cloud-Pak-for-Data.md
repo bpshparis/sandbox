@@ -27,7 +27,8 @@
 > :information_source: Run this on Installer 
 
 ```
-LB_HOSTNAME="cli-ocp9"
+OCP="ocp9"
+LB_HOSTNAME="cli-$OCP"
 PASSWD="admin"
 ```
 

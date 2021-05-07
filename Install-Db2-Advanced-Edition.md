@@ -42,7 +42,8 @@ oc login https://$LB_HOSTNAME:6443 -u admin -p admin --insecure-skip-tls-verify=
 
 ```
 LABEL="icp4data=database-db2oltp"
-NODE="w1-ocp4.iicparis.fr.ibm.com"
+OCP="ocp4"
+NODE="w1-$OCP.iicparis.fr.ibm.com" && echo $NODE
 ```
 
 ```

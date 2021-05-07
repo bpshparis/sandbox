@@ -21,7 +21,8 @@
 > :information_source: Run this on Installer
 
 ```
-WORKERS_NODES="w1-ocp17 w2-ocp17 w3-ocp17"
+OCP="ocp17"
+WORKERS_NODES="w1-$OCP w2-$OCP w3-$OCP"
 ```
 
 ```
@@ -69,7 +70,7 @@ oc login https://$LB_HOSTNAME:6443 -u admin -p admin --insecure-skip-tls-verify=
 
 ```
 NS="local-storage"
-CHANNEL_VERSION="4.4"
+CHANNEL_VERSION="4.6"
 
 oc new-project $NS
 
@@ -169,7 +170,7 @@ watch -n5 "oc get all -n $NS; oc get pv -n $NS"
 > :information_source: Run this on Installer
 
 ```
-BLK_DEV="/dev/sdc"
+BLK_DEV="/dev/sdb"
 BLK_RES="local-storage.yaml"
 
 cat > $BLK_RES << EOF
@@ -252,9 +253,9 @@ oc get route -n openshift-console | awk 'NR>1 && $1 ~ "console" {print "https://
 2. Search for **OpenShift Container Storage** from the list of operators and click on it.
 3. On the OpenShift Container Storage operator page, click **Install**.
 4. Keep recommended namespace **openshift-storage** as Installed Namespace.
-5. Choose **stable-4.4** option as Update Channel.
+5. Choose **stable-4.6** option as Update Channel.
 6. Choose **Automatic** option as Approval Strategy.
-7. Click on **Subscribe**
+7. Click on **Install**
 
 #### Wait for openshift-storage to be up and running 
 
@@ -340,7 +341,7 @@ oc patch storageclass $SC -p '{"metadata": {"annotations":{"storageclass.kuberne
 > :information_source: Run this on Installer
 
 ```
-oc patch configs.imageregistry.operator.openshift.io cluster --type='json' -p='[{"op": "remove", "path": "/spec/storage/emptyDir"}]' --dry-run
+oc patch configs.imageregistry.operator.openshift.io cluster --type='json' -p='[{"op": "remove", "path": "/spec/storage/emptyDir"}]' --dry-run=client
 
 oc patch configs.imageregistry.operator.openshift.io cluster --type='json' -p='[{"op": "remove", "path": "/spec/storage/emptyDir"}]'
 ```
@@ -350,6 +351,8 @@ oc patch configs.imageregistry.operator.openshift.io cluster --type='json' -p='[
 > :information_source: Run this on Installer
 
 ```
+oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"storage":{"pvc":{"claim": ""}}}}' --dry-run=client
+
 oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"storage":{"pvc":{"claim": ""}}}}'
 ```
 
@@ -364,3 +367,4 @@ watch -n5 "oc get pod -n openshift-image-registry; oc get pvc -n openshift-image
 :checkered_flag::checkered_flag::checkered_flag:
 
 <br>
+

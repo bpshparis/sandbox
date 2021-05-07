@@ -68,7 +68,7 @@ oc get no -l node-role.kubernetes.io/worker --no-headers -o name | xargs -I {} -
 
 ```
 OCP="ocp9"
-WORKERS="w1-$OCP w2-$OCP w3-$OCP w4-$OCP w5-$OCP"
+WORKERS="w1-$OCP w2-$OCP w3-$OCP"
 ROOT_PWD="password"
 ```
 

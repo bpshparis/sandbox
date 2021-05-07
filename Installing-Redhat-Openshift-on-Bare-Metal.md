@@ -731,6 +731,8 @@ vncviewer $ESX_SERVER:$W3_VNC_PORT
 INST_DIR=~/ocpinst
 ```
 
+
+
 ```
 cd $INST_DIR
 

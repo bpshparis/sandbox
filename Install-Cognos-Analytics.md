@@ -183,6 +183,8 @@ NS="cpd"
 DB2USERNAME="db2inst1"
 ```
 
+
+
 ```
 DB2_ENGINE_POD=$(oc get pod -n $NS | awk '$1 ~ "db2u-0$" {print $1}') && echo $DB2_ENGINE_POD
 

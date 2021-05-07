@@ -7,6 +7,7 @@
 ## System requirements
 
 <!--
+
 - One [OCP 3.11](https://github.com/bpshparis/sandbox/blob/master/Installing-Redhat-Openshift-3.11-on-Bare-Metal.md#installing-redhat-openshift-311-on-bare-metal) or [OCP 4](https://github.com/bpshparis/sandbox/blob/master/Installing-Redhat-Openshift-4-on-Bare-Metal.md#installing-redhat-openshift-4-on-bare-metal)
 - One [centos/redhat Cli](https://github.com/bpshparis/sandbox/blob/master/Installing-Redhat-Openshift-4.3-on-Bare-Metal.md#create-cli) with **oc** and **kubectl** commands installed
 - One **WEB server** where following files are available in **read mode**:
@@ -362,7 +363,7 @@ podman push default-route-openshift-image-registry.apps.$OCP.iicparis.fr.ibm.com
 
 ```
 OCP="ocp9"
-WORKERS_NODES="w1-$OCP w2-$OCP w3-$OCP"
+WORKERS_NODES="w1-$OCP w2-$OCP w3-$OCP w4-$OCP w5-$OCP"
 ```
 
 ```
