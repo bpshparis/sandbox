@@ -4,15 +4,18 @@ Mise à disposition de votre sandbox IBM Cloud Pak for Data
 
 Bonjour,
 
-voici vos identifiants utiles une seule fois pour récupérer le client VPN et le fichier de configuration ici:
+voici vos identifiants:
+
+User				Paswword
+
+sfaye 		hRdvf85K
+nmchela 		CFY5JhZe
+skajie 		uXVfJ7h+
+ehaback 		38T5u4Et
+
+utiles une seule fois pour récupérer le client VPN et le fichier de configuration ici:
 
 https://bscvpn.nca.ihost.com
-
-User:				Paswword:
-
-
-
-
 
 
 
@@ -22,38 +25,38 @@ Une fois la connexion établie, ajouter les lignes suivantes à votre fichier ho
 
 e.g. /etc/hosts ou C:\Windows\ System32\drivers\etc\hosts
 
-172.16.187.70 console-openshift-console.apps.ocp7.iicparis.fr.ibm.com
+172.16.187.90 console-openshift-console.apps.ocp9.iicparis.fr.ibm.com
 
-172.16.187.70 oauth-openshift.apps.ocp7.iicparis.fr.ibm.com
+172.16.187.90 oauth-openshift.apps.ocp9.iicparis.fr.ibm.com
 
-172.16.187.70 cpd-cpd-cpd.apps.ocp7.iicparis.fr.ibm.com
-
-172.16.187.70 cli-ocp7.iicparis.fr.ibm.com cli-ocp7
+172.16.187.90 cpd-cpd-cpd.apps.ocp9.iicparis.fr.ibm.com
 
 
 
-Accès à la console ESX:
-
-(Firefox) https://172.16.161.138/ui en tant que user **root** mot de passe **spcspc**
-
+Accès à la Console Cloud Pak for Data en tant que user **admin** mot de passe **password**:
+https://cpd-cpd-cpd.apps.ocp9.iicparis.fr.ibm.com
 
 
-Manage snapshot sur l'ESX:
 
-en mode ssh sur 172.16.161.138 en tant que user **root** mot de passe **spcspc**
+Accès à DataStage:
 
-https://github.com/bpshparis/sandbox/blob/master/Manage-ESX-snapshots.md#manage-esx-snapshots
+https://cpd-cpd-cpd.apps.ocp9.iicparis.fr.ibm.com/zen/#/projectList
+
+
+
+Accès à Db2 si besoin:
+
+https://cpd-cpd-cpd.apps.ocp9.iicparis.fr.ibm.com/zen-databases/#/details/Db2-1/db2oltp-1620200333138185
+
+jdbc:db2://db2inst1:y9D@5vZJ5#%_i5Ja@w1-ocp9.iicparis.fr.ibm.com:30041/BLUDB
 
 
 
 Accès à la Console Openshift en tant que user **admin** mot de passe **admin**:
-https://console-openshift-console.apps.ocp7.iicparis.fr.ibm.com
-
-Accès à la Console Cloud Pak for Data en tant que user **admin** mot de passe **password**:
-https://cpd-cpd-cpd.apps.ocp7.iicparis.fr.ibm.com
+https://console-openshift-console.apps.ocp9.iicparis.fr.ibm.com
 
 Accès au cluster via la commande oc:
-oc login https://172.16.187.70:6443 -u admin -p admin --insecure-skip-tls-verify=true
+oc login https://172.16.187.90:6443 -u admin -p admin --insecure-skip-tls-verify=true
 Install oc and kubectl if needed:
 Linux:
 https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz
@@ -61,25 +64,5 @@ Windows:
 https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-windows.zip
 MacOS:
 https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-mac.tar.gz
-
-Accès ssh au nodes du cluster depuis cli-ocp7 (172.16.187.70) en tant que user **core** puis sudo passwd si besoin d'être root:
-
-m1-ocp7
-ssh://core@172.16.187.71
-
-m2-ocp7
-ssh://core@172.16.187.72
-
-m3-ocp7
-ssh://core@172.16.187.73
-
-w1-ocp7
-ssh://core@172.16.187.74
-
-w2-ocp7
-ssh://core@172.16.187.75
-
-w3-ocp7
-ssh://core@172.16.187.76
 
 Enjoy !
