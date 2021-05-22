@@ -116,6 +116,9 @@ $INST_DIR/cpd-cli preload-images \
 --target-registry-password $(oc whoami -t) \
 --target-registry-username $(oc whoami) \
 --load-from $INST_DIR/cpd-cli-workspace \
+--parallelism 3 \
+--max-image-retry 5 \
+--verbose \
 --accept-all-licenses
 ```
 

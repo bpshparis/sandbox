@@ -70,15 +70,16 @@ Download [Redhat Openshift 4 on Bare Metal material](https://cloud.redhat.com/op
 ```
 DOMAIN=$(cat /etc/resolv.conf | awk '$1 ~ "search" {print $2}') && echo $DOMAIN
 IP_HEAD="172.16"
-OCP=ocp1
-LB_IP=$IP_HEAD.187.10
-M1_IP=$IP_HEAD.187.11
-M2_IP=$IP_HEAD.187.12
-M3_IP=$IP_HEAD.187.13
-W1_IP=$IP_HEAD.187.14
-W2_IP=$IP_HEAD.187.15
-W3_IP=$IP_HEAD.187.16
-BS_IP=$IP_HEAD.187.19
+OCP="ocp1"
+NUM="$(echo $OCP | awk -F'ocp' '{print $2}')" && echo $NUM
+LB_IP=$IP_HEAD.187.${NUM}0 && echo $LB_IP
+M1_IP=$IP_HEAD.187.${NUM}1 && echo $M1_IP
+M2_IP=$IP_HEAD.187.${NUM}2 && echo $M2_IP
+M3_IP=$IP_HEAD.187.${NUM}3 && echo $M3_IP
+W1_IP=$IP_HEAD.187.${NUM}4 && echo $W1_IP
+W2_IP=$IP_HEAD.187.${NUM}5 && echo $W2_IP
+W3_IP=$IP_HEAD.187.${NUM}6 && echo $W3_IP
+BS_IP=$IP_HEAD.187.${NUM}9 && echo $BS_IP
 MZONE=/var/lib/bind/$DOMAIN.hosts
 RZONE=/var/lib/bind/$IP_HEAD.rev
 ```
@@ -412,6 +413,7 @@ sed -i 's/mastersSchedulable: true/mastersSchedulable: false/' manifests/cluster
 ```
 WEB_SERVER="web"
 WEB_SERVER_PATH="/web/$OCP"
+RHCOS_IMG_PATH="/web/img/rhcos-4.5.6-metal.x86_64.raw.gz"
 RHCOS_IMG_PATH="/web/img/rhcos-4.6.8-x86_64-metal.x86_64.raw.gz"
 ```
 
