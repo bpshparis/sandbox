@@ -293,7 +293,7 @@ oc patch configs.imageregistry.operator.openshift.io/cluster --type merge -p '{"
 watch -n5 oc registry info
 ```
 
-### Trust Openshift registry
+#### Trust Openshift registry
 
 > :information_source: Run this on Installer
 
@@ -309,7 +309,7 @@ cp -v tls.crt /etc/containers/certs.d/$REG_HOST/
 
 <br>
 
-### Log in Openshift registry
+#### Log in Openshift registry
 
 > :information_source: Run this on Installer
 
@@ -317,7 +317,7 @@ cp -v tls.crt /etc/containers/certs.d/$REG_HOST/
 podman login -u $(oc whoami) -p $(oc whoami -t) $REG_HOST
 ```
 
-### Tag an image with Openshift registry hostname and push it
+#### Tag an image with Openshift registry hostname and push it
 
 > :information_source: Run this on Installer
 
