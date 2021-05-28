@@ -276,7 +276,7 @@ echo $VNC_PWD | vncpasswd -f > ~/.vnc/passwd
 ```
 OC_URL="https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz"
 
-[ -z $(command -v oc) ] && { wget -c $OC_URL; tar -xvzf $(echo $OC_URL | awk -F'/' '{print $NF}') -C $(echo $PATH | awk -F":" 'NR==1 {print $1}'); oc version; } || { echo "oc and bubectl already installed"; }
+[ -z $(command -v oc) ] && { wget -c $OC_URL; tar -xvzf $(echo $OC_URL | awk -F'/' '{print $NF}') -C $(echo $PATH | awk -F":" 'NR==1 {print $1}'); oc version --client; } || { echo "oc and bubectl already installed"; }
 
 [ -z $(command -v podman) ] && { yum install podman runc buildah skopeo -y; } || echo "podman already installed"
 

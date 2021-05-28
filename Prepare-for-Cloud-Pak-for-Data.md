@@ -9,7 +9,7 @@
 - Have completed  [Prepare Redhat Openshift for Cloud Paks](https://github.com/bpshparis/sandbox/blob/master/Prepare-Redhat-Openshift-for-Cloud-Paks.md#prepare-redhat-openshift-for-cloud-paks)
 - Check latest [**cpd-cli**](https://github.com/IBM/cpd-cli/releases) release
 - One **WEB server** where following files are available in **read mode**:
-  - [Latest cpd-cli](https://github.com/IBM/cpd-cli/releases/download/v3.5.3/cpd-cli-linux-EE-3.5.3.tgz)
+  - [Latest cpd-cli](https://github.com/IBM/cpd-cli/releases/download/v3.5.4/cpd-cli-linux-EE-3.5.4.tgz)
   - [IBM® Cloud Pak for Data entitlement license API key](https://myibm.ibm.com/products-services/containerlibrary) saved in apikey file.
 
 <br>
@@ -21,6 +21,10 @@
 > :information_source: Commands below are valid for a **Linux/Centos 7**.
 
 > :warning: Some of commands below will need to be adapted to fit Linux/Debian or MacOS .
+
+### Checking I/O performance
+
+[howto](https://www.ibm.com/docs/en/cloud-paks/cp-data/3.5.0?topic=installation-checking-io-performance)
 
 ### Changing load balancer timeout settings
 
@@ -160,13 +164,15 @@ https://docs.openshift.com/container-platform/4.6/nodes/nodes/nodes-nodes-managi
 
 ### Install the cpd command
 
+<!-- https://www.ibm.com/docs/en/cloud-paks/cp-data/3.5.0?topic=installing -->
+
 > :warning: Adapt settings to fit to your environment.
 
 > :information_source: Run this on Installer
 
 ```
 WEB_SERVER_CP_URL="http://web/cloud-pak"
-INST_FILE="cpd-cli-linux-EE-3.5.3.tgz"
+INST_FILE="cpd-cli-linux-EE-3.5.4.tgz"
 INST_DIR=~/cpd && echo $INST_DIR
 ```
 
@@ -231,8 +237,8 @@ sed -i -e 's/\(^\s\{4\}apikey:\).*$/\1 '$APIKEY'/' repo.yaml
 > :information_source: Run this on Installer 
 
 ```
-INST_DIR=~/cpd
-ASSEMBLY="lite"
+INST_DIR=~/cpd && echo $INST_DIR
+ASSEMBLY="lite" && echo $ASSEMBLY
 ARCH="x86_64"
 ```
 

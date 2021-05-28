@@ -421,7 +421,7 @@ tar xvzf $PX_FILE
 > :information_source: Run this on Installer
 
 ```
-oc login https://$LB_HOSTNAME:6443 -u admin -p admin --insecure-skip-tls-verify=true -n $NS
+oc login https://cli-$OCP:6443 -u admin -p admin --insecure-skip-tls-verify=true -n $NS
 
 REG_HOST=$(oc registry info) && echo $REG_HOST
 podman login -u $(oc whoami) -p $(oc whoami -t) $REG_HOST

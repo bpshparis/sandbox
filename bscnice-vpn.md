@@ -10,7 +10,7 @@ User				Paswword
 
 
 
-utiles une seule fois pour récupérer le client VPN et le fichier de configuration ici:
+utiles une seule fois pour récupérer utiles une seule fois pour récupérer (voir pièce jointe pour info détaillée) le client VPN et le fichier de configuration ici:
 
 https://bscvpn.nca.ihost.com
 

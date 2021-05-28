@@ -94,7 +94,7 @@ pkill screen; screen -mdS ADM && screen -r ADM
 > :information_source: Run this on Installer
 
 ```
-INST_DIR=~/cpd
+INST_DIR=~/cpd && echo $INST_DIR
 ASSEMBLY="lite"
 ARCH="x86_64"
 VERSION=$(find $INST_DIR/cpd-cli-workspace/assembly/$ASSEMBLY/$ARCH/* -type d | awk -F'/' '{print $NF}')
@@ -113,6 +113,9 @@ $INST_DIR/cpd-cli preload-images \
 --target-registry-password $(oc whoami -t) \
 --target-registry-username $(oc whoami) \
 --load-from $INST_DIR/cpd-cli-workspace \
+--parallelism 5 \
+--verbose \
+--max-image-retry 1 \
 --accept-all-licenses
 ```
 
