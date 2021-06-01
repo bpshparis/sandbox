@@ -19,6 +19,18 @@ $INST_DIR/cpd-cli adm \
 
 // oc get sa -> edb-operator
 
+$INST_DIR/cpd-cli install \
+--namespace $(oc project -q) \
+--assembly $ASSEMBLY \
+--arch $ARCH \
+--cluster-pull-prefix $INT_REG/$(oc project -q) \
+--load-from $INST_DIR/cpd-cli-workspace \
+--optional-modules edb-pg-base:x86_64 \
+--latest-dependency \
+--accept-all-licenses
+
+
+
 ASSEMBLY="watson-discovery"
 VERSION=$(find $INST_DIR/cpd-cli-workspace/assembly/$ASSEMBLY/$ARCH/* -type d | awk -F'/' '{print $NF}')
 
@@ -77,6 +89,19 @@ spec:
     replicas: 1
   dispatcher:
     replicas: 1
+  minio:
+    replicas: 4
+    minio:
+      image:
+        tag: "1.1.6"
+    minioClient:
+      image:
+        tag: "1.0.6"
+    creds:
+      image:
+        tag: "1.1.9"
+    persistence:
+      size: 50Gi
   mma:
     replicas: 1
   glimpse:
