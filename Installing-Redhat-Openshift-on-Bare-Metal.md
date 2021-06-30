@@ -1132,3 +1132,62 @@ spec:
 
 -->
 
+<!--
+
+## Method #2 - create a new worker node based on an existing worker ignition file with a new certificate extracted from the existing OpenShift cluster:
+
+Retrieve the certificate from the *api-int.<cluster_name>.<domain>:22623* and save in a temporary file (example cert.pem):
+
+```
+# openssl s_client -connect api-int.<cluster_name>.<domain>:22623 -showcerts
+```
+
+**NOTE!** The certificate is a block of text starting with "BEGIN CERTIFICATE" and ending with "END CERTIFICATE":
+
+```
+-----BEGIN CERTIFICATE-----
+MIIDUzCCAjugAwIBAgIIcth2QzTQWFowDQYJKoZIhvcNAQELBQAwJjESMBAGA1UE
+CxMJb3BlbnNoaWZ0MRAwDgYDVQQDEwdyb290LWNhMB4XDTIwMDUxNDE2NDgyNloX
+DTMwMDUxMjE2NDgyOFowITEfMB0GA1UEAxMWYXBpLWludC5vY3AxLm9jcC5sb2Nh
+bDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAOhAojn+3/In8oDRmgX3
+ZAtuH7L0HQL3Ss3qVCM3EHKbnS/jGq4Q0o9Swd9FbyLQ1q0wJnnFBvQKMsa4rICP
+jeN8E95PIB+a9ey4vWqe1FQSCCI9IBHOfVSPtBjgFMrFGcwGgx3Axh/Hf/C1l/ei
+oOMsND3JPvZOrfj/5WyRicdXGNNK9oepBaGQrxrXLuM2aAvqvNR9WjLxvPMoib47
+ZiaeJ4Unx/Ms/4+Hpr6VPgK2icnF1DjkigL/1pL6UInGHQg2zH02J+e25enoI4a4
+r9e50AvdcKd8LMf2hJSNItNLelq8B3SHTWuOeirh7YN4R3/4nxH6n1woEmEVADBm
++V0CAwEAAaOBiTCBhjATBgNVHSUEDDAKBggrBgEFBQcDATAMBgNVHRMBAf8EAjAA
+MB0GA1UdDgQWBBQsjq3NE7FeQHWGGYoY0szkFBdtoDAfBgNVHSMEGDAWgBQsjq3N
+E7FeQHWGGYoY0szkFBdtoDAhBgNVHREEGjAYghZhcGktaW50Lm9jcDEub2NwLmxv
+Y2FsMA0GCSqGSIb3DQEBCwUAA4IBAQBy9CNG8mS1IY6pUcTf7GcUpVDZ//kgBwnb
+PB6K7SHR/fb7IdOMGa9VN3iQ6FiZ6lcPuUkC1S7KbQo5NUXh8hVw9Hl/teuniJEA
+WOUkJ62Lr19E6qiF1jHuF/aH6tlw9VVQTpFQynlfJTRNsHRlKWy5iI3gYj8i0fyl
+FusYXGKgDDouab2Afp5Xy8JqWcqzZD64uPnJ+V0yRl/3DIuTOFhMy61UR6eVMYig
+LvLaqWbbLEGYIGOEM36oUyZiNU1Qyrlqs17iIe9ssmsozBPrmlQBUaCSI17o9dHv
+QGdhrGpBa7iGvkRShg7bmaBTaPYp7p2cLXmyGHGGKae71lpE3l8i
+
+-----END CERTIFICATE-----
+```
+
+Just copy the certificate inside the cert.pem temporary file, then encode the certificate using base64 with "--wrap=0" option:
+
+```
+# base64 --wrap=0 ./cert.pem 1> ./cert.base64
+```
+
+Copy the content of cert.base64 file and place it after the section "base64" in the *worker.ign* file:
+
+```
+{"ignition":{"config":{"append":[{"source":"https://api-int.<cluster.domain>:22623/config/metal-worker","verification":{}}]},"security":{"tls":{"certificateAuthorities":[{"source":"data:text/plain;charset=utf-8;base64,MIIDUzCCAjugAwIBAgIIcth2QzTQWFowDQYJKoZIhvcNAQELBQAwJjESMBAGA1UECxMJb3BlbnNoaWZ0MRAwDgYDVQQDEwdyb290LWNhMB4XDTIwMDUxNDE2NDgyNloXDTMwMDUxMjE2NDgyOFowITEfMB0GA1UEAxMWYXBpLWludC5vY3AxLm9jcC5sb2NhbDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAOhAojn+3/In8oDRmgX3ZAtuH7L0HQL3Ss3qVCM3EHKbnS/jGq4Q0o9Swd9FbyLQ1q0wJnnFBvQKMsa4rICPjeN8E95PIB+a9ey4vWqe1FQSCCI9IBHOfVSPtBjgFMrFGcwGgx3Axh/Hf/C1l/eioOMsND3JPvZOrfj/5WyRicdXGNNK9oepBaGQrxrXLuM2aAvqvNR9WjLxvPMoib47ZiaeJ4Unx/Ms/4+Hpr6VPgK2icnF1DjkigL/1pL6UInGHQg2zH02J+e25enoI4a4r9e50AvdcKd8LMf2hJSNItNLelq8B3SHTWuOeirh7YN4R3/4nxH6n1woEmEVADBm+V0CAwEAAaOBiTCBhjATBgNVHSUEDDAKBggrBgEFBQcDATAMBgNVHRMBAf8EAjAAMB0GA1UdDgQWBBQsjq3NE7FeQHWGGYoY0szkFBdtoDAfBgNVHSMEGDAWgBQsjq3NE7FeQHWGGYoY0szkFBdtoDAhBgNVHREEGjAYghZhcGktaW50Lm9jcDEub2NwLmxvY2FsMA0GCSqGSIb3DQEBCwUAA4IBAQBy9CNG8mS1IY6pUcTf7GcUpVDZ//kgBwnbPB6K7SHR/fb7IdOMGa9VN3iQ6FiZ6lcPuUkC1S7KbQo5NUXh8hVw9Hl/teuniJEAWOUkJ62Lr19E6qiF1jHuF/aH6tlw9VVQTpFQynlfJTRNsHRlKWy5iI3gYj8i0fylFusYXGKgDDouab2Afp5Xy8JqWcqzZD64uPnJ+V0yRl/3DIuTOFhMy61UR6eVMYigLvLaqWbbLEGYIGOEM36oUyZiNU1Qyrlqs17iIe9ssmsozBPrmlQBUaCSI17o9dHvQGdhrGpBa7iGvkRShg7bmaBTaPYp7p2cLXmyGHGGKae71lpE3l8i","verification":{}}]}},"timeouts":{},"version":"2.2.0"},"networkd":{},"passwd":{},"storage":{},"systemd":{}}
+```
+
+**TIP!** thanks to [Pat Fruth](https://www.linkedin.com/in/pat-fruth-b93726137/). To automate the process to extract the digital certificate from your running cluster, convert it to base64 and make the proper modifications to the *worker.ign* file you can use this command line (The command line bellow creates a backup copy of the worker.ign as well):
+
+```
+MCS="api-int.<cluster_name>.<domain>:22623" NEWBASE64CERT=$(echo "q" | openssl s_client -connect $MCS  -showcerts 2>/dev/null | awk '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/' | base64 --wrap=0) && sed --regexp-extended --in-place=.backup "s%base64,[^,]+%base64,$NEWBASE64CERT\"%" /<path_to_worker.ign>/worker.ign
+```
+
+Upload the updated *worker.ign* file to the HTTP server you were using for your OCP cluster deployment.
+
+
+
+-->
