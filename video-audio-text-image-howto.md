@@ -1,4 +1,4 @@
-# video-audio-text-image-howto
+# Video-audio-text-image-howto
 
 ### Check sound and install sound tools
 
@@ -17,6 +17,21 @@ sudo dnf install http://download1.rpmfusion.org/free/fedora/rpmfusion-free-relea
 sudo dnf install mplayer mencoder -y
 sudo yum install ffmpeg -y
 ```
+
+
+
+### Install youtube-dl
+
+```
+git clone https://github.com/ytdl-org/youtube-dl
+cd youtube-dl
+make
+sudo cp -v youtube-dl /usr/local/bin/
+```
+
+💡 Don't pay attention to **make: pandoc: No such file or directory**, **youtube-dl** binary should be generated.
+
+
 
 ### Video from image with audio
 
@@ -58,6 +73,28 @@ AUDIO_SOURCE="speech.mp3"
 TARGET="merge.mp4"
 
 ffmpeg -i ${VIDEO_SOURCE} -i ${AUDIO_SOURCE} -c:v copy -c:a copy ${TARGET}
+```
+
+
+
+### Shrink video size
+
+```
+VIDEO_SOURCE="queen-love-of-my-life.webm"
+VIDEO_TARGET="queen-love-of-my-life.mp4"
+
+ffmpeg -i ${VIDEO_SOURCE} -c:v libx265 -crf 28  -c:a copy ${VIDEO_TARGET}
+```
+
+
+
+### Extract video and encode to mp3
+
+```
+VIDEO_SOURCE="queen-love-of-my-life.webm"
+AUDIO_TARGET="queen-love-of-my-life.mp3"
+
+ffmpeg -i ${VIDEO_SOURCE} -vn -ab 128k -ar 44100 -y ${AUDIO_TARGET}
 ```
 
 
