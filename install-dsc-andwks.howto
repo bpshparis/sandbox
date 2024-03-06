@@ -1,0 +1,138 @@
+INST_DIR=~/dsc
+
+cd $INST_DIR
+
+ASSEMBLY="edb-operator"
+ARCH="x86_64"
+VERSION=$(find $INST_DIR/cpd-cli-workspace/assembly/$ASSEMBLY/$ARCH/* -type d | awk -F'/' '{print $NF}')
+
+[ ! -z "$VERSION" ] && echo $VERSION "-> OK" || echo "ERROR: VERSION is not set."
+
+$INST_DIR/cpd-cli adm \
+--namespace $(oc project -q) \
+--assembly $ASSEMBLY \
+--arch $ARCH \
+--load-from $INST_DIR/cpd-cli-workspace \
+--apply \
+--latest-dependency \
+--accept-all-licenses
+
+// oc get sa -> edb-operator
+
+$INST_DIR/cpd-cli install \
+--namespace $(oc project -q) \
+--assembly $ASSEMBLY \
+--arch $ARCH \
+--cluster-pull-prefix $INT_REG/$(oc project -q) \
+--load-from $INST_DIR/cpd-cli-workspace \
+--optional-modules edb-pg-base:x86_64 \
+--latest-dependency \
+--accept-all-licenses
+
+
+
+ASSEMBLY="watson-discovery"
+VERSION=$(find $INST_DIR/cpd-cli-workspace/assembly/$ASSEMBLY/$ARCH/* -type d | awk -F'/' '{print $NF}')
+
+[ ! -z "$VERSION" ] && echo $VERSION "-> OK" || echo "ERROR: VERSION is not set."
+
+$INST_DIR/cpd-cli adm \
+--namespace $(oc project -q) \
+--assembly $ASSEMBLY \
+--arch $ARCH \
+--load-from $INST_DIR/cpd-cli-workspace \
+--apply \
+--latest-dependency \
+--accept-all-licenses
+
+cp -v ./cpd-cli-workspace/modules/watson-discovery-release/x86_64/2.2.1/install-override.yaml .
+OVERRIDE="$PWD/install-override.yaml" && echo $OVERRIDE
+SC="portworx-db-gp3-sc" && echo $SC
+INT_REG=$(oc registry info --internal) && echo $INT_REG
+
+$INST_DIR/cpd-cli install \
+--namespace $(oc project -q) \
+--assembly $ASSEMBLY \
+--arch $ARCH \
+--storageclass $SC \
+--cluster-pull-prefix $INT_REG/$(oc project -q) \
+--load-from $INST_DIR/cpd-cli-workspace \
+--override $OVERRIDE \
+--latest-dependency \
+--accept-all-licenses \
+--dry-run
+
+
+ASSEMBLY="watson-ks"
+VERSION=$(find $INST_DIR/cpd-cli-workspace/assembly/$ASSEMBLY/$ARCH/* -type d | awk -F'/' '{print $NF}')
+
+[ ! -z "$VERSION" ] && echo $VERSION "-> OK" || echo "ERROR: VERSION is not set."
+
+$INST_DIR/cpd-cli adm \
+--namespace $(oc project -q) \
+--assembly $ASSEMBLY \
+--arch $ARCH \
+--load-from $INST_DIR/cpd-cli-workspace \
+--apply \
+--latest-dependency \
+--accept-all-licenses
+
+
+cat > wks.yaml << EOF
+---
+spec:
+  global:
+    highAvailabilityMode: false
+    storageClassName: "portworx-db-gp3-sc"
+  replicaCount: 1
+  broker:
+    replicas: 1
+  dispatcher:
+    replicas: 1
+  minio:
+    replicas: 4
+    minio:
+      image:
+        tag: "1.1.6"
+    minioClient:
+      image:
+        tag: "1.0.6"
+    creds:
+      image:
+        tag: "1.1.9"
+    persistence:
+      size: 50Gi
+  mma:
+    replicas: 1
+  glimpse:
+    builder:
+      replicas: 1
+    query:
+      replicas: 1
+  awt:
+    replicas: 1
+EOF
+
+[ ! -z $(command -v yamllint) ] && echo "yammllint already installed" || { sudo yum install -y yamllint; }
+
+yamllint wks.yaml
+
+// OVERRIDE="$PWD/installOverride.yaml" && echo $OVERRIDE
+OVERRIDE="$PWD/wks.yaml" && echo $OVERRIDE
+SC="portworx-shared-gp3" && echo $SC
+INT_REG=$(oc registry info --internal) && echo $INT_REG
+
+$INST_DIR/cpd-cli install \
+--namespace $(oc project -q) \
+--assembly $ASSEMBLY \
+--arch $ARCH \
+--storageclass $SC \
+--cluster-pull-prefix $INT_REG/$(oc project -q) \
+--load-from $INST_DIR/cpd-cli-workspace \
+--override $OVERRIDE \
+--latest-dependency \
+--accept-all-licenses \
+--dry-run
+
+
+./cpd-cli uninstall -a $ASSEMBLY -n $(oc project -q)

@@ -1,0 +1,54 @@
+root@cli cpd-cli]# oc get catalogsource -n ${PROJECT_CATSRC}
+NAME                   DISPLAY                TYPE   PUBLISHER     AGE
+certified-operators    Certified Operators    grpc   Red Hat       3h14m
+community-operators    Community Operators    grpc   Red Hat       3h14m
+ibm-operator-catalog   ibm-operator-catalog   grpc   IBM Content   10m
+redhat-marketplace     Red Hat Marketplace    grpc   Red Hat       3h14m
+redhat-operators       Red Hat Operators      grpc   Red Hat       3h14m
+
+[root@cli cpd-cli]# oc get sub -n ${PROJECT_CPFS_OPS}
+NAME                                       PACKAGE                        SOURCE                 CHANNEL
+ibm-common-service-operator                ibm-common-service-operator    ibm-operator-catalog   v3.23
+ibm-namespace-scope-operator               ibm-namespace-scope-operator   ibm-operator-catalog   v3.23
+operand-deployment-lifecycle-manager-app   ibm-odlm                       ibm-operator-catalog   v3.23
+
+[root@cli cpd-cli]# oc get csv -n ${PROJECT_CPFS_OPS}
+NAME                                           DISPLAY                                VERSION   REPLACES   PHASE
+ibm-common-service-operator.v3.23.4            IBM Cloud Pak foundational services    3.23.4               Succeeded
+ibm-namespace-scope-operator.v1.17.4           IBM NamespaceScope Operator            1.17.4               Succeeded
+operand-deployment-lifecycle-manager.v1.21.4   Operand Deployment Lifecycle Manager   1.21.4               Succeeded
+
+[root@cli cpd-cli]# oc api-resources --api-group operator.ibm.com
+NAME                SHORTNAMES   APIVERSION                  NAMESPACED   KIND
+commonservices                   operator.ibm.com/v3         true         CommonService
+namespacescopes     nss          operator.ibm.com/v1         true         NamespaceScope
+operandbindinfos    opbi         operator.ibm.com/v1alpha1   true         OperandBindInfo
+operandconfigs      opcon        operator.ibm.com/v1alpha1   true         OperandConfig
+operandregistries   opreg        operator.ibm.com/v1alpha1   true         OperandRegistry
+operandrequests     opreq        operator.ibm.com/v1alpha1   true         OperandRequest
+podpresets                       operator.ibm.com/v1alpha1   true         PodPreset
+
+[root@cli cpd-cli]# oc get po -n cpd
+NAME                                                    READY   STATUS    RESTARTS   AGE
+ibm-common-service-operator-6c499775d-wz7ld             1/1     Running   0          10m
+ibm-common-service-webhook-7ffc98958d-dmwxr             1/1     Running   0          9m17s
+ibm-namespace-scope-operator-ccf8496b5-srqtn            1/1     Running   0          9m25s
+operand-deployment-lifecycle-manager-695b88467f-8brmt   1/1     Running   0          8m46s
+secretshare-546d947c5f-9h7vb                            1/1     Running   0          9m11s
+[root@cli cpd-cli]# oc get crd | grep operandrequest
+operandrequests.operator.ibm.com                                  2023-06-20T15:32:05Z
+[root@cli cpd-cli]# oc api-resources --api-group operator.ibm.com
+NAME                SHORTNAMES   APIVERSION                  NAMESPACED   KIND
+commonservices                   operator.ibm.com/v3         true         CommonService
+namespacescopes     nss          operator.ibm.com/v1         true         NamespaceScope
+operandbindinfos    opbi         operator.ibm.com/v1alpha1   true         OperandBindInfo
+operandconfigs      opcon        operator.ibm.com/v1alpha1   true         OperandConfig
+operandregistries   opreg        operator.ibm.com/v1alpha1   true         OperandRegistry
+operandrequests     opreq        operator.ibm.com/v1alpha1   true         OperandRequest
+podpresets                       operator.ibm.com/v1alpha1   true         PodPreset
+
+
+
+
+
+

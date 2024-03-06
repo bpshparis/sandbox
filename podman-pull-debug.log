@@ -1,0 +1,415 @@
+sudo podman pull --authfile ~/auth.json --log-level=debug cp.icr.io/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345
+
+INFO[0000] podman filtering at log level debug          
+DEBU[0000] Called pull.PersistentPreRunE(podman pull --authfile /var/home/core/auth.json --log-level=debug cp.icr.io/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345) 
+DEBU[0000] Merged system config "/usr/share/containers/containers.conf" 
+DEBU[0000] Using conmon: "/usr/bin/conmon"              
+DEBU[0000] Initializing boltdb state at /var/lib/containers/storage/libpod/bolt_state.db 
+DEBU[0000] Using graph driver overlay                   
+DEBU[0000] Using graph root /var/lib/containers/storage 
+DEBU[0000] Using run root /var/run/containers/storage   
+DEBU[0000] Using static dir /var/lib/containers/storage/libpod 
+DEBU[0000] Using tmp dir /run/libpod                    
+DEBU[0000] Using volume path /var/lib/containers/storage/volumes 
+DEBU[0000] Set libpod namespace to ""                   
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+DEBU[0000] cached value indicated that overlay is supported 
+DEBU[0000] cached value indicated that metacopy is not being used 
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] cached value indicated that native-diff is usable 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0000] Initializing event backend file              
+DEBU[0000] configured OCI runtime kata initialization failed: no valid executable found for OCI runtime kata: invalid argument 
+DEBU[0000] configured OCI runtime runsc initialization failed: no valid executable found for OCI runtime runsc: invalid argument 
+DEBU[0000] Using OCI runtime "/usr/bin/runc"            
+INFO[0000] Found CNI network crio (type=bridge) at /etc/cni/net.d/100-crio-bridge.conf 
+INFO[0000] Found CNI network 200-loopback.conf (type=loopback) at /etc/cni/net.d/200-loopback.conf 
+INFO[0000] Found CNI network podman (type=bridge) at /etc/cni/net.d/87-podman-bridge.conflist 
+DEBU[0000] Default CNI network name podman is unchangeable 
+INFO[0000] Setting parallel job count to 97             
+DEBU[0000] Pulling image cp.icr.io/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345 (policy: always) 
+DEBU[0000] Looking up image "cp.icr.io/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345" in local containers storage 
+DEBU[0000] Trying "cp.icr.io/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345" ... 
+DEBU[0000] Trying "cp.icr.io/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345" ... 
+DEBU[0000] Trying "cp.icr.io/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345" ... 
+DEBU[0000] Looking for image with matching recorded digests 
+DEBU[0000] Loading registries configuration "/etc/containers/registries.conf" 
+DEBU[0000] Loading registries configuration "/etc/containers/registries.conf.d/000-shortnames.conf" 
+DEBU[0000] Loading registries configuration "/etc/containers/registries.conf.d/001-rhel-shortnames.conf" 
+DEBU[0000] Loading registries configuration "/etc/containers/registries.conf.d/002-rhel-shortnames-overrides.conf" 
+DEBU[0000] Attempting to pull candidate cp.icr.io/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345 for cp.icr.io/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345 
+DEBU[0000] parsed reference into "[overlay@/var/lib/containers/storage+/var/run/containers/storage]cp.icr.io/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345" 
+Trying to pull cp.icr.io/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345...
+DEBU[0000] Copying source image //cp.icr.io/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345 to destination image [overlay@/var/lib/containers/storage+/var/run/containers/storage]cp.icr.io/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345 
+DEBU[0000] Trying to access "lb.ocp9.iicparis.fr.ibm.com:5000/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345" 
+DEBU[0000] Trying to access "lb.ocp9.iicparis.fr.ibm.com:5000/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345" 
+DEBU[0000] Found credentials for lb.ocp9.iicparis.fr.ibm.com:5000 in credential helper containers-auth.json 
+DEBU[0000] Using registries.d directory /etc/containers/registries.d for sigstore configuration 
+DEBU[0000]  Using "default-docker" configuration        
+DEBU[0000]  No signature storage configuration found for lb.ocp9.iicparis.fr.ibm.com:5000/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345, using built-in default file:///var/lib/containers/sigstore 
+DEBU[0000] Looking for TLS certificates and private keys in /etc/containers/certs.d/lb.ocp9.iicparis.fr.ibm.com:5000 
+DEBU[0000]  crt: /etc/containers/certs.d/lb.ocp9.iicparis.fr.ibm.com:5000/domain.crt 
+DEBU[0000] GET https://lb.ocp9.iicparis.fr.ibm.com:5000/v2/ 
+DEBU[0000] Ping https://lb.ocp9.iicparis.fr.ibm.com:5000/v2/ status 401 
+DEBU[0000] GET https://lb.ocp9.iicparis.fr.ibm.com:5000/v2/wmltrainingservicehydra/manifests/sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345 
+DEBU[0000] Content-Type from manifest GET is "application/json; charset=utf-8" 
+DEBU[0000] Accessing "lb.ocp9.iicparis.fr.ibm.com:5000/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345" failed: Error reading manifest sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345 in lb.ocp9.iicparis.fr.ibm.com:5000/wmltrainingservicehydra: manifest unknown: manifest unknown 
+DEBU[0000] Trying to access "lb.ocp9.iicparis.fr.ibm.com:5000/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345" 
+DEBU[0000] Trying to access "lb.ocp9.iicparis.fr.ibm.com:5000/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345" 
+DEBU[0000] Found credentials for lb.ocp9.iicparis.fr.ibm.com:5000 in credential helper containers-auth.json 
+DEBU[0000] Using registries.d directory /etc/containers/registries.d for sigstore configuration 
+DEBU[0000]  Using "default-docker" configuration        
+DEBU[0000]  No signature storage configuration found for lb.ocp9.iicparis.fr.ibm.com:5000/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345, using built-in default file:///var/lib/containers/sigstore 
+DEBU[0000] Looking for TLS certificates and private keys in /etc/containers/certs.d/lb.ocp9.iicparis.fr.ibm.com:5000 
+DEBU[0000]  crt: /etc/containers/certs.d/lb.ocp9.iicparis.fr.ibm.com:5000/domain.crt 
+DEBU[0000] GET https://lb.ocp9.iicparis.fr.ibm.com:5000/v2/ 
+DEBU[0000] Ping https://lb.ocp9.iicparis.fr.ibm.com:5000/v2/ status 401 
+DEBU[0000] GET https://lb.ocp9.iicparis.fr.ibm.com:5000/v2/cp/cpd/wmltrainingservicehydra/manifests/sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345 
+DEBU[0000] Content-Type from manifest GET is "application/vnd.docker.distribution.manifest.list.v2+json" 
+DEBU[0000] Using blob info cache at /var/lib/containers/storage/cache/blob-info-cache-v1.boltdb 
+DEBU[0000] Source is a manifest list; copying (only) instance sha256:ee4cdbfe7ae087c47e28c8f4d1c904fbdf9246c78ee5a56609230d9061da2942 for current system 
+DEBU[0000] GET https://lb.ocp9.iicparis.fr.ibm.com:5000/v2/cp/cpd/wmltrainingservicehydra/manifests/sha256:ee4cdbfe7ae087c47e28c8f4d1c904fbdf9246c78ee5a56609230d9061da2942 
+DEBU[0000] Content-Type from manifest GET is "application/vnd.docker.distribution.manifest.v2+json" 
+DEBU[0000] IsRunningImageAllowed for image docker:cp.icr.io/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345 
+DEBU[0000]  Using default policy section                
+DEBU[0000]  Requirement 0: allowed                      
+DEBU[0000] Overall: allowed                             
+DEBU[0000] Downloading /v2/cp/cpd/wmltrainingservicehydra/blobs/sha256:d751de9d385785caea84dae18a61142c6164a3e4fe5deb7078516fa6a94a9553 
+DEBU[0000] GET https://lb.ocp9.iicparis.fr.ibm.com:5000/v2/cp/cpd/wmltrainingservicehydra/blobs/sha256:d751de9d385785caea84dae18a61142c6164a3e4fe5deb7078516fa6a94a9553 
+Getting image source signatures
+DEBU[0000] Reading /var/lib/containers/sigstore/cp/cpd/wmltrainingservicehydra@sha256=ee4cdbfe7ae087c47e28c8f4d1c904fbdf9246c78ee5a56609230d9061da2942/signature-1 
+DEBU[0000] We can't modify the manifest, hoping for the best... 
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+DEBU[0000] cached value indicated that overlay is supported 
+DEBU[0000] cached value indicated that metacopy is not being used 
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+DEBU[0000] cached value indicated that overlay is supported 
+DEBU[0000] cached value indicated that metacopy is not being used 
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0000] Downloading /v2/cp/cpd/wmltrainingservicehydra/blobs/sha256:ae62e7a9c9fe3c4487e732736354ddb60c4fc6c504885f65d927f4a8d0657840 
+DEBU[0000] GET https://lb.ocp9.iicparis.fr.ibm.com:5000/v2/cp/cpd/wmltrainingservicehydra/blobs/sha256:ae62e7a9c9fe3c4487e732736354ddb60c4fc6c504885f65d927f4a8d0657840 
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+DEBU[0000] cached value indicated that overlay is supported 
+DEBU[0000] cached value indicated that metacopy is not being used 
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+DEBU[0000] cached value indicated that overlay is supported 
+DEBU[0000] cached value indicated that metacopy is not being used 
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0000] Skipping blob sha256:0d725b91398ed3db11249808d89e688e62e511bbd4a2e875ed8493ce1febdb2c (already present): 
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+DEBU[0000] cached value indicated that overlay is supported 
+DEBU[0000] cached value indicated that metacopy is not being used 
+Copying blob 0d725b91398e skipped: already exists  
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+DEBU[0000] cached value indicated that overlay is supported 
+DEBU[0000] cached value indicated that metacopy is not being used 
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+Copying blob 0d725b91398e skipped: already exists  
+Copying blob 1e09a5ee0038 [--------------------------------------] 0.0b / 0.0b
+Copying blob 0d725b91398e skipped: already exists  
+Copying blob 1e09a5ee0038 skipped: already exists  
+DEBU[0000] cached value indicated that metacopy is not being used 
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+DEBU[0000] cached value indicated that overlay is supported 
+DEBU[0000] cached value indicated that metacopy is not being used 
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0000] Skipping blob sha256:37659f0508fa0a9d5879013d6954a9eb5fc0acffeb0f953982c394d677dc62dd (already present): 
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+Copying blob 0d725b91398e skipped: already exists  
+Copying blob 1e09a5ee0038 skipped: already exists  
+Copying blob 37659f0508fa skipped: already exists  
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+DEBU[0000] cached value indicated that overlay is supported 
+DEBU[0000] cached value indicated that metacopy is not being used 
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0000] Detected compression format gzip             
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+DEBU[0000] cached value indicated that overlay is supported 
+DEBU[0000] cached value indicated that metacopy is not being used 
+DEBU[0000] Using original blob without modification     
+DEBU[0000] Downloading /v2/cp/cpd/wmltrainingservicehydra/blobs/sha256:d41f6ac1b1785bb2fcf8852a8f579a691d3b0a32e584f8e8c5df39e0b74876df 
+DEBU[0000] GET https://lb.ocp9.iicparis.fr.ibm.com:5000/v2/cp/cpd/wmltrainingservicehydra/blobs/sha256:d41f6ac1b1785bb2fcf8852a8f579a691d3b0a32e584f8e8c5df39e0b74876df 
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+DEBU[0000] cached value indicated that overlay is supported 
+DEBU[0000] cached value indicated that metacopy is not being used 
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0000] Downloading /v2/cp/cpd/wmltrainingservicehydra/blobs/sha256:cc9d3f6bec747f08ece3d8c711c6cfafac51a32ad933b5f3c1f77c1aae5ae19d 
+DEBU[0000] GET https://lb.ocp9.iicparis.fr.ibm.com:5000/v2/cp/cpd/wmltrainingservicehydra/blobs/sha256:cc9d3f6bec747f08ece3d8c711c6cfafac51a32ad933b5f3c1f77c1aae5ae19d 
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+DEBU[0000] cached value indicated that overlay is supported 
+DEBU[0000] cached value indicated that metacopy is not being used 
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+DEBU[0000] cached value indicated that overlay is supported 
+Copying blob 0d725b91398e skipped: already exists  
+Copying blob 1e09a5ee0038 skipped: already exists  
+Copying blob 37659f0508fa skipped: already exists  
+Copying blob ae62e7a9c9fe [==>-----------------------------------] 784.0KiB / 9.8MiB
+DEBU[0000] Downloading /v2/cp/cpd/wmltrainingservicehydra/blobs/sha256:b818c200f6be50c8bfe5006958e47ff2bf1a860040695aec3f437e9708d86c88 
+DEBU[0000] GET https://lb.ocp9.iicparis.fr.ibm.com:5000/v2/cp/cpd/wmltrainingservicehydra/blobs/sha256:b818c200f6be50c8bfe5006958e47ff2bf1a860040695aec3f437e9708d86c88 
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+DEBU[0000] cached value indicated that overlay is supported 
+DEBU[0000] cached value indicated that metacopy is not being used 
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+DEBU[0000] cached value indicated that overlay is supported 
+DEBU[0000] cached value indicated that metacopy is not being used 
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0000] Detected compression format gzip             
+DEBU[0000] Using original blob without modification     
+DEBU[0000] Downloading /v2/cp/cpd/wmltrainingservicehydra/blobs/sha256:7d7d1d4fe0da33850bcd469a07049a0de4bbffcce0f65dbbc3bf8cea7dcadf1a 
+DEBU[0000] GET https://lb.ocp9.iicparis.fr.ibm.com:5000/v2/cp/cpd/wmltrainingservicehydra/blobs/sha256:7d7d1d4fe0da33850bcd469a07049a0de4bbfCopying blob 0d725b91398e skipped: already exists  
+Copying blob 1e09a5ee0038 skipped: already exists  
+Copying blob 37659f0508fa skipped: already exists  
+Copying blob ae62e7a9c9fe [=====>--------------------------------] 1.4MiB / 9.8MiB
+Copying blob d41f6ac1b178 done  
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+DEBU[0000] cached value indicated that overlay is supported 
+DEBU[0000] cached value indicated that metacopy is not being used 
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0000] Downloading /v2/cp/cpd/wmltrainingservicehydra/blobs/sha256:503bb5860669a44e0d629f993976dbdd4a8678e0bb9dfbada78ba349ee8c1b81 
+DEBU[0000] GET https://lb.ocp9.iicparis.fr.ibm.com:5000/v2/cp/cpd/wmltrainingservicehydra/blobs/sha256:503bb5860669a44e0d629f993976dbdd4a8678e0bb9dfbada78ba349ee8c1b81 
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+DEBU[0000] cached value indicated that overlay is supported 
+DEBU[0000] cached value indicated that metacopy is not being used 
+DEBU[0000] Detected compression format gzip             
+DEBU[0000] Using original blob without modification     
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+DEBU[0000] cached value indicated that overlay is supported 
+DEBU[0000] cached value indicated that metacopy is not being used 
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+Copying blob 0d725b91398e skipped: already exists  
+Copying blob 1e09a5ee0038 skipped: already exists  
+Copying blob 37659f0508fa skipped: already exists  
+Copying blob ae62e7a9c9fe [==========>---------------------------] 2.8MiB / 9.8MiB
+Copying blob d41f6ac1b178 done  
+Copying blob cc9d3f6bec74 [--------------------------------------] 224.0KiB / 188.7MiB
+Copying blob b818c200f6be done  
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+DEBU[0000] cached value indicated that overlay is supported 
+DEBU[0000] cached value indicated that metacopy is not being used 
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+DEBU[0000] cached value indicated that overlay is supported 
+DEBU[0000] cached value indicated that metacopy is not being used 
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+Copying blob 0d725b91398e skipped: already exists  
+Copying blob 1e09a5ee0038 skipped: already exists  
+Copying blob 37659f0508fa skipped: already exists  
+Copying blob ae62e7a9c9fe [==============>-----------------------] 4.0MiB / 9.8MiB
+Copying blob d41f6ac1b178 done  
+Copying blob cc9d3f6bec74 [--------------------------------------] 960.0KiB / 188.7MiB
+Copying blob b818c200f6be done  
+Copying blob 7d7d1d4fe0da [--------------------------------------] 160.0KiB / 83.5MiB
+Copying blob 503bb5860669 done  
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+DEBU[0000] cached value indicated that overlay is supported 
+DEBU[0000] cached value indicated that metacopy is not being used 
+DEBU[0000] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0000] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0000] [graphdriver] trying provided driver "overlay" 
+Copying blob 0d725b91398e skipped: already exists  
+Copying blob 1e09a5ee0038 skipped: already exists  
+Copying blob 0d725b91398e skipped: already exists  
+Copying blob 1e09a5ee0038 skipped: already exists  
+Copying blob 0d725b91398e skipped: already exists  
+Copying blob 1e09a5ee0038 skipped: already exists  
+Copying blob 37659f0508fa skipped: already exists  
+Copying blob ae62e7a9c9fe done  
+Copying blob d41f6ac1b178 done  
+Copying blob cc9d3f6bec74 done  
+Copying blob b818c200f6be done  
+Copying blob 7d7d1d4fe0da done  
+Copying blob 503bb5860669 done  
+Copying blob 6b8dd1ea3522 done  
+Copying blob 2416fd46a170 done  
+Copying blob a4e8fe832deb done  
+DEBU[0005] No compression detected                      
+DEBU[0005] Using original blob without modification     
+Copying config d751de9d38 done  
+Writing manifest to image destination
+Storing signatures
+DEBU[0005] [graphdriver] trying provided driver "overlay" 
+DEBU[0005] cached value indicated that overlay is supported 
+DEBU[0005] cached value indicated that metacopy is not being used 
+DEBU[0005] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0005] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0005] [graphdriver] trying provided driver "overlay" 
+DEBU[0005] cached value indicated that overlay is supported 
+DEBU[0005] cached value indicated that metacopy is not being used 
+DEBU[0005] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0005] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0005] [graphdriver] trying provided driver "overlay" 
+DEBU[0005] cached value indicated that overlay is supported 
+DEBU[0005] cached value indicated that metacopy is not being used 
+DEBU[0005] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0005] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0005] [graphdriver] trying provided driver "overlay" 
+DEBU[0005] cached value indicated that overlay is supported 
+DEBU[0005] cached value indicated that metacopy is not being used 
+DEBU[0005] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0005] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0005] [graphdriver] trying provided driver "overlay" 
+DEBU[0005] cached value indicated that overlay is supported 
+DEBU[0005] cached value indicated that metacopy is not being used 
+DEBU[0005] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750720 
+DEBU[0005] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0005] SetQuota(/var/lib/containers/storage/overlay/1fc685b584e491af5e1a86ad998ce87912349a6b17940018522a368e3241b011, 0): projectID=310750720 
+DEBU[0005] Applying tar in /var/lib/containers/storage/overlay/1fc685b584e491af5e1a86ad998ce87912349a6b17940018522a368e3241b011/diff 
+DEBU[0005] [graphdriver] trying provided driver "overlay" 
+DEBU[0005] cached value indicated that overlay is supported 
+DEBU[0005] cached value indicated that metacopy is not being used 
+DEBU[0005] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750721 
+DEBU[0005] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0005] [graphdriver] trying provided driver "overlay" 
+DEBU[0005] cached value indicated that overlay is supported 
+DEBU[0005] cached value indicated that metacopy is not being used 
+DEBU[0005] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750721 
+DEBU[0005] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0005] SetQuota(/var/lib/containers/storage/overlay/aa2c4709b60b6298344464116670663ec49ed9fbd14a773c594e6e4360d604a5, 0): projectID=310750721 
+DEBU[0005] Applying tar in /var/lib/containers/storage/overlay/aa2c4709b60b6298344464116670663ec49ed9fbd14a773c594e6e4360d604a5/diff 
+DEBU[0013] [graphdriver] trying provided driver "overlay" 
+DEBU[0013] cached value indicated that overlay is supported 
+DEBU[0013] cached value indicated that metacopy is not being used 
+DEBU[0013] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750722 
+DEBU[0013] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0013] [graphdriver] trying provided driver "overlay" 
+DEBU[0013] cached value indicated that overlay is supported 
+DEBU[0013] cached value indicated that metacopy is not being used 
+DEBU[0013] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750722 
+DEBU[0013] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0013] SetQuota(/var/lib/containers/storage/overlay/31306ebde9a93ede2e1ec587f43e2af5daa7a706b99da228e5a970d97750b18b, 0): projectID=310750722 
+DEBU[0013] Applying tar in /var/lib/containers/storage/overlay/31306ebde9a93ede2e1ec587f43e2af5daa7a706b99da228e5a970d97750b18b/diff 
+DEBU[0014] [graphdriver] trying provided driver "overlay" 
+DEBU[0014] cached value indicated that overlay is supported 
+DEBU[0014] cached value indicated that metacopy is not being used 
+DEBU[0014] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750723 
+DEBU[0014] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0014] [graphdriver] trying provided driver "overlay" 
+DEBU[0014] cached value indicated that overlay is supported 
+DEBU[0014] cached value indicated that metacopy is not being used 
+DEBU[0014] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750723 
+DEBU[0014] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0014] SetQuota(/var/lib/containers/storage/overlay/db14594d924219628b496b0c75f9ae6a0a02416ac8e0704857d06539a702f683, 0): projectID=310750723 
+DEBU[0014] Applying tar in /var/lib/containers/storage/overlay/db14594d924219628b496b0c75f9ae6a0a02416ac8e0704857d06539a702f683/diff 
+DEBU[0014] [graphdriver] trying provided driver "overlay" 
+DEBU[0014] cached value indicated that overlay is supported 
+DEBU[0014] cached value indicated that metacopy is not being used 
+DEBU[0014] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750724 
+DEBU[0014] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0014] [graphdriver] trying provided driver "overlay" 
+DEBU[0014] cached value indicated that overlay is supported 
+DEBU[0014] cached value indicated that metacopy is not being used 
+DEBU[0014] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750724 
+DEBU[0014] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0014] SetQuota(/var/lib/containers/storage/overlay/ea0a14f466c0a6e63da32e0d46f9becc94b65c6d704fe5ba554325d3ad350771, 0): projectID=310750724 
+DEBU[0014] Applying tar in /var/lib/containers/storage/overlay/ea0a14f466c0a6e63da32e0d46f9becc94b65c6d704fe5ba554325d3ad350771/diff 
+DEBU[0015] [graphdriver] trying provided driver "overlay" 
+DEBU[0015] cached value indicated that overlay is supported 
+DEBU[0015] cached value indicated that metacopy is not being used 
+DEBU[0015] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750725 
+DEBU[0015] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0015] [graphdriver] trying provided driver "overlay" 
+DEBU[0015] cached value indicated that overlay is supported 
+DEBU[0015] cached value indicated that metacopy is not being used 
+DEBU[0015] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750725 
+DEBU[0015] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0015] SetQuota(/var/lib/containers/storage/overlay/0da2929eb156f73fcf4808fab3e434b9a6d714d325c427ddb149938f7f1e254d, 0): projectID=310750725 
+DEBU[0015] Applying tar in /var/lib/containers/storage/overlay/0da2929eb156f73fcf4808fab3e434b9a6d714d325c427ddb149938f7f1e254d/diff 
+DEBU[0015] [graphdriver] trying provided driver "overlay" 
+DEBU[0015] cached value indicated that overlay is supported 
+DEBU[0015] cached value indicated that metacopy is not being used 
+DEBU[0015] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750726 
+DEBU[0015] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0015] [graphdriver] trying provided driver "overlay" 
+DEBU[0015] cached value indicated that overlay is supported 
+DEBU[0015] cached value indicated that metacopy is not being used 
+DEBU[0015] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750726 
+DEBU[0015] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0015] SetQuota(/var/lib/containers/storage/overlay/5cec29bb85a13c1f6ba70a72bd34c65cec875223e24eab3c77c09bc6430844e0, 0): projectID=310750726 
+DEBU[0015] Applying tar in /var/lib/containers/storage/overlay/5cec29bb85a13c1f6ba70a72bd34c65cec875223e24eab3c77c09bc6430844e0/diff 
+DEBU[0015] [graphdriver] trying provided driver "overlay" 
+DEBU[0015] cached value indicated that overlay is supported 
+DEBU[0015] cached value indicated that metacopy is not being used 
+DEBU[0015] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750727 
+DEBU[0015] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0015] [graphdriver] trying provided driver "overlay" 
+DEBU[0015] cached value indicated that overlay is supported 
+DEBU[0015] cached value indicated that metacopy is not being used 
+DEBU[0015] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750727 
+DEBU[0015] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0015] SetQuota(/var/lib/containers/storage/overlay/3b6deee05105327b5f25578f93134e4a77f2353567833124f9ad9a7e365eb751, 0): projectID=310750727 
+DEBU[0015] Applying tar in /var/lib/containers/storage/overlay/3b6deee05105327b5f25578f93134e4a77f2353567833124f9ad9a7e365eb751/diff 
+DEBU[0016] [graphdriver] trying provided driver "overlay" 
+DEBU[0016] cached value indicated that overlay is supported 
+DEBU[0016] cached value indicated that metacopy is not being used 
+DEBU[0016] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750728 
+DEBU[0016] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0016] [graphdriver] trying provided driver "overlay" 
+DEBU[0016] cached value indicated that overlay is supported 
+DEBU[0016] cached value indicated that metacopy is not being used 
+DEBU[0016] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750728 
+DEBU[0016] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0016] SetQuota(/var/lib/containers/storage/overlay/f8f235a3512c0eb0b98df78ce0ca4790e9eaee61eb6d2eedcb2179a01586c874, 0): projectID=310750728 
+DEBU[0016] Applying tar in /var/lib/containers/storage/overlay/f8f235a3512c0eb0b98df78ce0ca4790e9eaee61eb6d2eedcb2179a01586c874/diff 
+DEBU[0016] setting image creation date to 2022-07-07 18:09:01.221424813 +0000 UTC 
+DEBU[0016] [graphdriver] trying provided driver "overlay" 
+DEBU[0016] cached value indicated that overlay is supported 
+DEBU[0016] cached value indicated that metacopy is not being used 
+DEBU[0016] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750729 
+DEBU[0016] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0016] created new image ID "d751de9d385785caea84dae18a61142c6164a3e4fe5deb7078516fa6a94a9553" 
+DEBU[0016] [graphdriver] trying provided driver "overlay" 
+DEBU[0016] cached value indicated that overlay is supported 
+DEBU[0016] cached value indicated that metacopy is not being used 
+DEBU[0016] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750729 
+DEBU[0016] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0016] set names of image "d751de9d385785caea84dae18a61142c6164a3e4fe5deb7078516fa6a94a9553" to [cp.icr.io/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345] 
+DEBU[0016] [graphdriver] trying provided driver "overlay" 
+DEBU[0016] cached value indicated that overlay is supported 
+DEBU[0016] cached value indicated that metacopy is not being used 
+DEBU[0016] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750729 
+DEBU[0016] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+DEBU[0016] saved image metadata "{\"signatures-sizes\":{\"sha256:ee4cdbfe7ae087c47e28c8f4d1c904fbdf9246c78ee5a56609230d9061da2942\":[]}}" 
+DEBU[0016] Pulled candidate cp.icr.io/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345 successfully 
+DEBU[0016] Looking up image "cp.icr.io/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345" in local containers storage 
+DEBU[0016] Trying "cp.icr.io/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345" ... 
+DEBU[0016] parsed reference into "[overlay@/var/lib/containers/storage+/var/run/containers/storage]@d751de9d385785caea84dae18a61142c6164a3e4fe5deb7078516fa6a94a9553" 
+DEBU[0016] Found image "cp.icr.io/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345" as "cp.icr.io/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345" in local containers storage 
+d751de9d385785caea84dae18a61142c6164a3e4fe5deb7078516fa6a94a9553
+DEBU[0016] Called pull.PersistentPostRunE(podman pull --authfile /var/home/core/auth.json --log-level=debug cp.icr.io/cp/cpd/wmltrainingservicehydra@sha256:8a80dd25d93f9ab9022e8467ca29a9c46a506d010b5a88aea1ea4f371e844345) 
+DEBU[0016] [graphdriver] trying provided driver "overlay" 
+DEBU[0016] cached value indicated that overlay is supported 
+DEBU[0016] cached value indicated that metacopy is not being used 
+DEBU[0016] NewControl(/var/lib/containers/storage/overlay): nextProjectID = 310750729 
+DEBU[0016] backingFs=xfs, projectQuotaSupported=true, useNativeDiff=true, usingMetacopy=false 
+

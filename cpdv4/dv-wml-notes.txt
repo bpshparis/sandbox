@@ -1,0 +1,234 @@
+NS="ibm-common-services"
+
+SUB=$(oc get sub -n $NS ibm-cpd-wkc-operator-catalog-subscription \
+-o jsonpath='{.status.installedCSV} {"\n"}') && echo $SUB
+
+oc get csv -n $NS $SUB \
+-o jsonpath='{ .status.phase } : { .status.message} {"\n"}'
+
+oc get deployments -n $NS -l olm.owner="$SUB" \
+-o jsonpath="{.items[0].status.availableReplicas} {'\n'}"
+
+# DV
+
+NS="ibm-common-services"
+
+oc get sub -n $NS ibm-db2u-operator \
+-o jsonpath='{.status.installedCSV} {"\n"}'
+
+oc get csv -n $NS db2u-operator.v1.1.10 \
+-o jsonpath='{ .status.phase } : { .status.message} {"\n"}'
+
+oc get deployments -n $NS -l olm.owner="db2u-operator.v1.1.10" \
+-o jsonpath="{.items[0].status.availableReplicas} {'\n'}"
+
+
+
+[root@cli ~]# OFFLINEDIR=/root/offline/dv
+[root@cli ~]# echo ${OFFLINEDIR}
+/root/offline/dv
+[root@cli ~]# l ${OFFLINEDIR}/ibm-dv-case-1.7.5.tgz
+-rw-r--r-- 1 root root 514K Feb 15 16:37 /root/offline/dv/ibm-dv-case-1.7.5.tgz
+[root@cli ~]# cloudctl case launch \
+>   --case ${OFFLINEDIR}/ibm-dv-case-1.7.5.tgz \
+>   --inventory dv \
+>   --namespace openshift-marketplace \
+>   --action install-catalog \
+>     --args "--inputDir ${OFFLINEDIR} --recursive"
+
+
+cat << EOF | oc apply -f -
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: ibm-dv-operator-catalog-subscription
+  namespace: $NS
+spec:
+  channel: v1.7
+  installPlanApproval: Automatic
+  name: ibm-dv-operator
+  source: ibm-dv-operator-catalog
+  sourceNamespace: openshift-marketplace
+EOF
+
+SUB=$(oc get sub -n $NS ibm-dv-operator-catalog-subscription \
+-o jsonpath='{.status.installedCSV} {"\n"}') && echo $SUB
+
+oc get csv -n $NS $SUB \
+-o jsonpath='{ .status.phase } : { .status.message} {"\n"}'
+
+oc get deployments -n $NS -l olm.owner="$SUB" \
+-o jsonpath="{.items[0].status.availableReplicas} {'\n'}"
+
+NS="cpd-instance"
+
+cat << EOF | oc apply -f -
+apiVersion: db2u.databases.ibm.com/v1
+kind: DvService
+metadata:
+  name: dv-service
+  namespace: $NS
+spec:
+  license:
+    accept: true
+    license: Enterprise
+  version: 1.7.5
+  size: "small"
+EOF
+
+
+# WML
+
+NS="ibm-common-services"
+
+cat << EOF | oc apply -f -
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  labels:
+    app.kubernetes.io/instance: ibm-cpd-wml-operator-subscription
+    app.kubernetes.io/managed-by: ibm-cpd-wml-operator
+    app.kubernetes.io/name: ibm-cpd-wml-operator-subscription
+  name: ibm-cpd-wml-operator-subscription
+  namespace: $NS
+spec:
+    channel: v1.1
+    installPlanApproval: Automatic
+    name: ibm-cpd-wml-operator
+    source: ibm-cpd-wml-operator-catalog
+    sourceNamespace: openshift-marketplace
+EOF
+
+SUB="ibm-cpd-wml-operator-subscription"
+
+SUB=$(oc get sub -n $NS $SUB -o jsonpath='{.status.installedCSV} {"\n"}') && echo $SUB
+
+oc get csv -n $NS $SUB -o jsonpath='{ .status.phase } : { .status.message} {"\n"}'
+
+oc get deployments -n $NS -l olm.owner="$SUB" -o jsonpath="{.items[0].status.availableReplicas} {'\n'}"
+
+NS="cpd-instance"
+
+cat << EOF | oc apply -f -
+apiVersion: wml.cpd.ibm.com/v1beta1
+kind: WmlBase
+metadata:
+  name: wml-cr
+  namespace: $NS
+  labels:
+    app.kubernetes.io/instance: wml-cr
+    app.kubernetes.io/managed-by: ibm-cpd-wml-operator
+    app.kubernetes.io/name: ibm-cpd-wml-operator
+spec:
+  ignoreForMaintenance: false
+  scaleConfig: small
+  license:
+    accept: true
+    license: Enterprise
+  storageClass: $STORAGE_CLASS_NAME                   
+EOF
+
+
+# WSL
+
+cloudctl case launch \
+  --case ${OFFLINEDIR}/ibm-wsl-2.0.5.tgz \
+  --inventory wslSetup \
+  --namespace openshift-marketplace \
+  --action install-catalog \
+    --args "--inputDir ${OFFLINEDIR} --recursive"
+
+oc get catalogsource -n openshift-marketplace ibm-cpd-ws-operator-catalog \
+-o jsonpath='{.status.connectionState.lastObservedState} {"\n"}'
+
+NS="ibm-common-services"
+
+cat << EOF | oc apply -f -
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  annotations:
+  name: ibm-cpd-ws-operator-catalog-subscription
+  namespace: $NS
+spec:
+  channel: v2.0
+  installPlanApproval: Automatic
+  name: ibm-cpd-wsl
+  source: ibm-cpd-ws-operator-catalog
+  sourceNamespace: openshift-marketplace
+EOF
+
+SUB="ibm-cpd-ws-operator-catalog-subscription"
+
+SUB=$(oc get sub -n $NS $SUB -o jsonpath='{.status.installedCSV} {"\n"}') && echo $SUB
+
+oc get csv -n $NS $SUB -o jsonpath='{ .status.phase } : { .status.message} {"\n"}'
+
+oc get deployments -n $NS -l olm.owner="$SUB" -o jsonpath="{.items[0].status.availableReplicas} {'\n'}"
+
+NS="cpd-instance"
+
+cat << EOF | oc apply -f -
+apiVersion: ws.cpd.ibm.com/v1beta1
+kind: WS
+metadata:
+  name: ws-cr
+  namespace: $NS
+spec:
+  license:
+    accept: true
+    license: Enterprise
+  version: 4.0.5
+  storageClass: $STORAGE_CLASS_NAME
+EOF
+
+oc get WS ws-cr -n $NS -o jsonpath='{.status.wsStatus} {"\n"}'
+
+# CDE
+
+NS="ibm-common-services"
+
+cat << EOF | oc apply -f -
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  labels:
+    app.kubernetes.io/instance: ibm-cde-operator-subscription
+    app.kubernetes.io/managed-by: ibm-cde-operator
+    app.kubernetes.io/name: ibm-cde-operator-subscription
+  name: ibm-cde-operator-subscription
+  namespace: $NS
+spec:
+  channel: v1.0
+  installPlanApproval: Automatic
+  name: ibm-cde-operator
+  source: ibm-cde-operator-catalog
+  sourceNamespace: openshift-marketplace
+EOF
+
+SUB="ibm-cde-operator-subscription"
+
+SUB=$(oc get sub -n $NS $SUB -o jsonpath='{.status.installedCSV} {"\n"}') && echo $SUB
+
+oc get csv -n $NS $SUB -o jsonpath='{ .status.phase } : { .status.message} {"\n"}'
+
+oc get deployments -n $NS -l olm.owner="$SUB" -o jsonpath="{.items[0].status.availableReplicas} {'\n'}"
+
+NS="cpd-instance"
+
+cat << EOF | oc apply -f -
+apiVersion: cde.cpd.ibm.com/v1
+kind: CdeProxyService
+metadata:
+  name: cdeproxyservice-cr
+  namespace: $NS
+spec:
+  license:
+    accept: true
+    license: Enterprise
+  version: 4.0.6
+  storageClass: $STORAGE_CLASS_NAME
+EOF
+
+oc get CdeProxyService cdeproxyservice-cr -o jsonpath='{.status.cdeStatus} {"\n"}'
+
