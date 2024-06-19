@@ -96,6 +96,18 @@ sudo alternatives --config java
 java -version
 ```
 
+## DBeaver
+
+### install
+
+:bulb: The main requirement for running DBeaver is Java. Ensure you have Java installed on your Fedora system. The latest release of DBeaver supports Java 11+ LTS.
+
+```
+cd ${HOME}/Downloads
+wget https://dbeaver.io/files/dbeaver-ce-latest-stable.x86_64.rpm
+sudo rpm -Uvh ./dbeaver-ce-latest-stable.x86_64.rpm
+```
+
 ## Eclipse
 
 ### Install
