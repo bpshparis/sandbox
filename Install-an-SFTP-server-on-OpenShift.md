@@ -1,5 +1,35 @@
 # Install an SFTP server on OpenShift
 
+## Installing tools needed
+
+### Linux stuff
+```
+sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y --nogpgcheck
+
+sudo subscription-manager repos --enable "codeready-builder-for-rhel-8-$(/bin/arch)-rpms"
+
+sudo yum install -y httpd-tools podman ca-certificates openssl skopeo jq bind-utils git wget screen moreutils
+```
+
+> :bulb: Set **enabled=1** for repo [epel] in /etc/yum.repos.d/epel.repo if necessary
+
+### Openshift stuff
+```
+wget -c https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz
+
+tar xvzf openshift-client-linux.tar.gz -C ~/bin
+
+oc version --client
+
+rm -f openshift-client-linux.tar.gz
+
+sudo yum -y install bash-completion
+
+oc completion bash | sudo tee /etc/bash_completion.d/oc_completion
+
+source /etc/bash_completion.d/oc_completion
+```
+
 ## Set env
 
 ```
