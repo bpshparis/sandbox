@@ -36,9 +36,9 @@ cat > installNFSServer.sh << EOF
 sudo mkdir $NFS_PATH
 echo "$NFS_PATH *(rw,sync,no_root_squash)" | sudo tee /etc/exports
 [ ! -z $(rpm -qa nfs-utils) ] && echo nfs-utils installed || { echo nfs-utils not installed; sudo yum install -y nfs-utils rpcbind; }
-sudo systemctl restart nfs
+sudo systemctl restart nfs-server
 sudo showmount -e
-sudo systemctl enable nfs
+sudo systemctl enable nfs-server
 EOF
 ```
 
