@@ -31,6 +31,18 @@ sudo cp -v youtube-dl /usr/local/bin/
 
 💡 Don't pay attention to **make: pandoc: No such file or directory**, **youtube-dl** binary should be generated.
 
+### Install yt-dlp (france.tv, arte.tv)
+
+```
+cd ~/Videos
+wget -c https://github.com/yt-dlp/yt-dlp/releases/download/2024.10.07/yt-dlp_linux
+chmod +x yt-dlp_linux
+
+URL="https://www.arte.tv/fr/videos/116856-000-A/angkor-et-le-tresor-oublie-des-khmers"
+FFMPEG_PATH="/usr/bin/ffmpeg"
+
+./yt-dlp_linux -i --no-abort-on-error -q --no-warnings --no-sponsorblock --cookies-from-browser firefox --no-check-certificates --video-multistreams --audio-multistreams --prefer-free-formats --merge-output-format mkv --ffmpeg-location ${FFMPEG_PATH} --allow-dynamic-mpd --hls-use-mpegts --sub-format best --sub-langs all --embed-subs ${URL}
+```
 
 
 ### Video from image with audio
