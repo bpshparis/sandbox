@@ -142,5 +142,37 @@ for jpg in $(ls *.jpg); do echo "Processing" "$jpg..."; echo $jpg | awk -F. '{pr
 for f in $(ls *.txt); do echo $f | awk -F. '{print "Question N°" $1}' >> questions.txt; echo "" >> questions.txt; cat $f >> questions.txt; echo "" >> questions.txt; echo "Answers:" >> questions.txt; echo "" >> questions.txt; echo 
 ```
 
+## QRCODE
 
+### Install tools
+
+```
+sudo yum install qrencode eog zbar -y
+```
+
+### Generate qrcode
+
+```
+MYEXTIP=$(curl -4  ifconfig.me)
+URL="http://${MYEXTIP}:5102/sharing/xej5fQx6t"
+IMG="dexter-new-blood.png"
+
+qrencode -o ${IMG} ${URL}
+```
+
+### Display qrcode
+
+```
+IMG="dexter-new-blood.png"
+
+eog ${IMG}
+```
+
+### Decode qrcode
+
+```
+IMG="dexter-new-blood.png"
+
+zbarimg ${IMG}
+```
 
