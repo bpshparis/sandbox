@@ -152,12 +152,36 @@ sudo yum install qrencode eog zbar -y
 
 ### Generate qrcode
 
+#### Downloadable link
+
 ```
 MYEXTIP=$(curl -4  ifconfig.me)
 URL="http://${MYEXTIP}:5102/sharing/xej5fQx6t"
 IMG="dexter-new-blood.png"
 
 qrencode -o ${IMG} ${URL}
+```
+
+#### Downloadable link
+
+```
+MYEXTIP=$(curl -4  ifconfig.me)
+URL="http://${MYEXTIP}:5102/sharing/xej5fQx6t"
+IMG="dexter-new-blood.png"
+
+qrencode -o ${IMG} ${URL}
+```
+
+#### WIFI access
+
+> :bulb: WIFI:S:{SSID name of your network};T:{security type - WPA or WEP};P:{the network password};;
+
+```
+IMG="zlgr.png"
+SSID="zlgr"
+PASSWD=""
+
+qrencode -o zlgr.png "WIFI:S:${SSID};T:WPA;P:${PASSWD};;"
 ```
 
 ### Display qrcode
