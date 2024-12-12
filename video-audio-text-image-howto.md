@@ -147,7 +147,7 @@ for f in $(ls *.txt); do echo $f | awk -F. '{print "Question N°" $1}' >> questi
 ### Install tools
 
 ```
-sudo yum install qrencode eog zbar -y
+sudo yum install qrencode eog zbar ImageMagick -y
 ```
 
 ### Generate qrcode
@@ -177,11 +177,13 @@ qrencode -o ${IMG} ${URL}
 > :bulb: WIFI:S:{SSID name of your network};T:{security type - WPA or WEP};P:{the network password};;
 
 ```
-IMG="zlgr.png"
-SSID="zlgr"
-PASSWD=""
+IMG="MyWifiAccess"
+SSID="Livebox-AA"
+CODE="ABC123"
 
-qrencode -o zlgr.png "WIFI:S:${SSID};T:WPA;P:${PASSWD};;"
+qrencode -o ${IMG}-temp.png "WIFI:S:${SSID};T:WPA;P:${CODE};;"
+
+magick ${IMG}-temp.png -colorspace gray -fill white -resize 200% -sharpen 0x1 ${IMG}.png
 ```
 
 ### Display qrcode
