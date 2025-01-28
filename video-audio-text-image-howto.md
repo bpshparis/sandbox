@@ -18,6 +18,18 @@ sudo dnf install mplayer mencoder -y
 sudo yum install ffmpeg -y
 ```
 
+### Capture screen with sound
+
+```
+sudo yum  install xwininfo -y
+```
+:bulb: grab last line output (e.g. -geometry 1920x1022+0+0) to set -video_size and value after + for -i parameter below
+
+```
+VIDEO="video.mp4"
+
+ffmpeg -video_size 1900x1080 -framerate 25 -f x11grab -i :0.0+0,0 -f pulse -ac 2 -i default ${VIDEO} -y
+```
 
 
 ### Install youtube-dl
