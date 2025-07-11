@@ -121,6 +121,29 @@ AUDIO_TARGET="queen-love-of-my-life.mp3"
 ffmpeg -i ${VIDEO_SOURCE} -vn -ab 128k -ar 44100 -y ${AUDIO_TARGET}
 ```
 
+## IMAGE
+
+:bulb: First, you need to convert the image format from .jpg to .png format, because JPEG does not support transparency.
+
+### Install tools
+
+```
+sudo yum install ImageMagick -y
+```
+
+### Sharpen
+```
+IMG="signature"
+
+magick $IMG.jpg -colorspace gray -fill white -resize 400% -sharpen 0x5 ${IMG}-sharpen.png
+```
+
+### Transparency
+```
+IMG="signature"
+
+magick ${IMG}-sharpen.png -fuzz 70% -transparent white ${IMG}-transparent.png
+```
 
 
 ## OCR
