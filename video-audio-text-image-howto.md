@@ -43,6 +43,15 @@ sudo cp -v youtube-dl /usr/local/bin/
 
 💡 Don't pay attention to **make: pandoc: No such file or directory**, **youtube-dl** binary should be generated.
 
+
+### Download youtube videos
+
+```
+VIDEO="https://www.youtube.com/watch?v=ywobzuCN158"
+BROWSER="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+youtube-dl --user-agent ${BROWSER} ${VIDEO}
+```
+
 ### Install yt-dlp (france.tv, arte.tv)
 
 ```
