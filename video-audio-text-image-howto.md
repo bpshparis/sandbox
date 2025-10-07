@@ -225,6 +225,8 @@ IMG="MyWifiAccess"
 SSID="Livebox-AA"
 CODE="ABC123"
 
+echo -n "WIFI:S:${SSID};T:WPA;P:${CODE};;" | qrencode -t ansiutf8
+
 qrencode -o ${IMG}-temp.png "WIFI:S:${SSID};T:WPA;P:${CODE};;"
 
 magick ${IMG}-temp.png -colorspace gray -fill white -resize 200% -sharpen 0x1 ${IMG}.png
