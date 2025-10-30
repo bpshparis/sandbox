@@ -50,7 +50,7 @@ gsk8capicmd_64 -cert -list -db ${INSTANCE}.p12 -stashed
 
 ## Configuring TLS support
 
-> ℹ️: Have to be run on DB2 server as ctginst1
+> ℹ️ Have to be run on DB2 server as ctginst1
 
 > :bulb: If db2level >= v11.5.8 then run db2 update dbm cfg using SSL_VERSIONS TLSV12,TLSV13
 
