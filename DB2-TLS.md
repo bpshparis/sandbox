@@ -2,7 +2,7 @@
 
 ## Creating a keystore
 
-:information: Have to be run on DB2 server as ctginst1
+> :information_source: Have to be run on DB2 server as ctginst1
 
 ```
 PASSWORD="abc123"
@@ -14,7 +14,7 @@ gsk8capicmd_64 -keydb -create -db ${INSTANCE}.p12 -pw ${PASSWORD} -stash
 
 ## Creating a certificate signing request (CSR)
 
-:information: Have to be run on DB2 server as ctginst1
+> :information_source: Have to be run on DB2 server as ctginst1
 
 ```
 INSTANCE="ctginst1"
@@ -25,16 +25,16 @@ gsk8capicmd_64 -certreq -create -db ${INSTANCE}.p12 -stashed -label ${INSTANCE} 
 gsk8capicmd_64 -certreq -list -db ${INSTANCE}.p12 -stashed
 ```
 
-> Send ${INSTANCE}.csr to Certificate Authority (CA)
+> ⚠️ Send ${INSTANCE}.csr to Certificate Authority (CA)
 
 ## CA side
 
 
-> CA Will provide rootCA.cer, (optional) intermdiateCA.cr and generate server.cer 
+> ⚠️ CA Will provide rootCA.cer, (optional) intermdiateCA.cr and generate server.cer 
 
 ## Adding the root, intermediate and server certificates
 
-:information: Have to be run on DB2 server as ctginst1
+> ℹ️ Have to be run on DB2 server as ctginst1
 
 
 ```
@@ -50,7 +50,7 @@ gsk8capicmd_64 -cert -list -db ${INSTANCE}.p12 -stashed
 
 ## Configuring TLS support
 
-> :information: Have to be run on DB2 server as ctginst1
+> ℹ️: Have to be run on DB2 server as ctginst1
 
 > :bulb: If db2level >= v11.5.8 then run db2 update dbm cfg using SSL_VERSIONS TLSV12,TLSV13
 
@@ -76,7 +76,7 @@ ss -pantu | grep 5000
 
 ## JDBC Connection url
 
-:information: Have to be set on client side (e.g. MAS)
+> ℹ️: Have to be set on client side (e.g. MAS)
 
 ```
 SERVERNAME="DB2_SERVER_FQDN"
@@ -85,5 +85,5 @@ PASSWORD="abc123"
 INSTANCE="ctginst1"
 P12_FILE="//opt//ibm//mas/certs//${INSTANCE}.p12"
 
-echo jdbc:db2://${SERVERNAME}:50001/${DB}:sslConnection=true;sslTrustStoreLocation=${P12_FILE};sslTrustStorePassword=${PASSWORD};verifyServerCertificate=false;useSSL=true;requireSSL=true;sslVersion=TLSv1.2;"
+echo "jdbc:db2://${SERVERNAME}:50001/${DB}:sslConnection=true;sslTrustStoreLocation=${P12_FILE};sslTrustStorePassword=${PASSWORD};verifyServerCertificate=false;useSSL=true;requireSSL=true;sslVersion=TLSv1.2;"
 ```
