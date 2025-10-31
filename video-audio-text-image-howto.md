@@ -31,6 +31,29 @@ VIDEO="video.mp4"
 ffmpeg -video_size 1900x1080 -framerate 25 -f x11grab -i :0.0+0,0 -f pulse -ac 2 -i default ${VIDEO} -y
 ```
 
+### Capture screen with sound
+
+```
+tee ~/screenrecord.sh << EOF
+#!/bin/sh
+xwininfo | {
+    while IFS=: read -r k v; do
+        case "$k" in
+        *"Absolute upper-left X"*) x=$v;;
+        *"Absolute upper-left Y"*) y=$v;;
+        *"Border width"*) bw=$v ;;
+        *"Width"*) w=$v;;
+        *"Height"*) h=$v;;
+        esac
+    done
+    for i in 3 2 1; do echo "$i"; sleep 1; done
+    ffmpeg -y -f x11grab -framerate 30 \
+           -video_size "$((w))x$((h))" \
+           -i "+$((x+bw)),$((y+bw))" screenrecord.mp4
+EOF
+
+chmod +x ~/screenrecord.sh
+```
 
 ### Install youtube-dl
 
