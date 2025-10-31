@@ -50,7 +50,7 @@ xwininfo | {
            -video_size "$((w))x$((h))" \
            -i "+$((x+bw)),$((y+bw))" \
            -f pulse -ac 2 -i default \
-           screenrecord.mp4
+           screenrecord-$(date +"%Y-%m-%d-%H-%M-%S").mp4
 }
 
 ```
