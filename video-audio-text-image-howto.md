@@ -48,7 +48,9 @@ xwininfo | {
     for i in 3 2 1; do echo "$i"; sleep 1; done
     ffmpeg -y -f x11grab -framerate 30 \
            -video_size "$((w))x$((h))" \
-           -i "+$((x+bw)),$((y+bw))" screenrecord.mp4
+           -i "+$((x+bw)),$((y+bw))" \
+           -f pulse -ac 2 -i default \
+           screenrecord.mp4
 }
 
 ```
