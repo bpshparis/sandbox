@@ -34,7 +34,6 @@ ffmpeg -video_size 1900x1080 -framerate 25 -f x11grab -i :0.0+0,0 -f pulse -ac 2
 ### Capture screen with sound
 
 ```
-tee ~/screenrecord.sh << EOF
 #!/bin/sh
 xwininfo | {
     while IFS=: read -r k v; do
@@ -50,9 +49,8 @@ xwininfo | {
     ffmpeg -y -f x11grab -framerate 30 \
            -video_size "$((w))x$((h))" \
            -i "+$((x+bw)),$((y+bw))" screenrecord.mp4
-EOF
+}
 
-chmod +x ~/screenrecord.sh
 ```
 
 ### Install youtube-dl
