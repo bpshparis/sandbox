@@ -80,6 +80,8 @@ ffmpeg -framerate 1 -pattern_type glob -i '*.png' -i ${AUDIO} -c:v libx264 -r 30
 
 ### Cut video
 
+> 💡 [calculatrice-temps](https://www.ma-calculatrice.fr/calculatrice-temps)
+
 ```
 START="00:01:20"
 SOURCE="demo.mp4"
