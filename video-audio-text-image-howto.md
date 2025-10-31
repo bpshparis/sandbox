@@ -121,6 +121,22 @@ VIDEO_TARGET="queen-love-of-my-life.mp4"
 ffmpeg -i ${VIDEO_SOURCE} -c:v libx265 -crf 28  -c:a copy ${VIDEO_TARGET}
 ```
 
+### Shrink video size - Alternate
+
+```
+SOURCE="video.mp4"
+TARGET="Video.mp4"
+WIDTH="640"
+
+ffmpeg -i "${SOURCE}" -vf "scale=${WIDTH}:trunc(ow/a/2)*2" "TARGET" -y
+
+NEW_RES=$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 "${TARGET}")
+
+SHRINKED=$(echo ${TARGET} | sed 's:\.:-'${NEW_RES}'.:')
+
+mv ${TARGET} ${SHRINKED}
+```
+
 
 
 ### Extract video and encode to mp3
